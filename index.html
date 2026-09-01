@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>박성진세무회계사무소 | 부산 수영구 세무사 · 기장 · 양도 · 상속증여</title>
+<meta name="description" content="부산 수영구 박성진세무회계사무소. 개인사업자·법인 기장, 부가세·종합소득세·법인세 신고, 양도소득세, 상속·증여, 병의원 전문직 세무를 대표세무사가 직접 상담해 드립니다. 051-710-9685">
+
+<!-- 브라우저 탭에 뜨는 아이콘 -->
+<link rel="icon" type="image/png" href="office-logo.png">
+<link rel="apple-touch-icon" href="office-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= 맨 위 바 ================= -->
+<header class="header">
+  <div class="container">
+    <!-- 로고를 누르면 홈(첫 화면)으로 돌아옵니다 -->
+    <a class="logo" href="index.html">
+      <img src="office-logo.png" alt="" onerror="this.style.display='none'">
+      <span><small>TAX ACCOUNTING</small><b>박성진세무회계사무소</b></span>
+    </a>
+    <nav class="gnb">
+      <!-- 마우스를 올리면 아래로 펼쳐지는 메뉴 -->
+      <div class="has-sub">
+        <a href="about.html" class="top">박성진세무회계사무소</a>
+        <div class="sub">
+          <a href="about.html">사무소 소개</a>
+          <a href="location.html">사무소 위치</a>
+        </div>
+      </div>
+      <a href="news.html">세무뉴스</a>
+      <a href="faq.html">자주 묻는 질문</a>
+      <a href="consult.html">상담하기</a>
+      <!-- 누르면 051-710-9685 로 전화가 걸립니다 (휴대폰 기준) -->
+      <a class="tel" href="tel:0517109685">전화 상담</a>
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- 좁은 화면에서 햄버거를 누르면 펼쳐지는 메뉴 -->
+  <nav class="m-menu" id="mMenu">
+    <a href="about.html">사무소 소개</a>
+    <a href="location.html">사무소 위치</a>
+    <a href="news.html">세무뉴스</a>
+    <a href="faq.html">자주 묻는 질문</a>
+    <a href="consult.html">상담하기</a>
+  </nav>
+</header>
+
+<!-- ================= 첫 화면 ================= -->
+<!-- ============ 첫 화면 + 대표세무사 소개 (하나의 무대) ============
+     스크롤하면 글이 사라지고 서명만 남았다가,
+     인물이 나타나 커지면서 문구가 떠오릅니다
+================================================================ -->
+<section class="stage" id="stage">
+  <div class="stage-pin">
+
+    <div class="stage-inner">
+      <!-- 처음에 보이는 글 -->
+      <div class="stage-hero" id="stageHero">
+        <h1>
+          세금 앞에서<span class="mbr"></span> 혼자 고민하지 않도록<br>
+          <strong>박성진세무회계사무소</strong>
+        </h1>
+        <div class="stage-sub">
+          <p class="sub">처음부터 끝까지,<span class="mbr"></span> 대표세무사가 직접 상담해 드립니다</p>
+        </div>
+      </div>
+
+      <!-- 끝까지 남는 서명 -->
+      <img class="stage-sign" id="stageSign" src="sign.png" alt="박성진 대표세무사 서명">
+
+      <!-- 마지막에 떠오르는 문구 -->
+      <div class="stage-words" id="stageWords">
+        <span class="mark">“</span>
+        <p>숫자를 정리해 드리는 것보다, 고객님이 다음에 <b>어떤 선택을</b><br>
+           <b>하셔야 할지</b> 함께 고민하는 일이 저희가 할 일이라고 생각합니다.</p>
+      </div>
+
+      <!-- 문구가 다 나온 뒤에 나타나는 버튼 -->
+      <div class="stage-cta" id="stageCta">
+        <!-- 누르면 051-710-9685 로 전화가 걸립니다 (휴대폰 기준) -->
+        <a class="btn btn-navy" href="tel:0517109685">상담 문의</a>
+        <a class="btn btn-line" href="#service">업무 분야 보기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 문장 패널 ================= -->
+
+<!-- ================= 업무 분야 ================= -->
+<section id="service" class="svc-sec">
+  <div class="pale-bg"></div>
+  <div class="container">
+    <div class="title_box rv">
+      <h2>다섯 가지 분야를 <span class="nv">모두</span> 다루고 있습니다</h2>
+      <p class="text">업종과 상황에 맞춰 필요한 것만 골라 맡기실 수 있습니다.</p>
+    </div>
+
+    <div class="svc-stage rv">
+      <!-- 왼쪽 : 카드에 맞춰 부드럽게 바뀌는 화면 -->
+      <div class="svc-panel">
+        <div class="circle"></div>
+        <div class="svc-frame" id="svcFrame">
+        <div class="pan on" data-i="0">
+          <div class="ph">개인사업자 · 소상공인 <em>01 / 05</em></div>
+          <div class="pb">
+            <div class="pt">매달 챙겨야 할 것을<br>대신 챙겨 드립니다</div>
+            <ul>
+              <li>매월 기장 대리</li>
+              <li>사업자등록 · 업종 선택 안내</li>
+              <li>간이과세 · 일반과세 판단</li>
+              <li>비용 처리 · 증빙 점검</li>
+            </ul>
+            <div class="cal">
+              <div class="lbl">주요 신고 일정</div>
+              <div class="row"><span>부가가치세</span><b>1월 · 7월</b></div>
+              <div class="row"><span>종합소득세</span><b>매년 5월</b></div>
+              <div class="row"><span>원천세</span><b>매월 10일</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pan" data-i="1">
+          <div class="ph">법인 기장 · 법인세 <em>02 / 05</em></div>
+          <div class="pb">
+            <div class="pt">법인 운영에 필요한 세무를<br>처음부터 끝까지</div>
+            <ul>
+              <li>법인세 신고 및 결산</li>
+              <li>재무제표 · 손익계산서 작성</li>
+              <li>급여 관리 · 4대보험 · 원천세</li>
+              <li>가지급금 · 가수금 정리</li>
+              <li>법인 설립 및 개인사업자 법인전환</li>
+            </ul>
+            <div class="cal">
+              <div class="lbl">주요 신고 일정</div>
+              <div class="row"><span>법인세</span><b>3월 (12월 결산)</b></div>
+              <div class="row"><span>부가가치세</span><b>분기별 4회</b></div>
+              <div class="row"><span>원천세</span><b>매월 10일</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pan" data-i="2">
+          <div class="ph">양도 · 상속 · 증여 <em>03 / 05</em></div>
+          <div class="pb">
+            <div class="pt">한 번의 선택이<br>세금을 크게 바꿉니다</div>
+            <ul>
+              <li>부동산 양도소득세 검토 및 신고</li>
+              <li>1세대 1주택 비과세 요건 확인</li>
+              <li>상속세 신고 및 사전 준비</li>
+              <li>증여 시기 · 방법 설계</li>
+              <li>가업승계 검토</li>
+            </ul>
+            <div class="cal">
+              <div class="lbl">신고 기한</div>
+              <div class="row"><span>양도소득세</span><b>말일부터 2개월</b></div>
+              <div class="row"><span>증여세</span><b>말일부터 3개월</b></div>
+              <div class="row"><span>상속세</span><b>말일부터 6개월</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pan" data-i="3">
+          <div class="ph">병의원 · 전문직 특화 <em>04 / 05</em></div>
+          <div class="pb">
+            <div class="pt">업종을 아는 곳에서<br>관리받으셔야 합니다</div>
+            <ul>
+              <li>병 · 의원 개원 세무 컨설팅</li>
+              <li>전문직 사업소득 관리</li>
+              <li>인건비 · 비용 처리 점검</li>
+              <li>세무조사 사전 진단 및 대응</li>
+              <li>경정청구를 통한 세금 환급</li>
+            </ul>
+            <div class="cal">
+              <div class="lbl">주요 신고 일정</div>
+              <div class="row"><span>종합소득세</span><b>5월 (성실신고 6월)</b></div>
+              <div class="row"><span>원천세</span><b>매월 10일</b></div>
+              <div class="row"><span>경정청구</span><b>5년 이내</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pan" data-i="4">
+          <div class="ph">신고대리 <em>05 / 05</em></div>
+          <div class="pb">
+            <div class="pt">신고 기간에만<br>간편하고 깔끔하게</div>
+            <ul>
+              <li>종합소득세 신고 (프리랜서 · 개인사업자)</li>
+              <li>부가가치세 신고 (일반 · 간이과세자)</li>
+              <li>단순경비율 · 기준경비율 추계신고 검토</li>
+              <li>사업장현황신고 (면세사업자)</li>
+              <li>기장 계약 없이 건별로 진행</li>
+            </ul>
+            <div class="cal">
+              <div class="lbl">주요 신고 일정</div>
+              <div class="row"><span>종합소득세</span><b>5월 (성실신고 6월)</b></div>
+              <div class="row"><span>부가가치세</span><b>1월 · 7월</b></div>
+              <div class="row"><span>사업장현황신고</span><b>매년 2월 10일</b></div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽 : 끊김 없이 옆으로 흘러가는 카드 -->
+      <div>
+        <div class="svc-viewport">
+          <ul class="svc-track" id="svcTrack">
+            <li class="svc-card act" data-i="0">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9h18"/><path d="M9 21v-7h6v7"/></svg></div>
+              <h3>개인사업자 · 소상공인</h3>
+              <p>음식점, 쇼핑몰, 프리랜서까지. 매달 챙겨야 할 것을 대신 챙겨 드립니다.</p>
+            </li>
+            <li class="svc-card" data-i="1">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17"/><path d="M15 9h3a1 1 0 0 1 1 1v11"/><path d="M8 7h3M8 11h3M8 15h3"/></svg></div>
+              <h3>법인 기장 · 법인세</h3>
+              <p>설립부터 결산까지, 법인 운영에 필요한 세무를 맡아 드립니다.</p>
+            </li>
+            <li class="svc-card" data-i="2">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
+              <h3>양도 · 상속 · 증여</h3>
+              <p>한 번의 판단이 세금을 크게 바꾸는 분야입니다. 미리 상의해 주세요.</p>
+            </li>
+            <li class="svc-card" data-i="3">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v6a5 5 0 0 0 10 0V3"/><path d="M4 3h3M15 3h3"/><path d="M11 14v2a5 5 0 0 0 10 0v-1"/><circle cx="21" cy="12" r="2"/></svg></div>
+              <h3>병의원 · 전문직 특화</h3>
+              <p>업종 특성을 아는 곳에서 관리받으실 때 결과가 달라집니다.</p>
+            </li>
+            <li class="svc-card" data-i="4">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M9 4H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 13.5l2 2 4-4"/></svg></div>
+              <h3>신고대리</h3>
+              <p>기장 계약 없이, 신고 기간에 간편하고 깔끔하게 신고만 맡기실 수 있습니다.</p>
+            </li>
+            <li class="svc-card" data-i="0">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9h18"/><path d="M9 21v-7h6v7"/></svg></div>
+              <h3>개인사업자 · 소상공인</h3>
+              <p>음식점, 쇼핑몰, 프리랜서까지. 매달 챙겨야 할 것을 대신 챙겨 드립니다.</p>
+            </li>
+            <li class="svc-card" data-i="1">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17"/><path d="M15 9h3a1 1 0 0 1 1 1v11"/><path d="M8 7h3M8 11h3M8 15h3"/></svg></div>
+              <h3>법인 기장 · 법인세</h3>
+              <p>설립부터 결산까지, 법인 운영에 필요한 세무를 맡아 드립니다.</p>
+            </li>
+            <li class="svc-card" data-i="2">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
+              <h3>양도 · 상속 · 증여</h3>
+              <p>한 번의 판단이 세금을 크게 바꾸는 분야입니다. 미리 상의해 주세요.</p>
+            </li>
+            <li class="svc-card" data-i="3">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v6a5 5 0 0 0 10 0V3"/><path d="M4 3h3M15 3h3"/><path d="M11 14v2a5 5 0 0 0 10 0v-1"/><circle cx="21" cy="12" r="2"/></svg></div>
+              <h3>병의원 · 전문직 특화</h3>
+              <p>업종 특성을 아는 곳에서 관리받으실 때 결과가 달라집니다.</p>
+            </li>
+            <li class="svc-card" data-i="4">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M9 4H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 13.5l2 2 4-4"/></svg></div>
+              <h3>신고대리</h3>
+              <p>기장 계약 없이, 신고 기간에 간편하고 깔끔하게 신고만 맡기실 수 있습니다.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="svc-nav">
+          <div class="svc-dots" id="svcDots"><i class="act"></i><i></i><i></i><i></i><i></i></div>
+          <button type="button" class="svc-reset" id="svcReset" title="처음으로" aria-label="처음으로">
+            <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4"/><path d="M3 4v5h5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 이런 점이 다릅니다 ================= -->
+<!-- ※ 아래 네 가지는 '고객에게 드리는 약속'입니다.
+     실제 운영 방식과 다른 문장이 있으면 꼭 고쳐서 쓰세요. -->
+<section id="why" class="why">
+  <div class="bg-text">TAX ACCOUNTING PARK SEONGJIN</div>
+  <div class="container">
+    <div class="title_box rv">
+      <h2>세금은 <span class="nv">줄이고</span> 고민은 <span class="nv">덜어드리고</span></h2>
+      <p class="text">
+        세금은 매년 돌아오는데, 막상 물어볼 곳은 마땅치 않습니다.<br>
+        개인사업자 기장부터 법인세, 양도·상속·증여, 병의원 전문직 세무까지<br>
+        한 곳에서 편하게 상의하실 수 있습니다.
+      </p>
+      <div class="dots">
+        <i style="background:#D9D9D9"></i>
+        <i style="background:#BCCAEC"></i>
+        <i style="background:#9099B0"></i>
+        <i style="background:#455887"></i>
+      </div>
+    </div>
+
+    <!-- 상담 절차 : 이런 점이 다릅니다에 이어서 -->
+    <div class="step-wrap" id="step">
+      <div class="title_box rv">
+        <h2>처음이셔도 <span class="nv">어렵지 않습니다</span>, <span class="nv">네 단계</span>면 됩니다</h2>
+      </div>
+
+      <div class="steps rv">
+        <div class="step">
+          <div class="n">01</div>
+          <h3>전화 주시기</h3>
+          <p>051-710-9685로 편하게 연락 주세요. 간단한 사업 현황만 말씀해 주시면 됩니다.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>대표세무사 직접 상담</h3>
+          <p>대표세무사가 직접 상담합니다. 업종과 규모에 맞춰 필요한 업무를 정리해 드리고, 현재 상황을 함께 점검합니다.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>비용 안내 · 계약</h3>
+          <p>업무 범위에 따른 비용을 명확히 안내해 드립니다. 숨은 비용은 없습니다.</p>
+        </div>
+        <div class="step">
+          <div class="n">04</div>
+          <h3>업무 시작</h3>
+          <p>담당 직원이 매달 실무를 챙기고, 대표세무사가 직접 확인합니다. 자료 인계부터 첫 신고까지 함께 진행합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 세무 일정 ================= -->
+<section id="schedule">
+  <div class="container">
+    <div class="sched-grid rv">
+
+      <!-- 왼쪽 : 스크롤해도 따라오는 카드 -->
+      <div class="sched-left">
+        <div class="sched-slides" id="schedSlides">
+
+          <!-- 1 : 다가오는 신고 일정 -->
+          <div class="sched-slide">
+            <div class="bubble">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+              세무 일정
+            </div>
+            <h2>지금,<br><span class="nv">세무사</span>가 필요할 때</h2>
+            <p class="hook">신고 기한은 다가오는데<br>무엇부터 해야 할지 모르겠다면</p>
+            <div class="gauge">
+              <svg viewBox="0 0 220 128">
+              <path d="M22,110 A88,88 0 0 1 33.8,66" stroke="#E3EAFA" stroke-width="18" fill="none" stroke-linecap="round"/>
+              <path d="M40.2,56.4 A88,88 0 0 1 76.3,28.7" stroke="#BCCAEC" stroke-width="18" fill="none" stroke-linecap="round"/>
+              <path d="M87.2,25 A88,88 0 0 1 132.8,25" stroke="#9099B0" stroke-width="18" fill="none" stroke-linecap="round"/>
+              <path d="M143.7,28.7 A88,88 0 0 1 179.8,56.4" stroke="#6E7EA8" stroke-width="18" fill="none" stroke-linecap="round"/>
+              <path d="M186.2,66 A88,88 0 0 1 198,110" stroke="#455887" stroke-width="18" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div class="mid">
+                <span class="chip">다음 신고까지</span>
+                <div class="big" id="gaugeDday">D-–</div>
+                <div class="cap" id="gaugeName">불러오는 중</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 : 연간 세무 일정 -->
+          <div class="sched-slide">
+            <div class="bubble">
+              <svg viewBox="0 0 24 24"><path d="M3 20V10M9 20V4M15 20v-8M21 20V7"/></svg>
+              연간 흐름
+            </div>
+            <h2>1년 세무 일정을<br><span class="nv">미리</span> 알고 계시면</h2>
+            <p class="hook">급하게 서류를 찾을 일이 없습니다</p>
+            <p class="desc">
+              신고가 몰리는 달을 미리 알려드리고, 필요한 자료를 앞당겨 요청드립니다.
+            </p>
+            <div class="mini-stat">
+              <b>4개월</b>
+              <span>1년 중 신고가 몰리는 달<br><em>1 · 3 · 5 · 7월</em></span>
+            </div>
+          </div>
+
+          <!-- 3 : 업무 범위 -->
+          <div class="sched-slide">
+            <div class="bubble">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              업무 범위
+            </div>
+            <h2>무엇을 맡길지<br><span class="nv">고민</span>되신다면</h2>
+            <p class="hook">필요한 것만 골라 맡기셔도 됩니다</p>
+            <p class="desc">
+              기장 없이 신고만, 양도세 상담만도 가능합니다.
+              어떤 것이 맞을지부터 대표세무사가 직접 정리해 드릴게요.
+            </p>
+            <a class="btn btn-navy" href="tel:0517109685">상담 문의</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 오른쪽 : 쌓이는 카드 -->
+      <div class="sched-right">
+        <div class="sched-cards" id="schedCards">
+
+        <div class="sched-card" data-i="0">
+          <h3>다가오는 신고 일정</h3>
+          <div id="ddayList"></div>
+          <p class="sched-note">
+            오늘 날짜를 기준으로 자동 계산됩니다.<br>
+            기한이 주말·공휴일이면 다음 영업일로 밀립니다.
+          </p>
+        </div>
+
+        <div class="sched-card" data-i="1">
+          <h3>연간 세무 일정</h3>
+          <div class="year-bars">
+            <div class="col on"><div class="bar" style="height:100%"></div><div class="mo">1</div></div>
+            <div class="col on"><div class="bar" style="height:62%"></div><div class="mo">2</div></div>
+            <div class="col on"><div class="bar" style="height:100%"></div><div class="mo">3</div></div>
+            <div class="col on"><div class="bar" style="height:62%"></div><div class="mo">4</div></div>
+            <div class="col on"><div class="bar" style="height:100%"></div><div class="mo">5</div></div>
+            <div class="col on"><div class="bar" style="height:78%"></div><div class="mo">6</div></div>
+            <div class="col on"><div class="bar" style="height:100%"></div><div class="mo">7</div></div>
+            <div class="col"><div class="bar" style="height:34%"></div><div class="mo">8</div></div>
+            <div class="col"><div class="bar" style="height:34%"></div><div class="mo">9</div></div>
+            <div class="col on"><div class="bar" style="height:62%"></div><div class="mo">10</div></div>
+            <div class="col"><div class="bar" style="height:34%"></div><div class="mo">11</div></div>
+            <div class="col"><div class="bar" style="height:34%"></div><div class="mo">12</div></div>
+          </div>
+          <div class="year-legend">
+            <span><b>1 · 7월</b> 부가가치세</span>
+            <span><b>2월</b> 사업장현황신고</span>
+            <span><b>3월</b> 법인세</span>
+            <span><b>5월</b> 종합소득세</span>
+            <span><b>매월 10일</b> 원천세</span>
+          </div>
+        </div>
+
+        <div class="sched-card" data-i="2">
+          <h3>이런 것부터 도와드립니다</h3>
+          <div class="help-chips">
+            <span><i></i>개인사업자 기장</span>
+            <span><i></i>법인 기장 · 법인세</span>
+            <span><i></i>양도 · 상속 · 증여</span>
+            <span><i></i>병의원 · 전문직</span>
+            <span><i></i>신고대리</span>
+            <span><i></i>세무조사 대응</span>
+            <span><i></i>경정청구</span>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 고객 이야기 · 자주 묻는 질문 ================= -->
+<section class="voice-sec">
+  <div class="container">
+    <!-- 화면을 반으로 나눠 : 왼쪽 이런 점이 다릅니다 / 오른쪽 자주 묻는 질문 -->
+    <div class="why-faq">
+      <div class="why-col">
+        <div class="title_box rv">
+          <h2>고객님들이 자주 하시는<br><span class="nv">이야기</span></h2>
+        </div>
+
+        <div class="why-grid rv">
+          <div class="why-card">
+            <p class="q">“기장료는 매달 내는데,<br>절세가 되고 있는 건지 모르겠어요.”</p>
+            <h3>신고 전에 먼저 연락드립니다</h3>
+            <p>신고 기한에 임박해서야 알려드리지 않습니다. 적용 가능한 공제·감면을 미리 확인하고, 준비하실 것을 앞당겨 안내해 드립니다.</p>
+          </div>
+          <div class="why-card">
+            <p class="q">“세무는 잘 몰라서<br>질문하기가 눈치 보여요.”</p>
+            <h3>사소한 질문일수록 편하게</h3>
+            <p>세법을 강의해 온 세무사가 직접 설명해 드립니다. 어려운 용어 대신 알아들으실 수 있는 말로 말씀드리겠습니다.</p>
+          </div>
+          <div class="why-card">
+            <p class="q">“중요한 건 세무사님께<br>직접 확인받고 싶어요.”</p>
+            <h3>대표세무사가 직접 확인합니다</h3>
+            <p>담당 직원이 실무를 챙기고, 박성진 대표세무사가 모든 건을 직접 꼼꼼히 확인합니다. 상담도 대표세무사가 직접 해 드립니다.</p>
+          </div>
+          <div class="why-card">
+            <p class="q">“지금 세무사무소를<br>옮겨도 괜찮을까요?”</p>
+            <h3>이전 절차는 저희가 처리합니다</h3>
+            <p>기존 사무소와의 자료 인계, 홈택스 수임 변경까지 저희가 진행합니다. 고객님이 하실 일은 거의 없습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-col" id="faq">
+        <div class="title_box rv">
+          <h2>이건 다들<br><span class="nv">물어보십니다</span></h2>
+        </div>
+
+        <div class="faq rv">
+          <details open>
+            <summary>기장료는 얼마인가요?</summary>
+            <div class="a">업종, 매출 규모, 직원 수, 필요한 업무 범위에 따라 달라집니다. 051-710-9685로 통화 한 번이면 대략적인 금액을 바로 안내해 드릴 수 있습니다. 상담 자체는 비용이 들지 않습니다.</div>
+          </details>
+          <details>
+            <summary>지금 다른 세무사무소를 이용 중인데, 옮길 수 있나요?</summary>
+            <div class="a">가능합니다. 기존 사무소와의 자료 인계, 홈택스 수임 동의 변경까지 저희가 진행해 드립니다. 시기는 언제든 상관없지만, 신고 기간을 피하시면 더 수월합니다.</div>
+          </details>
+          <details>
+            <summary>아직 사업자등록 전인데도 상담이 되나요?</summary>
+            <div class="a">물론입니다. 오히려 등록 전에 상담받으시는 편이 좋습니다. 개인사업자와 법인 중 무엇이 유리한지, 업종 코드는 어떻게 정할지부터 함께 정리해 드립니다.</div>
+          </details>
+          <details>
+            <summary>양도소득세 상담만 따로 받을 수도 있나요?</summary>
+            <div class="a">네, 기장 계약 없이 건별 상담과 신고만 진행하실 수 있습니다. 다만 계약일·잔금일 전에 미리 상담하실수록 검토할 수 있는 방법이 많아집니다.</div>
+          </details>
+          <details>
+            <summary>부산 수영구가 아니어도 상담이 되나요?</summary>
+            <div class="a">네. 자료는 대부분 온라인으로 주고받기 때문에 지역과 관계없이 업무가 가능합니다. 직접 뵙기를 원하시면 사무실로 방문해 주셔도 좋습니다.</div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= 대표 세무사 ================= -->
+<section id="tax" class="tax-sec">
+  <div class="container">
+    <div class="title_box rv">
+      <div class="bubble">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        박성진세무회계사무소 대표 세무사
+      </div>
+      <h2>믿고 맡길 수 있는 <span class="nv">세무 전문가</span>가 함께합니다</h2>
+      <p class="text">세무사회와 세무서에서 위촉받아 활동하고 있는 대표세무사가 직접 상담해 드립니다.</p>
+    </div>
+
+    <div class="tax-grid rv">
+      <div class="tax-card">
+        <img src="profile.jpg" alt="박성진 대표세무사">
+        <div class="veil"></div>
+        <div class="on">
+          <div class="nm">박성진 <em>대표세무사</em></div>
+          <div class="ed">세무사 · 부산대학교 경영대학원 경영학 석사</div>
+        </div>
+      </div>
+
+      <div class="tax-info">
+        <p class="say">
+          “숫자를 정리해 드리는 것보다, 고객님이 다음에 어떤 선택을 하셔야 할지
+          함께 고민하는 일이 저희가 할 일이라고 생각합니다.
+          궁금한 점은 언제든 편하게 물어봐 주세요.”
+        </p>
+        <ul class="career">
+          <li><i class="now">현</i>박성진세무회계사무소 대표 세무사</li>
+          <li><i class="now">현</i>한국세무사회 자격시험 출제위원</li>
+          <li><i class="now">현</i>부산지방세무사회 세무조정 및 성실신고 감리위원</li>
+          <li><i class="now">현</i>해운대세무서 영세납세지원단 나눔세무사</li>
+          <li><i class="now">현</i>부산광역시 수영구 마을세무사</li>
+          <li><i class="now">현</i>김해시 세무분야 역량강화 교육 강사</li>
+          <li><i class="was">전</i>영도구 사회적경제기업 창업아카데미 세법강사</li>
+          <li><i class="was">전</i>사상여성인력개발센터 세법강사</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 고객 후기 =================
+     ※ 실제로 받으신 후기가 모이면 이 자리에 넣어주세요.
+       받지 않은 후기를 올리면 허위광고가 됩니다.
+================================================= -->
+
+<!-- ================= 문의 ================= -->
+<section class="contact" id="contact">
+  <div class="narrow rv">
+    <div class="bubble">
+      <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+      상담 문의
+    </div>
+    <h2>망설이지 마시고 <strong>편하게</strong> 연락 주세요</h2>
+    <p class="text">
+      상담 비용은 받지 않습니다. 대표세무사가 직접 상담해 드립니다.<br>
+      지금 상황만 말씀해 주시면 무엇부터 하면 되는지 정리해 드리겠습니다.
+    </p>
+
+    <!-- 여기 큰 번호는 보여주기만 하고 전화는 걸리지 않습니다 -->
+    <div class="tel">051-710-9685</div>
+    <div class="addr"><a href="https://map.naver.com/p/search/%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C/place/1364007950?placePath=%2Fhome%3FabtExp%3DNEW-PLACE-SEARCH%3A2%26bk_query%3D%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C%26entry%3Dpll%26from%3Dnx%26fromNxList%3Dtrue%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202608251230%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C&amp;bk_query=%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C&amp;entry=pll&amp;from=nx&amp;fromNxList=true&amp;searchType=place&amp;c=15.00,0,0,0,dh" target="_blank" rel="noopener">부산광역시 수영구 연수로 370번길 1, 3층</a></div>
+    <div class="hours">평일 09:30 – 17:30 · 점심시간 12:00 – 13:00 · 주말·공휴일 휴무</div>
+
+    <div class="links">
+      <a href="tel:0517109685">전화 상담</a>
+      <a href="https://map.naver.com/p/search/%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C/place/1364007950?placePath=%2Fhome%3FabtExp%3DNEW-PLACE-SEARCH%3A2%26bk_query%3D%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C%26entry%3Dpll%26from%3Dnx%26fromNxList%3Dtrue%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202608251230%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C&amp;bk_query=%EB%B0%95%EC%84%B1%EC%A7%84%EC%84%B8%EB%AC%B4%ED%9A%8C%EA%B3%84%EC%82%AC%EB%AC%B4%EC%86%8C&amp;entry=pll&amp;from=nx&amp;fromNxList=true&amp;searchType=place&amp;c=15.00,0,0,0,dh" target="_blank" rel="noopener">네이버 지도로 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 발바닥 ================= -->
+<footer>
+  <div class="container">
+    <p>
+      <img class="flogo" src="office-logo.png" alt="박성진세무회계사무소 로고"><br>
+      <b>박성진세무회계사무소</b><br>
+      대표세무사 박성진 · 사업자등록번호 878-28-01274<br>
+      부산광역시 수영구 연수로 370번길 1, 3층<br>
+      대표전화 051-710-9685
+    </p>
+    <p style="text-align:right;">
+      평일 09:30 – 17:30<br>
+      점심시간 12:00 – 13:00<br>
+      주말 · 공휴일 휴무<br><br>
+      © 2026 박성진세무회계사무소
+    </p>
+  </div>
+</footer>
+
+<!-- ============ 화면 오른쪽 아래에 떠 있는 버튼 두 개 ============ -->
+<div class="fab">
+  <!-- 위 : 다음 구역으로 내려가기 -->
+  <a class="scroll-down" id="scrollDown" href="#service" aria-label="다음 구역으로 내려가기" title="다음으로">
+    <svg viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg>
+  </a>
+  <!-- 맨 위로 : 휴대폰에서 조금 내려가면 나타납니다 -->
+  <a class="top-fab" id="topFab" href="#" aria-label="맨 위로" title="맨 위로">
+    <svg viewBox="0 0 24 24"><path d="M18 14.5l-6-6-6 6"/></svg>
+  </a>
+
+  <!-- 누르면 051-710-9685 로 전화가 걸립니다 (휴대폰 기준) -->
+  <a class="call-fab" href="tel:0517109685" aria-label="051-710-9685 전화 상담" title="051-710-9685 전화 상담">
+    <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+  </a>
+
+  <!-- ★★ 카카오톡 채널 ★★
+       아래 href="#" 의 # 자리에 카카오톡 채널 주소를 넣어주세요.
+       예) href="https://pf.kakao.com/_XXXXXX"
+       주소를 넣기 전까지는 눌러도 아무 일이 일어나지 않습니다. -->
+  <a class="kakao-fab" href="#" target="_blank" rel="noopener"
+     aria-label="카카오톡 채널 상담" title="카카오톡 채널 상담">
+    <svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 2.75 6.24 2.75 10.23c0 2.55 1.7 4.79 4.26 6.06-.19.69-.68 2.47-.78 2.85-.12.48.18.47.37.34.15-.1 2.4-1.63 3.37-2.29.66.1 1.34.15 2.03.15 5.1 0 9.25-3.24 9.25-7.23S17.1 3 12 3z"/></svg>
+  </a>
+
+  <!-- ★★ 간단 문의 챗봇 ★★
+       아래 href="#" 의 # 자리에 챗봇 주소를 넣어주세요.
+       주소를 넣기 전까지는 눌러도 아무 일이 일어나지 않습니다. -->
+  <a class="bot-fab" href="#" target="_blank" rel="noopener"
+     aria-label="간단 문의 챗봇" title="간단 문의 챗봇">
+    <svg viewBox="0 0 24 24">
+      <rect x="3.5" y="8" width="17" height="12" rx="3.5"/>
+      <path d="M12 8V5.4"/><circle cx="12" cy="3.9" r="1.5"/>
+      <path d="M9 13h.01M15 13h.01"/><path d="M9.5 16.6h5"/>
+      <path d="M1.5 12.5v3M22.5 12.5v3"/>
+    </svg>
+  </a>
+</div>
+
+<script src="common.js"></script>
+<script>
+/* ---------------------------------------------------------
+   업무 분야 : 오른쪽 카드가 옆으로 흘러가고
+              왼쪽 화면이 그에 맞춰 바뀝니다
+   숫자를 바꾸고 싶으면 아래 SPEED 값만 조절하세요 (밀리초)
+   --------------------------------------------------------- */
+(function(){
+  var SPEED = 3000;                        // 카드가 넘어가는 간격
+  var track = document.getElementById('svcTrack');
+  var frame = document.getElementById('svcFrame');
+  var dots  = document.getElementById('svcDots');
+  if(!track || !frame) return;
+
+  var N = 5;                                // 분야 개수 (분야를 늘리면 이 숫자도 바꿔주세요)
+  var cards = track.querySelectorAll('.svc-card');
+  var pans  = frame.querySelectorAll('.pan');
+  var dotEls= dots ? dots.querySelectorAll('i') : [];
+  var i = 0, timer = null, paused = false;
+  var picked = false;                       // 직접 골랐으면 자동 넘김을 멈춥니다
+
+  function step(){                          // 카드 한 칸 너비 (여백 포함)
+    var c = cards[0].getBoundingClientRect().width;
+    var gap = parseFloat(getComputedStyle(track).gap) || 24;
+    return c + gap;
+  }
+  function mark(active){
+    for(var k=0;k<cards.length;k++){
+      cards[k].classList.toggle('act', Number(cards[k].dataset.i) === active);
+    }
+    for(var k=0;k<pans.length;k++) pans[k].classList.toggle('on', k === active);
+    for(var k=0;k<dotEls.length;k++) dotEls[k].classList.toggle('act', k === active);
+  }
+  function go(){
+    if(paused) return;
+    i++;
+    track.style.transition = 'transform .85s cubic-bezier(.4,0,.2,1)';
+    track.style.transform  = 'translateX(' + (-i * step()) + 'px)';
+    mark(i % N);
+    if(i === N){                            // 한 바퀴 돌면 티 안 나게 처음으로
+      setTimeout(function(){
+        track.style.transition = 'none';
+        i = 0;
+        track.style.transform = 'translateX(0)';
+      }, 880);
+    }
+  }
+  function start(){ stop(); timer = setInterval(go, SPEED); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  track.addEventListener('mouseenter', function(){ paused = true; });
+  track.addEventListener('mouseleave', function(){ paused = false; });
+
+  /* 원하는 분야로 바로 이동
+     byUser 가 true 면 (직접 고른 것이면) 자동 넘김을 멈춥니다 */
+  function goTo(want, byUser){
+    track.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
+    i = want;
+    track.style.transform = 'translateX(' + (-i * step()) + 'px)';
+    mark(want);
+    if(byUser){ picked = true; stop(); }     // 직접 고름 → 자동 넘김 정지
+    else { picked = false; start(); }        // 처음으로 → 자동 넘김 다시 시작
+  }
+
+  /* 카드를 누르면 그 분야로 */
+  for(var k=0;k<cards.length;k++){
+    cards[k].style.cursor = 'pointer';
+    cards[k].addEventListener('click', function(){ goTo(Number(this.dataset.i), true); });
+  }
+
+  /* 아래 점을 눌러도 이동 */
+  for(var k=0;k<dotEls.length;k++){
+    (function(idx){ dotEls[idx].addEventListener('click', function(){ goTo(idx, true); }); })(k);
+  }
+
+  /* 처음으로 버튼 : 첫 분야로 되돌리고 자동 넘김도 다시 시작합니다 */
+  var resetBtn = document.getElementById('svcReset');
+  if(resetBtn) resetBtn.addEventListener('click', function(){ goTo(0, false); });
+
+  window.addEventListener('resize', function(){
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(' + (-i * step()) + 'px)';
+  });
+
+  /* 화면에 보일 때만 돌아가게 (안 보이면 멈춤)
+     단, 직접 고른 뒤에는 다시 보여도 자동으로 넘어가지 않습니다 */
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ if(!picked) start(); }
+      else stop();
+    });
+  },{ threshold:.2 }).observe(track);
+})();
+
+/* ---------------------------------------------------------
+   첫 화면 연출
+   스크롤을 내리면
+   1) 제목·부제가 사라지고 서명만 남습니다
+   2) 문구가 떠오릅니다
+   3) 마지막에 버튼이 나타납니다
+   --------------------------------------------------------- */
+(function(){
+  var 무대 = document.getElementById('stage');
+  var 글   = document.getElementById('stageHero');
+  var 서명 = document.getElementById('stageSign');
+  var 문구 = document.getElementById('stageWords');
+  var 버튼 = document.getElementById('stageCta');
+  if(!무대 || !문구) return;
+
+  function 사이(v, a, b){ return Math.max(0, Math.min(1, (v - a)/(b - a))); }
+
+  function 그리기(){
+    var 좁은화면 = window.innerWidth <= 900;
+    var r = 무대.getBoundingClientRect();
+    var 총길이 = 무대.offsetHeight - window.innerHeight;
+    var 진행 = 총길이 > 0 ? Math.max(0, Math.min(1, (-r.top)/총길이)) : 0;
+
+    /* 1) 제목·부제가 위로 밀리며 사라집니다 */
+    var 사라짐 = 사이(진행, 0.06, 0.24);
+    글.style.setProperty('--ho', 1 - 사라짐);
+    글.style.setProperty('--hy', (-70 * 사라짐) + 'px');
+
+    /* 서명은 남아서 아래쪽으로 조금 내려갑니다 */
+    var 서명시작 = 좁은화면 ? 70 : 68;
+    서명.style.setProperty('--sy', (서명시작 + (좁은화면 ? -20 : 4) * 사이(진행, 0.10, 0.60)) + '%');
+
+    /* 2) 문구가 떠오릅니다 */
+    문구.style.setProperty('--wo', 사이(진행, 0.28, 0.46));
+
+    /* 3) 문구가 다 나온 뒤 버튼이 나타납니다 */
+    if(버튼) 버튼.style.setProperty('--co', 사이(진행, 0.54, 0.70));
+  }
+
+  window.addEventListener('scroll', 그리기, { passive:true });
+  window.addEventListener('resize', 그리기);
+  그리기();
+})();
+
+/* ---------------------------------------------------------
+   세무 일정 : 오늘 날짜 기준으로 다음 신고 기한을 계산합니다
+   --------------------------------------------------------- */
+(function(){
+  var list = document.getElementById('ddayList');
+  if(!list) return;
+
+  /* 매년 돌아오는 주요 신고 기한 (월, 일, 이름) */
+  var FIXED = [
+    [1, 25, '부가가치세 확정신고'],
+    [2, 10, '사업장현황신고 (면세사업자)'],
+    [3, 31, '법인세 신고 (12월 결산법인)'],
+    [4, 25, '부가가치세 예정신고 (법인)'],
+    [5, 31, '종합소득세 신고'],
+    [6, 30, '종합소득세 신고 (성실신고확인대상)'],
+    [7, 25, '부가가치세 확정신고'],
+    [10, 25, '부가가치세 예정신고 (법인)']
+  ];
+
+  var today = new Date(); today.setHours(0,0,0,0);
+  var items = [];
+  for(var y = today.getFullYear(); y <= today.getFullYear() + 1; y++){
+    FIXED.forEach(function(f){
+      var dt = new Date(y, f[0]-1, f[1]);
+      if(dt >= today) items.push({ dt: dt, name: f[2] });
+    });
+    for(var m = 0; m < 12; m++){                 /* 원천세는 매월 10일 */
+      var dt2 = new Date(y, m, 10);
+      if(dt2 >= today) items.push({ dt: dt2, name: '원천세 신고 · 납부' });
+    }
+  }
+  items.sort(function(a,b){ return a.dt - b.dt; });
+
+  /* 같은 신고가 여러 번 나오지 않게 (원천세는 매달이라 첫 번째만) */
+  var seen = {}, uniq = [];
+  items.forEach(function(it){
+    if(seen[it.name]) return;
+    seen[it.name] = true;
+    uniq.push(it);
+  });
+  items = uniq.slice(0, 3);
+
+  var html = '';
+  items.forEach(function(it, i){
+    var days = Math.round((it.dt - today) / 86400000);
+    var soon = days <= 14 ? ' soon' : '';
+    html += '<div class="dday-row">'
+          +   '<div class="d' + soon + '">' + (days === 0 ? 'D-DAY' : 'D-' + days) + '</div>'
+          +   '<div><div class="nm">' + it.name + '</div>'
+          +   '<div class="dt">' + (it.dt.getMonth()+1) + '월 ' + it.dt.getDate() + '일</div></div>'
+          + '</div>';
+    if(i === 0){                                  /* 왼쪽 게이지에도 표시 */
+      var g = document.getElementById('gaugeDday');
+      var n = document.getElementById('gaugeName');
+      if(g) g.textContent = days === 0 ? 'D-DAY' : 'D-' + days;
+      if(n) n.textContent = it.name;
+    }
+  });
+  list.innerHTML = html;
+})();
+
+/* ---------------------------------------------------------
+   세무 일정
+   · 오른쪽 창을 마우스 휠로 굴리면 한 장씩 넘어가고
+     왼쪽 창이 그에 맞춰 따라옵니다
+   · 가만히 두면 자동으로도 넘어갑니다
+   자동 넘김 간격을 바꾸려면 아래 SPEED 숫자만 고치세요 (밀리초)
+   --------------------------------------------------------- */
+(function(){
+  var SPEED  = 4500;
+  var box    = document.querySelector('#schedule .sched-right');
+  var slides = document.getElementById('schedSlides');
+  var cards  = document.getElementById('schedCards');
+  if(!box || !slides || !cards) return;
+
+  var list = cards.querySelectorAll('.sched-card');
+  var N = list.length;
+  var cur = 0, timer = null, paused = false, touched = 0;
+
+  function step(){                       /* 카드 한 장 + 사이 간격 */
+    if(N < 2) return 1;
+    return list[1].offsetTop - list[0].offsetTop;
+  }
+  function moveLeft(n){
+    if(n === cur) return;
+    cur = n;
+    slides.style.transform = 'translateY(-' + (n * 100) + '%)';
+  }
+
+  /* 오른쪽 창을 굴리면 왼쪽이 따라옵니다 */
+  box.addEventListener('scroll', function(){
+    if(window.innerWidth <= 1000) return;
+    moveLeft(Math.max(0, Math.min(N - 1, Math.round(box.scrollTop / step()))));
+  }, { passive:true });
+
+  /* 직접 굴리는 동안에는 자동 넘김을 잠시 멈춥니다 */
+  ['wheel','touchstart','mousedown'].forEach(function(ev){
+    box.addEventListener(ev, function(){ touched = Date.now(); }, { passive:true });
+  });
+
+  function tick(){
+    if(paused || window.innerWidth <= 1000) return;
+    if(Date.now() - touched < 6000) return;      /* 방금 직접 만졌으면 건너뜀 */
+    var next = (cur + 1) % N;
+    box.scrollTo({ top: next * step(), behavior:'smooth' });
+  }
+  function start(){ stop(); timer = setInterval(tick, SPEED); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  box.addEventListener('mouseenter', function(){ paused = true; });
+  box.addEventListener('mouseleave', function(){ paused = false; });
+
+  /* 화면에 보일 때만 돌아가게 */
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+  },{ threshold:.25 }).observe(box);
+})();
+
+/* ---------------------------------------------------------
+   화면 따라다니는 '아래로' 버튼
+   누를 때마다 다음 구역으로 내려가고,
+   맨 아래에 닿으면 위로 올라가는 화살표로 바뀝니다
+   --------------------------------------------------------- */
+(function(){
+  var btn = document.getElementById('scrollDown');
+  if(!btn) return;
+
+  /* 이동할 구역 순서 */
+  var ids = ['service','why','step','schedule','faq','tax','contact'];
+  var stops = [];
+  for(var k=0;k<ids.length;k++){
+    var el = document.getElementById(ids[k]);
+    if(el) stops.push(el);
+  }
+
+  function atBottom(){
+    return (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 120);
+  }
+  function refresh(){
+    btn.classList.toggle('up', atBottom());
+    btn.title = atBottom() ? '맨 위로' : '다음으로';
+  }
+
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    if(atBottom()){
+      window.scrollTo({ top:0, behavior:'smooth' });
+      return;
+    }
+    var y = window.scrollY;
+    for(var k=0;k<stops.length;k++){
+      var top = stops[k].getBoundingClientRect().top + y;
+      if(top > y + 80){                       // 지금 위치보다 아래에 있는 첫 구역
+        window.scrollTo({ top:top - 70, behavior:'smooth' });   // 70 = 맨 위 바 높이만큼 빼기
+        return;
+      }
+    }
+    window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' });
+  });
+
+  window.addEventListener('scroll', refresh, { passive:true });
+  refresh();
+})();
+
+/* 배경 초대형 글씨가 스크롤에 따라 옆으로 흐르게 */
+var bgText = document.querySelector('.bg-text');
+if(bgText){
+  var sec = bgText.parentElement;
+  window.addEventListener('scroll', function(){
+    var r = sec.getBoundingClientRect();
+    var p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+    bgText.style.transform = 'translateX(' + (10 - p * 60) + '%)';
+  }, { passive:true });
+}
+</script>
+
+</body>
+</html>
