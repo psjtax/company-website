@@ -123,6 +123,11 @@
         </button>
       </div>
 
+      <div class="news-result" id="newsResult" hidden>
+        <span id="newsResultText"></span>
+        <button type="button" id="newsReset">전체 목록 보기</button>
+      </div>
+
       <div class="news-thead">
         <span>제목</span>
         <span>날짜</span>
@@ -535,18 +540,38 @@
     단추('›', 지금쪽+1, false, 지금쪽 === 마지막);
   }
 
-  function 거르기(){
-    var 말 = (찾기.value || '').trim().toLowerCase();
+  var 안내 = document.getElementById('newsResult');
+  var 안내글 = document.getElementById('newsResultText');
+
+  function 거르기(알림){
+    var 말 = (찾기.value || '').trim();
+    var 소문자 = 말.toLowerCase();
     보임 = 말 ? 전체.filter(function(e){
-      return e.querySelector('.news-title').textContent.toLowerCase().indexOf(말) !== -1;
+      return e.querySelector('.news-title').textContent.toLowerCase().indexOf(소문자) !== -1;
     }) : 전체;
     지금쪽 = 1;
     그리기();
+
+    if(알림 && 말){
+      안내글.innerHTML = '‘<b>' + 말.replace(/[&<>]/g, '') + '</b>’ 검색 결과 <b>'
+                       + 보임.length + '건</b>';
+      안내.hidden = false;
+    }else if(!말){
+      안내.hidden = true;
+    }
   }
 
-  찾기.addEventListener('input', 거르기);
-  document.getElementById('newsGo').addEventListener('click', 거르기);
-  찾기.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); 거르기(); } });
+  function 지우기(){
+    찾기.value = '';
+    안내.hidden = true;
+    거르기(false);
+    찾기.focus();
+  }
+
+  찾기.addEventListener('input', function(){ 거르기(false); });
+  document.getElementById('newsGo').addEventListener('click', function(){ 거르기(true); });
+  찾기.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); 거르기(true); } });
+  document.getElementById('newsReset').addEventListener('click', 지우기);
 
   그리기();
 })();
