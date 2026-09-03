@@ -1154,3 +1154,42 @@ footer b{ color:var(--t3); font-weight:700; }
   /* 첫 화면 버튼은 지금 모양 그대로 */
   .stage-cta .btn{ border-radius:5px; width:auto; }
 }
+
+/* ==========================================================
+   [20] 세무사신문 새 소식 (자동으로 갱신되는 목록)
+   ========================================================== */
+.news-box{
+  background:#fff; border:1px solid #EFF3FB; border-radius:22px;
+  padding:30px 32px; box-shadow:var(--sh); margin-bottom:38px;
+}
+@media (max-width:560px){ .news-box{ padding:24px 20px; } }
+.news-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:14px; flex-wrap:wrap; margin-bottom:6px;
+}
+.news-head h3{ font-size:20px; font-weight:700; color:var(--t1); }
+.news-head a{
+  font-size:14px; color:var(--navy); font-weight:600; text-decoration:none; white-space:nowrap;
+}
+.news-head a:hover{ text-decoration:underline; text-underline-offset:4px; }
+
+.news-list{ display:block; }
+.news-item{
+  display:grid; grid-template-columns:104px 1fr; gap:14px; align-items:baseline;
+  padding:14px 4px; border-bottom:1px solid var(--line); text-decoration:none;
+}
+.news-item:last-child{ border-bottom:0; }
+.news-item:hover .news-title{ color:var(--navy); text-decoration:underline; text-underline-offset:4px; }
+.news-date{ font-size:13.5px; color:var(--t4); white-space:nowrap; }
+.news-title{
+  font-size:15.5px; color:var(--t2); line-height:1.6; word-break:keep-all;
+}
+@media (max-width:560px){
+  .news-item{ grid-template-columns:1fr; gap:5px; padding:13px 2px; }
+  .news-date{ order:2; font-size:12.5px; }
+  .news-title{ order:1; }
+}
+.news-note{
+  margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--t4); line-height:1.75; word-break:keep-all;
+}

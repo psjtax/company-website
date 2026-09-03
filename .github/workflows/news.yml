@@ -1,0 +1,43 @@
+# 세무사신문 새 소식을 하루 두 번 자동으로 가져와 홈페이지에 반영합니다.
+# (손으로 돌려보고 싶으실 때는 깃허브 Actions 탭에서 "Run workflow" 를 누르시면 됩니다)
+
+name: 세무뉴스 자동 갱신
+
+on:
+  schedule:
+    - cron: '0 0,9 * * *'      # 한국 시간 아침 9시, 저녁 6시
+  workflow_dispatch:            # 깃허브에서 손으로 실행할 때
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v4
+
+      - name: 파이썬 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 세무사신문에서 새 기사 받아오기
+        run: python tools/update_news.py
+
+      - name: 바뀐 것이 있으면 올리기
+        run: |
+          if [ -z "$(git status --porcelain news/index.html)" ]; then
+            echo "새 기사가 없어 올릴 것이 없습니다."
+            exit 0
+          fi
+          git config user.name  "psjtax"
+          git config user.email "tax0517109685@gmail.com"
+          git add news/index.html
+          git commit -m "세무뉴스 자동 갱신 ($(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'))"
+          git push
