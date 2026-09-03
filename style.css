@@ -1289,11 +1289,6 @@ footer b{ color:var(--t3); font-weight:700; }
 }
 .news-page button:disabled{ opacity:.35; cursor:default; }
 
-.news-note{
-  margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
-  font-size:13px; color:var(--t4); line-height:1.75; word-break:keep-all;
-}
-
 @media (max-width:600px){
   .news-thead{ display:none; }
   .news-row{ grid-template-columns:1fr; gap:6px; padding:15px 4px; }
