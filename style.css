@@ -1230,10 +1230,11 @@ footer b{ color:var(--t3); font-weight:700; }
 /* 표 머리 */
 .news-thead{
   display:grid; grid-template-columns:1fr 108px;
-  padding:14px 18px; border-top:2px solid var(--navy); border-bottom:1px solid var(--line);
-  font-size:14.5px; font-weight:700; color:var(--t2); background:var(--pale);
+  padding:16px 18px; border-radius:10px 10px 0 0;
+  background:var(--navy); color:#fff;
+  font-size:15px; font-weight:600; letter-spacing:.04em;
 }
-.news-thead span:last-child{ text-align:center; }
+.news-thead span{ text-align:center; }
 
 /* 기사 한 줄 */
 .news-row{
