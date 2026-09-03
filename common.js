@@ -58,6 +58,23 @@ document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 })();
 
 
+/* ---------------------------------------------------------
+   카카오톡 채널
+   컴퓨터에서는 채널 홈으로, 휴대폰에서는 바로 대화창으로 갑니다
+   --------------------------------------------------------- */
+(function(){
+  var 카톡 = document.querySelector('.kakao-fab');
+  if(!카톡 || !카톡.dataset.mo) return;
+
+  function 고르기(){
+    var 휴대폰 = window.matchMedia('(max-width:900px), (pointer:coarse)').matches;
+    카톡.href = 휴대폰 ? 카톡.dataset.mo : 카톡.dataset.pc;
+  }
+  고르기();
+  window.addEventListener('resize', 고르기);
+})();
+
+
 /* 아직 주소(#)를 안 넣은 버튼은 눌러도 페이지가 움직이지 않게 막습니다.
    href 에 실제 주소를 넣으면 이 막음은 자동으로 풀립니다. */
 document.querySelectorAll('.fab a').forEach(function(a){
