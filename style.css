@@ -535,7 +535,11 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
 @media (max-width:900px){ .steps{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:520px){ .steps{ grid-template-columns:1fr; } }
 /* 화면을 반으로 나눈 배치 : 왼쪽 이런 점이 다릅니다 / 오른쪽 자주 묻는 질문 */
-.voice-sec{ padding:110px 0; }
+.voice-sec{
+  padding:110px 0;
+  /* 세무 일정에서 이어져 내려오다 이 구역 안에서 흰색으로 풀립니다 */
+  background:linear-gradient(180deg, var(--pale) 0%, var(--pale) 42%, #FFFFFF 92%);
+}
 .why-faq{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
 .why-faq .title_box{ margin-bottom:38px; }
 .why-faq .why-col > .title_box h2,
@@ -1318,6 +1322,7 @@ footer b{ color:var(--t3); font-weight:700; }
    ========================================================== */
 #schedule{
   position:relative;
-  background:linear-gradient(180deg, var(--pale) 0%, var(--pale) 46%, #FFFFFF 100%);
+  /* 위쪽 흰색에서 서서히 하늘빛으로 들어옵니다 */
+  background:linear-gradient(180deg, #FFFFFF 0%, var(--pale) 26%, var(--pale) 100%);
 }
 #schedule > .container{ position:relative; z-index:2; }
