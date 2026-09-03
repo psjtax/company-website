@@ -67,7 +67,6 @@ def 카드만들기(항목):
             '            <span class="nc-date">%s</span>\n'
             '            <strong class="nc-title">%s</strong>\n'
             '            <span class="nc-sum">%s</span>\n'
-            '            <span class="nc-more">원문 보기</span>\n'
             '          </a>' % (주소, 날짜다듬기(it.findtext('pubDate')), 제목,
                                요약다듬기(it.findtext('description'))))
     return '\n'.join(줄)
