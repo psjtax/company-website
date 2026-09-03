@@ -34,8 +34,8 @@ section{ position:relative; padding:130px 0; }
 /* ==========================================================
    [2] 글자 규칙 — 40px/600, 강조는 900 또는 남색
    ========================================================== */
-h1{ font-size:clamp(27px,4.2vw,52px); font-weight:600; line-height:1.3; }
-h2{ font-size:clamp(19px,2.88vw,36px); font-weight:600; line-height:1.4; }
+h1{ font-size:clamp(27px,4.2vw,52px); font-weight:600; line-height:1.3; word-break:keep-all; }
+h2{ font-size:clamp(19px,2.88vw,36px); font-weight:600; line-height:1.4; word-break:keep-all; }
 h2 strong{ font-weight:900; }
 h2 .nv{ color:var(--navy); font-weight:900; }
 h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); margin-bottom:12px; }
@@ -130,7 +130,7 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
 /* ==========================================================
    [4] 첫 화면 + 대표세무사 소개 — 하나의 무대에서 이어집니다
    ========================================================== */
-.stage{ position:relative; height:230vh; }     /* 이 높이만큼 스크롤하며 연출됩니다 */
+.stage{ position:relative; height:190vh; }     /* 이 높이만큼 스크롤하며 연출됩니다 */
 .stage-pin{ position:sticky; top:0; height:100vh; overflow:hidden; background:#fff; }
 .stage-inner{
   position:relative; height:100%; max-width:1200px; margin:0 auto; padding:0 24px;
@@ -715,7 +715,8 @@ footer b{ color:var(--t3); font-weight:700; }
    ========================================================== */
 @media (max-width:900px){
   /* 구역 위아래 여백을 한 번에 줄입니다 (페이지가 너무 길어져서) */
-  section, #schedule, .tax-sec, .statement, .contact, .voice-sec{ padding:62px 0 !important; }
+  section:not(.sub-hero), #schedule, .tax-sec, .statement, .contact, .voice-sec{ padding:62px 0 !important; }
+  .sub-hero{ padding:34px 0 26px !important; }   /* 첫 칸은 더 좁게 */
   .title_box{ margin-bottom:36px; }
   .hero .container{ padding-top:44px !important; padding-bottom:56px !important; }
 }
@@ -1328,3 +1329,19 @@ footer b{ color:var(--t3); font-weight:700; }
   background:linear-gradient(180deg, #FFFFFF 0%, var(--pale) 26%, var(--pale) 100%);
 }
 #schedule > .container{ position:relative; z-index:2; }
+
+/* ==========================================================
+   [22] 휴대폰에서 눈에 걸리던 것들 정리
+   ========================================================== */
+@media (max-width:900px){
+  /* 세무 일정 : 배지가 가로로 늘어나지 않게 */
+  .sched-slide .bubble{ align-self:flex-start; }
+
+  /* 세무뉴스 카드 : 손가락으로 밀어 보므로 화살표는 감춥니다 */
+  .nc-arrow{ display:none; }
+  .nc-track{ scroll-snap-type:x proximity; }
+  .nc{ scroll-snap-align:center; }
+
+  /* 상담하기 : 영업시간이 어중간하게 끊기지 않게 */
+  .call-box .hours{ font-size:13.5px; }
+}
