@@ -73,58 +73,277 @@
         <a href="https://webzine.kacta.or.kr" target="_blank" rel="noopener">세무사신문 바로가기</a>
       </div>
 
-      <div class="news-list">
+      <!-- 카드 슬라이드 : 가장 최근 기사 -->
+      <div class="nc-wrap">
+        <button class="nc-arrow prev" id="ncPrev" type="button" aria-label="이전 기사">
+          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="nc-track" id="ncTrack">
+          <!-- 카드 여기부터 자동 -->
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25882" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">&quot;넉 달 앞 가상자산 과세, 세부 기준 없어…다시 정비해야&quot;</strong>
+            <span class="nc-sum">가상자산 과세제도 시행이 넉 달 앞으로 다가왔지만 과세 체계와 인프라는 여전히 미흡하다는 우려가 제기됐다.거래 유형별 소득 구분이 불명확하고 필요 경비·취득가액 산정 등이…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25881" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">권익위, 행안부에 &#x27;온라인 통합 폐업신고 제도 마련&#x27; 권고</strong>
+            <span class="nc-sum">국민권익위원회는 3일 행정안전부 등에 소상공인·자영업자의 불편 완화를 위해 온라인 통합 폐업 신고 시스템을 마련할 것을 권고했다.권익위는 &quot;직접 방문하지 않아도 온라인으로…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25880" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">고양시, 지방세 체납 압류 동산 공매…194점 중 189점 낙찰</strong>
+            <span class="nc-sum">경기 고양시는 &#x27;2026년 지방세 체납자 압류 동산 공매&#x27;에 출품한 194점 중 189점이 낙찰돼 2억1천만원의 매각대금을 체납액에 충당할 예정이라고 3일 밝혔다.이번 공…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25879" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">티빙 3천954만 계정 왜 털렸나…접속키 관리 부실이 화근</strong>
+            <span class="nc-sum">온라인동영상서비스(OTT) 플랫폼 &#x27;티빙&#x27;에서 소스 코드가 포함된 기술 자산 361건과 이용자 계정 약 3천954만 개가 유출된 것으로 확인됐다.과학기술정보통신부는 3일…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25878" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">&#x27;N% 성과급·호남반도체 반대&#x27; 파업·의무교섭 불가…노동부 지침</strong>
+            <span class="nc-sum">고용노동부가 노동조합의 &#x27;영업이익 N% 성과급 요구&#x27;나 &#x27;호남 반도체 공장 신설 반대&#x27; 등은 의무적 교섭대상 및 조정·쟁의행위 대상이 될 수 없다는 시행지침을 3일 내놨다…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+          <a class="nc" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25877" target="_blank" rel="noopener">
+            <span class="nc-date">2026. 09. 03</span>
+            <strong class="nc-title">법무부, 내년 상반기 세종으로 간다…&#x27;44년 과천시대&#x27; 마침표</strong>
+            <span class="nc-sum">법무부가 2차 중앙행정기관·공공기관 이전 대상에 포함되면서 1983년 정부과천청사 입주 이후 44년 만에 &#x27;과천 시대&#x27;를 마감하게 됐다.내부에선 &quot;사전 협의가 이뤄지지 않…</span>
+            <span class="nc-more">원문 보기</span>
+          </a>
+        <!-- 카드 여기까지 자동 -->
+        </div>
+        <button class="nc-arrow next" id="ncNext" type="button" aria-label="다음 기사">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="news-thead">
+        <span>제목</span>
+        <span>날짜</span>
+      </div>
+
+      <div class="news-list" id="newsList">
         <!-- 여기부터 자동 -->
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25882" target="_blank" rel="noopener">
-          <span class="news-date">2026. 09. 03</span>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25882" target="_blank" rel="noopener">
           <span class="news-title">&quot;넉 달 앞 가상자산 과세, 세부 기준 없어…다시 정비해야&quot;</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25881" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25881" target="_blank" rel="noopener">
           <span class="news-title">권익위, 행안부에 &#x27;온라인 통합 폐업신고 제도 마련&#x27; 권고</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25880" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25880" target="_blank" rel="noopener">
           <span class="news-title">고양시, 지방세 체납 압류 동산 공매…194점 중 189점 낙찰</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25879" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25879" target="_blank" rel="noopener">
           <span class="news-title">티빙 3천954만 계정 왜 털렸나…접속키 관리 부실이 화근</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25878" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25878" target="_blank" rel="noopener">
           <span class="news-title">&#x27;N% 성과급·호남반도체 반대&#x27; 파업·의무교섭 불가…노동부 지침</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25877" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25877" target="_blank" rel="noopener">
           <span class="news-title">법무부, 내년 상반기 세종으로 간다…&#x27;44년 과천시대&#x27; 마침표</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25876" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 03</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25876" target="_blank" rel="noopener">
           <span class="news-title">추석 앞두고 세금 고민 덜고, 전통시장도 살리고 ‘찾아가는 마을세무사’ 전국으로 간다!</span>
+          <span class="news-date">2026. 09. 03</span>
         </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25875" target="_blank" rel="noopener">
-          <span class="news-date">2026. 09. 02</span>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25875" target="_blank" rel="noopener">
           <span class="news-title">세무사회, 세무사제도수호센터 TF 위원 공개모집 “회원과 함께 세무사제도 수호 나선다“</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25874" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25874" target="_blank" rel="noopener">
           <span class="news-title">“고향사랑기부 해결사 세무사가 또 나섰다“ 행안부 지원 아래 전국 지방정부와 협약체결 본격 활동</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25873" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25873" target="_blank" rel="noopener">
           <span class="news-title">한국세무사회, 정부의 ‘모두의 AI’ 참여 확정…1만8천 세무사 ‘국민 AI 세무서비스’ 시대 연다</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25872" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25872" target="_blank" rel="noopener">
           <span class="news-title">올 상반기분 근로장려금 15일까지 신청…최대 115만원 지급</span>
-        </a>
-        <a class="news-item" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25871" target="_blank" rel="noopener">
           <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25871" target="_blank" rel="noopener">
           <span class="news-title">반도체 호황에 국세수입 168조 더 걷힌다…조세지출 100조 돌파</span>
+          <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25870" target="_blank" rel="noopener">
+          <span class="news-title">세출 줄이고 1조원 추가 확보…경기도, 재정위기극복 청사진</span>
+          <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25869" target="_blank" rel="noopener">
+          <span class="news-title">첫발 뗀 한국 재판소원, &#x27;75년 역사&#x27; 독일에 길을 묻다</span>
+          <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25868" target="_blank" rel="noopener">
+          <span class="news-title">&quot;사교육 경쟁 없었다면 자녀 28% 더 낳았다&quot;…한은 콘퍼런스</span>
+          <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25867" target="_blank" rel="noopener">
+          <span class="news-title">경찰 허위종결이 던진 질문…연락 끊긴 1인가구 누가 확인하나</span>
+          <span class="news-date">2026. 09. 02</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25866" target="_blank" rel="noopener">
+          <span class="news-title">정부 세제개편안에 낸 ‘세무사회의 목소리’…언론이 주목했다</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25865" target="_blank" rel="noopener">
+          <span class="news-title">하계공동학술대회 「지방세의 쟁점」 토론회 참석</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25864" target="_blank" rel="noopener">
+          <span class="news-title">박성춘 세무사, 「암송시 1,550」 발간</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25863" target="_blank" rel="noopener">
+          <span class="news-title">박정민 세무사, 한·일 부가가치세제 비교한 「일본소비세법」 발간</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25862" target="_blank" rel="noopener">
+          <span class="news-title">조의를 표합니다.</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25861" target="_blank" rel="noopener">
+          <span class="news-title">결혼을 축하합니다.</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25860" target="_blank" rel="noopener">
+          <span class="news-title">예산·재정전문가 안도걸 국회의원 초청 간담회</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25859" target="_blank" rel="noopener">
+          <span class="news-title">제3차 상임이사회 개최</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25858" target="_blank" rel="noopener">
+          <span class="news-title">대전지방세무사회, AI에이전트 및 플랫폼세무사회 활용법 교육 실시</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25857" target="_blank" rel="noopener">
+          <span class="news-title">인천지방세무사회,  2026 회직자 워크숍 개최</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25856" target="_blank" rel="noopener">
+          <span class="news-title">부산지방세무사회, 부산지방국세청과 세정 현안 논의</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25855" target="_blank" rel="noopener">
+          <span class="news-title">중부지방세무사회, ‘2026 회직자 워크숍’ 개최</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25854" target="_blank" rel="noopener">
+          <span class="news-title">서울지방세무사회, 2026년 회원 워크숍 및 체력단련대회 개최</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25853" target="_blank" rel="noopener">
+          <span class="news-title">윤상복 세무사의 플랫폼세무사의 100% 활용하기 ⑧</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25852" target="_blank" rel="noopener">
+          <span class="news-title">사무기기부터 추석선물까지…‘세무사랑몰 Mega Sale’ 연다</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25851" target="_blank" rel="noopener">
+          <span class="news-title">제4회 세무사의 날 기념식, 오는 9일 세무사회관서 개최</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25850" target="_blank" rel="noopener">
+          <span class="news-title">기초연금 기준 전환 대비…&quot;소득·재산 산정방식 단순화해야“</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25849" target="_blank" rel="noopener">
+          <span class="news-title">세제개편안 공개 &#x27;한달&#x27;…강남 급매물 느는데 강북은 신고가</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25848" target="_blank" rel="noopener">
+          <span class="news-title">7월 증권거래세 401%↑…누적 세수 274조원, 진도율 5년來 최고</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25847" target="_blank" rel="noopener">
+          <span class="news-title">100만 인파 안전 관리…서울시, 여의도 세계불꽃축제 종합대책</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25846" target="_blank" rel="noopener">
+          <span class="news-title">&quot;SRT 플랫폼 찾아뛰던 고생 끝&quot;…KTX·SRT 통합 운행 &#x27;스타트&#x27;</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25845" target="_blank" rel="noopener">
+          <span class="news-title">CCTV 아무나 안 보여준다?…유튜버 특혜논란으로 본 열람 기준</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25844" target="_blank" rel="noopener">
+          <span class="news-title">한국조세연구소, 디지털 세무·가상자산·증여세 등 핵심 현안을 다룬 「세무와 회계 연구」(등재학술지) 제46호  발간</span>
+          <span class="news-date">2026. 09. 01</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25843" target="_blank" rel="noopener">
+          <span class="news-title">세무사회-건설근로자공제회, 550만 건설근로자 세금고민 해결 나섰다</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25842" target="_blank" rel="noopener">
+          <span class="news-title">[AI로 무장한 근로자와 노동법] “3.3% 신고한 강사도 육아휴직을 쓸 수 있나요?”</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25841" target="_blank" rel="noopener">
+          <span class="news-title">음식점·미용업, 오늘부터 영업신고·사업자등록 한 번에 가능</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25840" target="_blank" rel="noopener">
+          <span class="news-title">국세청 태국에 세정경험 공유…현지 진출 기업 애로 해소 &#x27;물꼬&#x27;</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25839" target="_blank" rel="noopener">
+          <span class="news-title">李대통령 &quot;망국적 투기 반드시 타파…불공정 조세 반드시 시정&quot;</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25838" target="_blank" rel="noopener">
+          <span class="news-title">강하면서 수소에도 잘 견디는 합금 개발…&#x27;수소취성&#x27; 약점 개선</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25837" target="_blank" rel="noopener">
+          <span class="news-title">근무 중 열사병 사망…法 &quot;2인1조 택배기사도 산재보호 대상&quot;</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25836" target="_blank" rel="noopener">
+          <span class="news-title">&quot;자네 일하는거 보니 이해력이 부족한데 식구들이 다 그런가?&quot;</span>
+          <span class="news-date">2026. 08. 31</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25834" target="_blank" rel="noopener">
+          <span class="news-title">정부, 외국인주택투기 감시 강화…사업자대출 추가점검</span>
+          <span class="news-date">2026. 08. 28</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25833" target="_blank" rel="noopener">
+          <span class="news-title">이수만 SM서 5년간 600억 받아…법원 &quot;과도하지만 정상가 입증 안돼&quot;</span>
+          <span class="news-date">2026. 08. 28</span>
+        </a>
+        <a class="news-row" href="https://webzine.kacta.or.kr/news/articleView.html?idxno=25832" target="_blank" rel="noopener">
+          <span class="news-title">韓총리 &quot;AI·고가치 공공데이터 100종 내년까지 개방 완료할 것&quot;</span>
+          <span class="news-date">2026. 08. 28</span>
         </a>
         <!-- 여기까지 자동 -->
       </div>
+
+      <p class="news-empty" id="newsEmpty">찾으시는 기사가 없습니다.</p>
+
+      <div class="news-search">
+        <label for="newsQ" class="sr-only">기사 제목 검색</label>
+        <input type="search" id="newsQ" placeholder="제목으로 찾기" autocomplete="off">
+        <button type="button" id="newsGo" aria-label="찾기">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+      </div>
+
+      <nav class="news-page" id="newsPage" aria-label="기사 목록 쪽 넘기기"></nav>
 
       <p class="news-note">
         한국세무사회 「세무사신문」의 기사 제목을 그대로 소개해 드립니다.
@@ -216,5 +435,122 @@
 </div>
 
 <script src="../common.js"></script>
+
+<script>
+/* ---------------------------------------------------------
+   세무사신문 카드 : 좌우 화살표로 넘겨 봅니다
+   --------------------------------------------------------- */
+(function(){
+  var 줄 = document.getElementById('ncTrack');
+  var 왼 = document.getElementById('ncPrev');
+  var 오 = document.getElementById('ncNext');
+  if(!줄 || !왼 || !오) return;
+
+  function 한칸(){
+    var c = 줄.querySelector('.nc');
+    if(!c) return 300;
+    var 사이 = parseFloat(getComputedStyle(줄).columnGap || getComputedStyle(줄).gap || 0) || 16;
+    return c.getBoundingClientRect().width + 사이;
+  }
+  function 새로고침(){
+    var 끝 = 줄.scrollWidth - 줄.clientWidth - 2;
+    왼.disabled = 줄.scrollLeft <= 2;
+    오.disabled = 줄.scrollLeft >= 끝;
+    var 넘칠것 = 줄.scrollWidth > 줄.clientWidth + 4;
+    왼.style.display = 오.style.display = 넘칠것 ? '' : 'none';
+  }
+  /* 브라우저마다 '부드럽게' 지원이 달라서 직접 움직여 줍니다 */
+  var 달리는중 = null;
+  function 부드럽게(목표){
+    var 끝 = 줄.scrollWidth - 줄.clientWidth;
+    목표 = Math.max(0, Math.min(끝, 목표));
+    var 움직임끄기 = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(움직임끄기 || document.hidden || !window.requestAnimationFrame){
+      줄.scrollLeft = 목표; 새로고침(); return;   /* 화면이 안 보이면 바로 옮깁니다 */
+    }
+    var 시작 = 줄.scrollLeft, 거리 = 목표 - 시작, 첫시각 = null;
+    if(달리는중) cancelAnimationFrame(달리는중);
+    function 걸음(t){
+      if(첫시각 === null) 첫시각 = t;
+      var p = Math.min(1, (t - 첫시각) / 380);
+      var e = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+      줄.scrollLeft = 시작 + 거리 * e;
+      if(p < 1) 달리는중 = requestAnimationFrame(걸음);
+      else { 달리는중 = null; 새로고침(); }
+    }
+    달리는중 = requestAnimationFrame(걸음);
+  }
+
+  왼.addEventListener('click', function(){ 부드럽게(줄.scrollLeft - 한칸()); });
+  오.addEventListener('click', function(){ 부드럽게(줄.scrollLeft + 한칸()); });
+  줄.addEventListener('scroll', 새로고침, { passive:true });
+  window.addEventListener('resize', 새로고침);
+  새로고침();
+})();
+</script>
+
+
+<script>
+/* ---------------------------------------------------------
+   세무사신문 목록 : 한 쪽에 10건씩, 제목으로 찾기
+   --------------------------------------------------------- */
+(function(){
+  var 목록 = document.getElementById('newsList');
+  var 쪽칸 = document.getElementById('newsPage');
+  var 찾기 = document.getElementById('newsQ');
+  var 없음 = document.getElementById('newsEmpty');
+  if(!목록 || !쪽칸) return;
+
+  var 한쪽 = 10;
+  var 전체 = [].slice.call(목록.querySelectorAll('.news-row'));
+  var 보임 = 전체;
+  var 지금쪽 = 1;
+
+  function 그리기(){
+    var 마지막 = Math.max(1, Math.ceil(보임.length / 한쪽));
+    if(지금쪽 > 마지막) 지금쪽 = 마지막;
+
+    전체.forEach(function(e){ e.style.display = 'none'; });
+    보임.slice((지금쪽-1)*한쪽, 지금쪽*한쪽).forEach(function(e){ e.style.display = ''; });
+    없음.style.display = 보임.length ? 'none' : 'block';
+
+    쪽칸.innerHTML = '';
+    if(보임.length <= 한쪽) return;
+
+    function 단추(글, 쪽, 켬, 막힘){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = 글;
+      if(켬) b.className = 'on';
+      if(막힘){ b.disabled = true; }
+      else b.addEventListener('click', function(){
+        지금쪽 = 쪽; 그리기();
+        document.querySelector('.news-box').scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+      쪽칸.appendChild(b);
+    }
+
+    단추('‹', 지금쪽-1, false, 지금쪽 === 1);
+    for(var i = 1; i <= 마지막; i++) 단추(String(i), i, i === 지금쪽, false);
+    단추('›', 지금쪽+1, false, 지금쪽 === 마지막);
+  }
+
+  function 거르기(){
+    var 말 = (찾기.value || '').trim().toLowerCase();
+    보임 = 말 ? 전체.filter(function(e){
+      return e.querySelector('.news-title').textContent.toLowerCase().indexOf(말) !== -1;
+    }) : 전체;
+    지금쪽 = 1;
+    그리기();
+  }
+
+  찾기.addEventListener('input', 거르기);
+  document.getElementById('newsGo').addEventListener('click', 거르기);
+  찾기.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); 거르기(); } });
+
+  그리기();
+})();
+</script>
+
 </body>
 </html>
