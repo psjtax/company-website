@@ -1305,3 +1305,10 @@ footer b{ color:var(--t3); font-weight:700; }
   .news-date{ text-align:left; font-size:12.5px; }
   .news-search input{ width:100%; }
 }
+
+/* 현/전 구분 없이 나열하는 약력 */
+.pro-career li.no-badge{ padding-left:16px; }
+.pro-career li.no-badge::before{
+  content:''; position:absolute; left:4px; top:12px;
+  width:4px; height:4px; border-radius:50%; background:var(--pale2);
+}
