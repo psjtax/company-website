@@ -2125,12 +2125,14 @@
     <button class="nv-x" id="nvClose" type="button" aria-label="닫기">
       <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
-    <p class="nv-date" id="nvDate"></p>
-    <h3 class="nv-title" id="nvTitle"></h3>
-    <div class="nv-body" id="nvBody"></div>
-    <div class="nv-src">
-      <span>출처 · 한국세무사회 「세무사신문」</span>
-      <a id="nvLink" href="#" target="_blank" rel="noopener">세무사신문에서 전문 보기</a>
+    <div class="nv-scroll" id="nvScroll">
+      <p class="nv-date" id="nvDate"></p>
+      <h3 class="nv-title" id="nvTitle"></h3>
+      <div class="nv-body" id="nvBody"></div>
+      <div class="nv-src">
+        <span>출처 · 한국세무사회 「세무사신문」</span>
+        <a id="nvLink" href="#" target="_blank" rel="noopener">세무사신문에서 전문 보기</a>
+      </div>
     </div>
   </div>
 </div>
@@ -2149,6 +2151,7 @@
   var 날짜칸 = document.getElementById('nvDate');
   var 제목칸 = document.getElementById('nvTitle');
   var 글칸   = document.getElementById('nvBody');
+  var 두루마리 = document.getElementById('nvScroll');
   var 원문   = document.getElementById('nvLink');
   var 닫기   = document.getElementById('nvClose');
   var 되돌릴곳 = null;
@@ -2165,7 +2168,7 @@
       p.textContent = 문단;
       글칸.appendChild(p);
     });
-    글칸.scrollTop = 0;
+    두루마리.scrollTop = 0;
     원문.href = a.getAttribute('href');
     뒷막.hidden = false;
     document.body.style.overflow = 'hidden';

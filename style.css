@@ -1358,20 +1358,54 @@ footer b{ color:var(--t3); font-weight:700; }
 @keyframes nvFade{ from{ opacity:0 } to{ opacity:1 } }
 
 .nv-box{
-  position:relative; width:min(640px,100%); max-height:82vh; overflow-y:auto;
-  background:#fff; border-radius:22px; padding:38px 38px 30px;
+  position:relative; width:min(640px,100%); max-height:82vh;
+  display:flex; flex-direction:column; overflow:hidden;   /* 둥근 모서리가 가려지지 않게 */
+  background:#fff; border-radius:22px;
   box-shadow:0 24px 60px rgba(30,38,60,.3);
   animation:nvUp .28s cubic-bezier(.2,.7,.3,1) both;
 }
 @keyframes nvUp{ from{ opacity:0; transform:translateY(18px) } to{ opacity:1; transform:none } }
-@media (max-width:560px){ .nv-box{ padding:30px 22px 24px; border-radius:18px; } }
+
+/* 위로 올라간 글이 뚝 끊기지 않고 흐릿하게 사라지도록 */
+.nv-box::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:24px; z-index:1;
+  background:linear-gradient(#fff 40%, rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+/* 글만 스크롤되는 안쪽 칸. 스크롤 막대가 모서리를 덮지 않고 안쪽에 떠 있습니다 */
+.nv-scroll{
+  min-height:0; overflow-y:auto; overscroll-behavior:contain;
+  padding:38px 28px 30px 38px;
+}
+/* 파이어폭스는 아래 방식이 안 되므로 표준 속성으로 대신합니다 */
+@supports not selector(::-webkit-scrollbar){
+  .nv-scroll{ scrollbar-width:thin; scrollbar-color:var(--pale2) transparent; }
+}
+.nv-scroll::-webkit-scrollbar{ width:14px; }
+.nv-scroll::-webkit-scrollbar-track{ background:transparent; }
+.nv-scroll::-webkit-scrollbar-thumb{
+  background:var(--pale2); border-radius:99px;
+  border:5px solid transparent; background-clip:padding-box;   /* 흰 여백을 두고 가늘게 */
+}
+.nv-scroll::-webkit-scrollbar-thumb:hover{
+  background:#C3CFEA; background-clip:padding-box;
+}
+
+@media (max-width:560px){
+  .nv-box{ border-radius:18px; }
+  .nv-scroll{ padding:30px 14px 24px 22px; }
+  .nv-scroll::-webkit-scrollbar{ width:11px; }
+  .nv-scroll::-webkit-scrollbar-thumb{ border-width:4px; }
+}
 
 .nv-x{
-  position:absolute; right:16px; top:16px; width:38px; height:38px;
-  border:0; background:none; border-radius:50%; cursor:pointer;
+  position:absolute; right:16px; top:16px; z-index:2; width:38px; height:38px;
+  border:0; border-radius:50%; cursor:pointer;
   display:grid; place-items:center;
+  background:#fff; box-shadow:0 0 0 6px #fff;   /* 글이 밑으로 지나가도 가려주도록 */
 }
-.nv-x:hover{ background:var(--pale); }
+.nv-x:hover{ background:var(--pale); box-shadow:0 0 0 6px #fff; }
 .nv-x svg{ width:20px; height:20px; fill:none; stroke:var(--t3); stroke-width:2; stroke-linecap:round; }
 
 .nv-date{ font-size:13.5px; color:var(--t4); letter-spacing:.03em; }
