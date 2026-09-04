@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import io
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools'))
@@ -202,3 +203,74 @@ def test_전체가_돌면_목록이_채워진다(tmp_path, monkeypatch):
     assert '옛것' not in 난것
     assert 난것.count('class="news-row"') == 34
     assert 'data-img="zz.jpg' in 난것
+
+
+def test_사진은_열두장까지만_들어간다(tmp_path, monkeypatch):
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: 자료('blog_rss.xml'))
+
+    사진들 = ''.join(
+        '<img data-lazy-src="https://postfiles.pstatic.net/x/img%02d.jpg">' % i
+        for i in range(20)
+    )
+    합성쪽 = ('<div class="se-main-container"><p>%s</p>%s</div>'
+             % ('본문 내용입니다. ' * 30, 사진들))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성쪽)
+    monkeypatch.setattr(uc, '사진저장', lambda u, f, 받아오기=None: uc.사진이름(u))
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    m = re.search(r'data-img="([^"]*)"', 난것)
+    assert m is not None
+    이름들 = m.group(1).split(',')
+    assert len(이름들) == 12                    # 20장 중 12장까지만
+
+
+def test_본문도_요약도_짧으면_건너뛴다(tmp_path, monkeypatch, capsys):
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: [
+        {'제목': '본문이 짧은 글', '주소': 'https://blog.naver.com/tax5868/1',
+         '번호': '1', '요약': '짧음'},
+    ])
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: '<html><body>본문 없음</body></html>')
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 난것.count('class="news-row"') == 0
+    assert '본문을 못 가져와 건너뜁니다' in capsys.readouterr().out
+
+
+def test_두번_돌리면_그대로다(tmp_path, monkeypatch, capsys):
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: 자료('blog_rss.xml'))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 자료글('blog_post.html'))
+    monkeypatch.setattr(uc, '사진저장', lambda u, f, 받아오기=None: 'zz.jpg')
+
+    assert uc.main() == 0
+    한번째 = 대상.read_text(encoding='utf-8')
+
+    capsys.readouterr()                        # 첫 실행 출력은 비워둔다
+    assert uc.main() == 0
+    두번째 = 대상.read_text(encoding='utf-8')
+
+    assert 두번째 == 한번째
+    assert '바뀐 것이 없습니다.' in capsys.readouterr().out
