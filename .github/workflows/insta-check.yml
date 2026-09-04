@@ -1,0 +1,28 @@
+# 인스타 이름표가 쓸 수 있는 것인지 확인만 합니다.
+# 저절로 돌지 않습니다. Actions 탭에서 "Run workflow" 를 눌러야만 돕니다.
+# 아무 파일도 고치지 않고, 아무것도 올리지 않습니다. 이름표 값도 화면에 안 나옵니다.
+
+name: 인스타 이름표 확인
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v4
+
+      - name: 파이썬 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 이름표 확인
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python tools/check_insta.py
