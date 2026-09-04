@@ -52,6 +52,10 @@ def 고른글(원본):
 NL = chr(10)
 지울것 = re.compile(r'<(script|style)[^>]*>.*?</\1>', re.S)
 
+# 본문이 끝나고 태그·공감·댓글 같은 페이지 꾸밈이 시작되는 지점을 나타내는 표시들.
+# 실제 글에는 이 중 어느 것이 먼저 나오는지 페이지마다 달라서, 가장 먼저 나오는 것을 기준으로 자른다.
+본문끝표시 = ('post_footer', 'post_btn', 'wrap_postcomment', 'area_sympathy', 'se_doc_footer')
+
 
 def 본문뽑기(쪽):
     """본문 영역에서 글자와 사진 주소를 뽑습니다.
@@ -61,9 +65,15 @@ def 본문뽑기(쪽):
         return '', []
     본 = m.group(1)
 
-    끝 = 본.find('se_doc_footer')
-    if 끝 != -1:
-        본 = 본[:끝]
+    끝후보 = [i for i in (본.find(표시) for 표시 in 본문끝표시) if i != -1]
+    if 끝후보:
+        본 = 본[:min(끝후보)]
+
+    # 자르는 지점이 태그 한가운데일 수 있다 (예: '<div id="' 처럼 닫는 '>' 없이 끝남).
+    # 그런 잘린 조각은 태그로 인식되지 못해 글자로 남아버리니 미리 잘라낸다.
+    잘린조각 = re.search(r'<[^>]*$', 본)
+    if 잘린조각:
+        본 = 본[:잘린조각.start()]
 
     사진 = []
     for u in re.findall(r'data-lazy-src="([^"]+)"', 본):
