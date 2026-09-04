@@ -36,6 +36,23 @@ document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
   /* 화면이 넓어지면 닫습니다 */
   window.addEventListener('resize', function(){ if(window.innerWidth > 1024) close(); });
+
+  /* 제목을 누르면 그 아래가 펼쳐집니다 (한 번에 하나만 열립니다) */
+  menu.querySelectorAll('.m-top').forEach(function(제목){
+    제목.addEventListener('click', function(){
+      var 칸 = 제목.parentElement;
+      var 열림 = !칸.classList.contains('open');
+      menu.querySelectorAll('.m-group').forEach(function(다른){
+        다른.classList.remove('open');
+        var b = 다른.querySelector('.m-top');
+        if(b) b.setAttribute('aria-expanded', 'false');
+      });
+      if(열림){
+        칸.classList.add('open');
+        제목.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
 })();
 
 

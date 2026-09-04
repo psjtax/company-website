@@ -32,7 +32,13 @@
           <a href="../location/">사무소 위치</a>
         </div>
       </div>
-      <a href="../news/">세무뉴스</a>
+      <div class="has-sub">
+        <a href="../column/" class="top">세무소식</a>
+        <div class="sub">
+          <a href="../column/">세무소식</a>
+          <a href="../news/">세무뉴스</a>
+        </div>
+      </div>
       <a href="../faq/">자주 묻는 질문</a>
       <a href="../consult/" class="on">상담하기</a>
       <a class="tel" href="tel:050714318155">전화 상담</a>
@@ -42,10 +48,22 @@
     </nav>
   </div>
 
+  <!-- 좁은 화면용 메뉴 : 제목을 누르면 아래가 펼쳐집니다 -->
   <nav class="m-menu" id="mMenu">
-    <a href="../about/">사무소 소개</a>
-    <a href="../location/">사무소 위치</a>
-    <a href="../news/">세무뉴스</a>
+    <div class="m-group">
+      <button class="m-top" type="button" aria-expanded="false">박성진세무회계사무소</button>
+      <div class="m-sub">
+        <a href="../about/">사무소 소개</a>
+        <a href="../location/">사무소 위치</a>
+      </div>
+    </div>
+    <div class="m-group">
+      <button class="m-top" type="button" aria-expanded="false">세무소식</button>
+      <div class="m-sub">
+        <a href="../column/">세무소식</a>
+        <a href="../news/">세무뉴스</a>
+      </div>
+    </div>
     <a href="../faq/">자주 묻는 질문</a>
     <a href="../consult/">상담하기</a>
   </nav>

@@ -753,13 +753,35 @@ footer b{ color:var(--t3); font-weight:700; }
   box-shadow:0 12px 28px rgba(69,88,135,.10);
   max-height:0; overflow:hidden; transition:max-height .3s ease;
 }
-.m-menu.open{ max-height:420px; }
-.m-menu a{
-  display:block; padding:16px 24px; font-size:16px; font-weight:500;
+.m-menu.open{ max-height:min(78vh, 640px); overflow-y:auto; }
+.m-menu > a, .m-top{
+  display:block; width:100%; padding:16px 24px; font-size:16px; font-weight:500;
   color:var(--t2); text-decoration:none; border-top:1px solid var(--line);
+  background:none; border-left:0; border-right:0; border-bottom:0;
+  text-align:left; font-family:inherit; cursor:pointer;
 }
-.m-menu a:first-child{ border-top:0; }
-.m-menu a:active{ background:var(--pale); }
+.m-menu > *:first-child > .m-top,
+.m-menu > a:first-child{ border-top:0; }
+.m-menu > a:active, .m-top:active{ background:var(--pale); }
+
+/* 제목을 누르면 아래가 펼쳐집니다 */
+.m-group{ border-top:1px solid var(--line); }
+.m-group:first-child{ border-top:0; }
+.m-group .m-top{ border-top:0; display:flex; align-items:center; justify-content:space-between; }
+.m-top::after{
+  content:''; width:7px; height:7px; margin-right:4px;
+  border-right:1.8px solid var(--t4); border-bottom:1.8px solid var(--t4);
+  transform:rotate(45deg) translateY(-2px); transition:transform .25s;
+}
+.m-group.open .m-top{ color:var(--navy); font-weight:600; }
+.m-group.open .m-top::after{ transform:rotate(225deg) translate(-2px,-2px); border-color:var(--navy); }
+.m-sub{ max-height:0; overflow:hidden; transition:max-height .25s ease; background:var(--pale); }
+.m-group.open .m-sub{ max-height:220px; }
+.m-sub a{
+  display:block; padding:13px 24px 13px 38px; font-size:15px; font-weight:500;
+  color:var(--t2); text-decoration:none;
+}
+.m-sub a:active{ background:var(--pale2); }
 @media (min-width:1025px){ .m-menu{ display:none; } }
 
 /* --- 떠 있는 버튼 : 휴대폰에서는 화면 오른쪽 아래로 --- */
@@ -1431,3 +1453,7 @@ footer b{ color:var(--t3); font-weight:700; }
 }
 .nv-src a:hover{ background:var(--pale); }
 .nv-src a::after{ content:' →'; }
+.nv-note{
+  margin-top:14px; font-size:12.5px; line-height:1.7; color:var(--t4);
+  word-break:keep-all;
+}
