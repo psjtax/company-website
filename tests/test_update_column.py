@@ -78,3 +78,61 @@ def test_본문에_페이지_찌꺼기가_안_섞인다():
     assert len(글) < 20000, '본문이 너무 깁니다 : 자르는 지점을 다시 보세요'
     for 찌꺼기 in ('이웃추가', '공감한 사람 보기', '댓글쓰기', '블로그 마켓', '서로이웃', '구독'):
         assert 찌꺼기 not in 글
+
+
+import io as _io
+
+from PIL import Image
+
+
+def 가짜사진(가로=1600, 세로=900):
+    buf = _io.BytesIO()
+    Image.new('RGB', (가로, 세로), (200, 210, 235)).save(buf, 'PNG')
+    return buf.getvalue()
+
+
+def test_사진이름은_주소마다_고정된다():
+    a = uc.사진이름('https://postfiles.pstatic.net/aaa/bbb.png')
+    b = uc.사진이름('https://postfiles.pstatic.net/aaa/bbb.png')
+    c = uc.사진이름('https://postfiles.pstatic.net/aaa/ccc.png')
+    assert a == b
+    assert a != c
+    assert a.endswith('.jpg')
+
+
+def test_사진을_받아_가로900이하로_줄인다(tmp_path):
+    이름 = uc.사진저장('https://postfiles.pstatic.net/x/y.png', str(tmp_path),
+                    받아오기=lambda u: 가짜사진())
+    assert 이름 is not None
+    난것 = os.path.join(str(tmp_path), 이름)
+    assert os.path.exists(난것)
+    with Image.open(난것) as im:
+        assert im.width <= 900
+        assert im.format == 'JPEG'
+
+
+def test_이미_있으면_다시_받지_않는다(tmp_path):
+    부른횟수 = {'n': 0}
+
+    def 받기(u):
+        부른횟수['n'] += 1
+        return 가짜사진()
+
+    주소 = 'https://postfiles.pstatic.net/x/y.png'
+    첫번 = uc.사진저장(주소, str(tmp_path), 받아오기=받기)
+    두번 = uc.사진저장(주소, str(tmp_path), 받아오기=받기)
+    assert 첫번 == 두번
+    assert 부른횟수['n'] == 1
+
+
+def test_받아오다_실패하면_None(tmp_path):
+    def 터짐(u):
+        raise OSError('안 열림')
+
+    assert uc.사진저장('https://postfiles.pstatic.net/x/z.png', str(tmp_path),
+                    받아오기=터짐) is None
+
+
+def test_사진이_아니면_None(tmp_path):
+    assert uc.사진저장('https://postfiles.pstatic.net/x/w.png', str(tmp_path),
+                    받아오기=lambda u: b'this is not an image') is None

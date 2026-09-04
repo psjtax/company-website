@@ -6,9 +6,12 @@
   GitHub Actions 가 하루 두 번 자동으로 돌립니다.
   손으로 돌려보려면 :  python tools/update_column.py
 """
+import hashlib
 import html
+import io
 import os
 import re
+import urllib.request
 import xml.etree.ElementTree as ET
 
 RSS = 'https://rss.blog.naver.com/tax5868.xml'
@@ -90,3 +93,52 @@ def 본문뽑기(쪽):
     글 = re.sub(NL + r'[ \t]*', NL, 글)
     글 = re.sub(NL + r'{2,}', NL, 글).strip()
     return 글, 사진
+
+
+가로최대 = 900
+품질 = 80
+글당사진 = 12
+
+
+def 받아오기기본(주소):
+    """네이버는 다른 사이트에서 부르면 막으므로 Referer 를 붙이지 않습니다."""
+    요청 = urllib.request.Request(주소, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(요청, timeout=20) as 응답:
+        return 응답.read()
+
+
+def 사진이름(주소):
+    """같은 주소면 늘 같은 이름이 나옵니다. 두 번 받지 않기 위해서입니다."""
+    return hashlib.sha1((주소 or '').encode('utf-8')).hexdigest()[:16] + '.jpg'
+
+
+def 사진저장(주소, 폴더, 받아오기=None):
+    """사진을 받아 가로 900px 이하 JPEG 로 저장합니다.
+       이미 있으면 받지 않고, 실패하면 None 을 돌려줍니다."""
+    from PIL import Image
+
+    이름 = 사진이름(주소)
+    갈곳 = os.path.join(폴더, 이름)
+    if os.path.exists(갈곳):
+        return 이름
+
+    try:
+        자료 = (받아오기 or 받아오기기본)(주소)
+        그림 = Image.open(io.BytesIO(자료))
+        그림.load()
+    except Exception:
+        return None
+
+    try:
+        if 그림.mode not in ('RGB', 'L'):
+            그림 = 그림.convert('RGB')
+        if 그림.width > 가로최대:
+            높이 = max(1, round(그림.height * 가로최대 / 그림.width))
+            그림 = 그림.resize((가로최대, 높이), Image.LANCZOS)
+        os.makedirs(폴더, exist_ok=True)
+        그림.save(갈곳, 'JPEG', quality=품질, optimize=True)
+    except Exception:
+        if os.path.exists(갈곳):
+            os.remove(갈곳)
+        return None
+    return 이름
