@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import html
 import io
 import os
 import re
@@ -257,8 +258,12 @@ def test_사진은_열두장까지만_들어간다(tmp_path, monkeypatch):
 
 
 def test_본문도_요약도_짧으면_건너뛴다(tmp_path, monkeypatch, capsys):
+    """모든 글이 건너뛰어지면(본문·요약 모두 너무 짧음) 화면을 비우는 대신
+       기존 화면을 그대로 지키고 실패로 보고해야 한다 (Finding 1)."""
     대상 = tmp_path / 'index.html'
-    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+    원래 = 'A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B'
+    대상.write_text(원래, encoding='utf-8')
+    원래바이트 = 대상.read_bytes()
 
     monkeypatch.setattr(uc, '뿌리', str(tmp_path))
     monkeypatch.setattr(uc, '대상', 'index.html')
@@ -271,10 +276,11 @@ def test_본문도_요약도_짧으면_건너뛴다(tmp_path, monkeypatch, capsy
     ])
     monkeypatch.setattr(uc, '받아오기글', lambda 번호: '<html><body>본문 없음</body></html>')
 
-    assert uc.main() == 0
-    난것 = 대상.read_text(encoding='utf-8')
-    assert 난것.count('class="news-row"') == 0
-    assert '본문을 못 가져와 건너뜁니다' in capsys.readouterr().out
+    assert uc.main() == 1
+    출력 = capsys.readouterr().out
+    assert '본문을 못 가져와 건너뜁니다' in 출력
+    assert '기존 화면을 그대로 둡니다' in 출력
+    assert 대상.read_bytes() == 원래바이트          # 파일이 한 바이트도 바뀌지 않는다
 
 
 def test_두번_돌리면_그대로다(tmp_path, monkeypatch, capsys):
@@ -298,3 +304,209 @@ def test_두번_돌리면_그대로다(tmp_path, monkeypatch, capsys):
 
     assert 두번째 == 한번째
     assert '바뀐 것이 없습니다.' in capsys.readouterr().out
+
+
+# ── 이 아래는 최종 코드 리뷰에서 나온 안전장치들에 대한 테스트다 ──────────────
+
+합성본문 = ('<div class="se-main-container"><p>'
+         + '실제 본문 내용입니다. ' * 50 + '</p></div>')     # 길이 200자 넉넉히 넘음
+
+
+def _가짜글목록(개수):
+    return [
+        {'제목': '글%d' % i, '주소': 'https://blog.naver.com/tax5868/%d' % i,
+         '번호': str(i), '요약': '요약%d' % i}
+        for i in range(개수)
+    ]
+
+
+def test_모두_건너뛰면_기존화면을_지킨다(tmp_path, monkeypatch, capsys):
+    """Finding 1 : 모든 글이 건너뛰어져 줄들이 비면, 빈 화면을 올리는 대신
+       기존 화면을 지키고 main() 은 1을 돌려줘야 한다."""
+    대상 = tmp_path / 'index.html'
+    원래 = 'A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B'
+    대상.write_text(원래, encoding='utf-8')
+    원래바이트 = 대상.read_bytes()
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: [
+        {'제목': '짧은 글 1', '주소': 'https://blog.naver.com/tax5868/1',
+         '번호': '1', '요약': '짧음'},
+        {'제목': '짧은 글 2', '주소': 'https://blog.naver.com/tax5868/2',
+         '번호': '2', '요약': '짧음'},
+    ])
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: '<html><body>본문 없음</body></html>')
+
+    assert uc.main() == 1
+    assert '기존 화면을 그대로 둡니다' in capsys.readouterr().out
+    assert 대상.read_bytes() == 원래바이트
+
+
+def test_본문을_대부분_못받으면_중단한다(tmp_path, monkeypatch, capsys):
+    """Finding 2 (폴백 과반 가드) : 절반을 넘는 글이 요약으로 대체되면
+       (네이버가 요청을 막은 경우 등) 화면을 바꾸지 않고 중단해야 한다."""
+    대상 = tmp_path / 'index.html'
+    원래 = 'A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B'
+    대상.write_text(원래, encoding='utf-8')
+    원래바이트 = 대상.read_bytes()
+
+    긴요약 = '나' * 90                              # 80자 문턱은 넘지만 본문은 아님
+    글목록 = [
+        {'제목': '글1', '주소': 'https://blog.naver.com/tax5868/1', '번호': '1', '요약': 긴요약},
+        {'제목': '글2', '주소': 'https://blog.naver.com/tax5868/2', '번호': '2', '요약': 긴요약},
+        {'제목': '글3', '주소': 'https://blog.naver.com/tax5868/3', '번호': '3', '요약': 긴요약},
+        {'제목': '글4', '주소': 'https://blog.naver.com/tax5868/4', '번호': '4', '요약': 긴요약},
+    ]
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: 글목록)
+
+    def 받아오기글(번호):
+        if 번호 in ('1', '2', '3'):
+            raise OSError('네이버가 막았습니다')      # 4건 중 3건이 요약으로 대체됨
+        return 합성본문
+
+    monkeypatch.setattr(uc, '받아오기글', 받아오기글)
+
+    assert uc.main() == 1
+    출력 = capsys.readouterr().out
+    assert '본문을 제대로 못 받았습니다' in 출력
+    assert '4건 중 3건' in 출력
+    assert 대상.read_bytes() == 원래바이트
+
+
+def test_기존보다_크게_줄면_중단한다(tmp_path, monkeypatch, capsys):
+    """Finding 2 (줄어듦 가드) : 마커 위 안내 주석 속 예시 한 줄은 세지 않고,
+       마커 사이의 34건이 3건으로 크게 줄면 중단해야 한다."""
+    대상 = tmp_path / 'index.html'
+    예시줄 = '<!-- 사용 예시 : <a class="news-row" href="#">이렇게 나옵니다</a> -->'
+    기존행들 = uc.NL.join(
+        '<a class="news-row" href="#">기존글%d</a>' % i for i in range(34))
+    원래 = 예시줄 + uc.NL + uc.시작표 + uc.NL + 기존행들 + uc.NL + uc.끝표
+    대상.write_text(원래, encoding='utf-8')
+    원래바이트 = 대상.read_bytes()
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: _가짜글목록(3))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성본문)
+
+    assert uc.main() == 1
+    출력 = capsys.readouterr().out
+    assert '크게 줄었습니다' in 출력
+    assert 대상.read_bytes() == 원래바이트
+
+
+def test_기존보다_조금_줄면_허용된다(tmp_path, monkeypatch):
+    """Finding 2 (줄어듦 가드) : 34건에서 33건처럼 한 건 줄어드는 것은
+       글쓴이가 직접 지운 정상 상황일 수 있으므로 막지 않는다."""
+    대상 = tmp_path / 'index.html'
+    기존행들 = uc.NL.join(
+        '<a class="news-row" href="#">기존글%d</a>' % i for i in range(34))
+    원래 = uc.시작표 + uc.NL + 기존행들 + uc.NL + uc.끝표
+    대상.write_text(원래, encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: _가짜글목록(33))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성본문)
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 난것.count('class="news-row"') == 33
+    assert '기존글0' not in 난것
+
+
+def test_일부_실패해도_요약으로_채워진다(tmp_path, monkeypatch):
+    """Finding 2 관련 커버리지 : 한 글만 받아오기글 이 실패해도(네트워크 오류 등)
+       그 글은 요약으로 대체되어 줄에 들어가고, main() 은 성공(0)해야 한다."""
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+
+    긴요약 = '실패한 글의 요약입니다. ' * 10          # 80자 문턱을 넉넉히 넘김
+    글목록 = [
+        {'제목': '실패한 글', '주소': 'https://blog.naver.com/tax5868/1',
+         '번호': '1', '요약': 긴요약},
+        {'제목': '성공한 글', '주소': 'https://blog.naver.com/tax5868/2',
+         '번호': '2', '요약': '짧은 요약'},
+    ]
+    monkeypatch.setattr(uc, '고른글', lambda 원본: 글목록)
+
+    def 받아오기글(번호):
+        if 번호 == '1':
+            raise OSError('타임아웃')
+        return 합성본문
+
+    monkeypatch.setattr(uc, '받아오기글', 받아오기글)
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 난것.count('class="news-row"') == 2
+    assert ('data-body="%s"' % html.escape(긴요약)) in 난것
+
+
+def test_제목에_마커문구가_있어도_안전하다(tmp_path, monkeypatch):
+    """Finding 3(마커 주입) : 글 제목에 끝표 마커와 똑같은 문구가 들어 있어도
+       html.escape 덕분에 실제 마커로 오인되지 않아야 한다."""
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+
+    글목록 = [
+        {'제목': '이상한 제목 <!-- 글 여기까지 --> 입니다',
+         '주소': 'https://blog.naver.com/tax5868/1', '번호': '1', '요약': '요약'},
+        {'제목': '평범한 제목', '주소': 'https://blog.naver.com/tax5868/2',
+         '번호': '2', '요약': '요약'},
+    ]
+    monkeypatch.setattr(uc, '고른글', lambda 원본: 글목록)
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성본문)
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 난것.count(uc.시작표) == 1
+    assert 난것.count(uc.끝표) == 1
+    assert 난것.count('class="news-row"') == 2
+
+
+def test_성공하면_임시파일이_남지_않는다(tmp_path, monkeypatch):
+    """Finding 4(원자적 쓰기) : 정상적으로 끝나면 임시로 만든 파일이
+       폴더에 남아 있으면 안 된다."""
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: 자료('blog_rss.xml'))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 자료글('blog_post.html'))
+    monkeypatch.setattr(uc, '사진저장', lambda u, f, 받아오기=None: 'zz.jpg')
+
+    assert uc.main() == 0
+    남은파일들 = os.listdir(str(tmp_path))
+    assert 남은파일들 == ['index.html']             # 임시 파일이 남아있지 않다

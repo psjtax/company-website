@@ -12,9 +12,12 @@ import io
 import os
 import re
 import sys
+import tempfile
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+
+from PIL import Image
 
 RSS = 'https://rss.blog.naver.com/tax5868.xml'
 분류 = '세금이야기'
@@ -141,8 +144,6 @@ def 사진이름(주소):
 def 사진저장(주소, 폴더, 받아오기=None):
     """사진을 받아 가로 900px 이하 JPEG 로 저장합니다.
        이미 있으면 받지 않고, 실패하면 None 을 돌려줍니다."""
-    from PIL import Image
-
     이름 = 사진이름(주소)
     갈곳 = os.path.join(폴더, 이름)
     if os.path.exists(갈곳):
@@ -190,6 +191,16 @@ def 갈아끼우기(s, 시작표, 끝표, 새내용, 들여):
     return s[:a + len(시작표)] + NL + 새내용 + NL + 들여 + s[b:]
 
 
+def 마커사이_줄수(s, 시작표, 끝표):
+    """시작표~끝표 사이에 있는 news-row 개수만 센다.
+       파일 위쪽 안내 주석 속 예시 한 줄까지 세면 실제보다 하나 많게 잘못 세게 되므로,
+       마커 밖은 보지 않는다. 마커를 찾지 못하면 0을 돌려준다."""
+    a, b = s.find(시작표), s.find(끝표)
+    if a == -1 or b == -1:
+        return 0
+    return s[a + len(시작표):b].count('class="news-row"')
+
+
 대상 = 'column/index.html'
 사진폴더 = 'column/img'
 쉬는시간 = 0.25
@@ -232,6 +243,7 @@ def main():
 
     사진갈곳 = os.path.join(뿌리, 사진폴더)
     줄들 = []
+    폴백수 = 0
     for n, 글 in enumerate(글들):
         try:
             쪽 = 받아오기글(글['번호'])
@@ -242,6 +254,7 @@ def main():
         if len(본문) < 200:
             본문 = 글['요약']
             사진주소 = []
+            폴백수 += 1
 
         if len(본문) < 80:
             print('  본문을 못 가져와 건너뜁니다 :', 글['제목'])
@@ -259,8 +272,30 @@ def main():
         if n % 10 == 9:
             print('  %d건 가져옴…' % (n + 1))
 
+    # 전부 건너뛰어 화면에 올릴 것이 없으면, 빈 화면을 올리는 대신 기존 화면을 지킨다.
+    if not 줄들:
+        print('가져온 글이 전부 건너뛰어져 화면에 올릴 것이 없습니다. 기존 화면을 그대로 둡니다.')
+        return 1
+
+    # 네이버가 요청을 막아 본문 대신 요약으로 채운 글이 절반을 넘으면,
+    # 짧게 잘린 요약과 사진 없는 화면으로 통째로 바뀌게 되므로 여기서 멈춘다.
+    if 폴백수 > len(글들) // 2:
+        print('블로그에서 본문을 제대로 못 받았습니다 (%d건 중 %d건). 기존 화면을 그대로 둡니다.'
+              % (len(글들), 폴백수))
+        return 1
+
     경로 = os.path.join(뿌리, 대상)
     s = 원래 = io.open(경로, encoding='utf-8').read()
+
+    # 받아온 글이 기존보다 크게 줄었으면(예: RSS 가 일시적으로 짧게 와서 34건이 3건이
+    # 되는 경우), 실수로 보이는 화면을 그대로 지우지 않도록 멈춘다. 한두 건 줄어드는
+    # 것(예: 34→33, 글쓴이가 직접 지운 경우)은 정상이므로 막지 않는다.
+    이전줄수 = 마커사이_줄수(s, 시작표, 끝표)
+    if 이전줄수 > 0 and len(줄들) * 5 < 이전줄수 * 4:
+        print('기존 %d건에서 %d건으로 크게 줄었습니다. 기존 화면을 그대로 둡니다.'
+              % (이전줄수, len(줄들)))
+        return 1
+
     s2 = 갈아끼우기(s, 시작표, 끝표, NL.join(줄들), '        ')
     if s2 is None:
         print('글 자리 표시를 찾지 못했습니다.')
@@ -270,7 +305,19 @@ def main():
         print('바뀐 것이 없습니다.')
         return 0
 
-    io.open(경로, 'w', encoding='utf-8').write(s2)
+    # 실행 중 갑자기 멈추더라도(정전, 강제 종료 등) 실제 서비스 화면 파일이
+    # 절반만 쓰인 채로 남지 않도록, 같은 폴더에 임시로 쓴 뒤 통째로 바꿔치기한다.
+    fd, 임시경로 = tempfile.mkstemp(dir=os.path.dirname(경로) or '.',
+                                  prefix='.update_column-', suffix='.tmp')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            f.write(s2)
+        os.replace(임시경로, 경로)
+    except Exception:
+        if os.path.exists(임시경로):
+            os.remove(임시경로)
+        raise
+
     print('세무소식 %d건으로 갱신했습니다.' % len(줄들))
     return 0
 
