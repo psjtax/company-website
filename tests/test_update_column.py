@@ -147,6 +147,7 @@ def test_줄에_필요한_것이_다_들어간다():
     assert 'data-img="aa.jpg,bb.jpg"' in 줄
     assert '&#10;' in 줄                       # 문단 구분
     assert 'news-date' not in 줄               # 날짜는 넣지 않는다
+    assert 'data-date' not in 줄               # 날짜 속성도 넣지 않는다
 
 
 def test_사진이_없어도_줄이_만들어진다():
