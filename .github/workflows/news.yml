@@ -1,5 +1,11 @@
 # 세무사신문 새 소식을 하루 두 번 자동으로 가져와 홈페이지에 반영합니다.
 # (손으로 돌려보고 싶으실 때는 깃허브 Actions 탭에서 "Run workflow" 를 누르시면 됩니다)
+#
+# 깃허브는 "60일 동안 사람 손이 안 닿은 저장소"의 자동 실행을 꺼버립니다.
+# 그래서 아래 두 가지를 해 둡니다.
+#   1) NEWS_TOKEN(개인 이름표)이 금고에 있으면 그것으로 올립니다 → 사람이 온 것으로 인정됩니다
+#   2) 30일 넘게 아무 수정이 없을 때만 작은 메모 파일에 날짜를 찍습니다 → 그래도 시계가 돌아갑니다
+# 이름표가 없어도 세무뉴스 갱신 자체는 그대로 동작합니다.
 
 name: 세무뉴스 자동 갱신
 
@@ -15,12 +21,18 @@ concurrency:
   group: news-update
   cancel-in-progress: false
 
+env:
+  QUIET_DAYS: 30                # 이 기간 넘게 수정이 없을 때만 도장을 찍습니다
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - name: 저장소 가져오기
         uses: actions/checkout@v4
+        with:
+          # 금고에 이름표가 있으면 그것으로, 없으면 지금까지처럼 기본 자격으로
+          token: ${{ secrets.NEWS_TOKEN || github.token }}
 
       - name: 파이썬 준비
         uses: actions/setup-python@v5
@@ -40,4 +52,33 @@ jobs:
           git config user.email "tax0517109685@gmail.com"
           git add news/index.html
           git commit -m "세무뉴스 자동 갱신 ($(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'))"
+          git push
+
+      - name: 오래 조용했을 때만 살아있다는 도장 찍기
+        run: |
+          last=$(git log -1 --format=%ct 2>/dev/null || true)
+          if [ -z "$last" ]; then
+            echo "마지막 수정 날짜를 읽지 못했습니다. 안전하게 그냥 넘어갑니다."
+            exit 0
+          fi
+          now=$(date +%s)
+          quiet=$(( (now - last) / 86400 ))
+          echo "마지막 수정으로부터 ${quiet}일 지났습니다."
+
+          if [ "$quiet" -lt "$QUIET_DAYS" ]; then
+            echo "최근에 수정이 있었으니 도장은 찍지 않습니다."
+            exit 0
+          fi
+
+          echo "${QUIET_DAYS}일 넘게 조용해서 도장을 한 번 찍습니다."
+          {
+            echo "# 이 파일은 깃허브 자동 실행이 꺼지지 않도록 가끔 날짜만 적어두는 메모입니다."
+            echo "# 홈페이지 화면에는 아무 영향이 없습니다. 지우지 마세요."
+            TZ=Asia/Seoul date '+마지막 점검 : %Y-%m-%d %H:%M (한국 시간)'
+          } > .github/keepalive.txt
+
+          git config user.name  "psjtax"
+          git config user.email "tax0517109685@gmail.com"
+          git add .github/keepalive.txt
+          git commit -m "자동 점검 : 세무뉴스 자동 갱신이 살아있는지 확인 ($(TZ=Asia/Seoul date '+%Y-%m-%d'))"
           git push
