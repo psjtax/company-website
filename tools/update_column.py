@@ -47,3 +47,36 @@ def 고른글(원본):
             '요약': 태그걷기(it.findtext('description'))[:요약길이],
         })
     return 골라둠
+
+
+NL = chr(10)
+지울것 = re.compile(r'<(script|style)[^>]*>.*?</\1>', re.S)
+
+
+def 본문뽑기(쪽):
+    """본문 영역에서 글자와 사진 주소를 뽑습니다.
+       사진 주소는 게으른 불러오기(data-lazy-src)에 들어 있습니다."""
+    m = re.search(r'<div class="se-main-container">(.*)', 쪽 or '', re.S)
+    if not m:
+        return '', []
+    본 = m.group(1)
+
+    끝 = 본.find('se_doc_footer')
+    if 끝 != -1:
+        본 = 본[:끝]
+
+    사진 = []
+    for u in re.findall(r'data-lazy-src="([^"]+)"', 본):
+        u = html.unescape(u).split('?')[0]
+        if 'pstatic.net' in u and u not in 사진:
+            사진.append(u)
+
+    글 = 지울것.sub(' ', 본)
+    글 = re.sub(r'<br\s*/?>', NL, 글)
+    글 = re.sub(r'</(p|div)>', NL, 글)
+    글 = re.sub(r'<[^>]+>', ' ', 글)
+    글 = html.unescape(글).replace(chr(0xa0), ' ').replace(chr(0x200b), '')
+    글 = re.sub(r'[ \t]+', ' ', 글)
+    글 = re.sub(NL + r'[ \t]*', NL, 글)
+    글 = re.sub(NL + r'{2,}', NL, 글).strip()
+    return 글, 사진
