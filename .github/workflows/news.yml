@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  QUIET_DAYS: 30                # 이 기간 넘게 수정이 없을 때만 도장을 찍습니다
+  QUIET_DAYS: 0                 # (확인용으로 잠깐 0. 확인 끝나면 30으로 되돌립니다)
 
 jobs:
   update:
