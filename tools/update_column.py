@@ -142,3 +142,23 @@ def 사진저장(주소, 폴더, 받아오기=None):
             os.remove(갈곳)
         return None
     return 이름
+
+
+def 줄만들기(글, 본문, 사진이름들):
+    """목록 한 줄을 만듭니다. 날짜는 넣지 않습니다."""
+    몸 = html.escape(본문).replace(NL, '&#10;')
+    return (
+        '        <a class="news-row" href="%s" target="_blank" rel="noopener"' % html.escape(글['주소']) + NL +
+        '           data-title="%s"' % html.escape(글['제목']) + NL +
+        '           data-img="%s"' % html.escape(','.join(사진이름들)) + NL +
+        '           data-body="%s">' % 몸 + NL +
+        '          <span class="news-title">%s</span>' % html.escape(글['제목']) + NL +
+        '        </a>'
+    )
+
+
+def 갈아끼우기(s, 시작표, 끝표, 새내용, 들여):
+    a, b = s.find(시작표), s.find(끝표)
+    if a == -1 or b == -1:
+        return None
+    return s[:a + len(시작표)] + NL + 새내용 + NL + 들여 + s[b:]

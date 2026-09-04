@@ -136,3 +136,32 @@ def test_받아오다_실패하면_None(tmp_path):
 def test_사진이_아니면_None(tmp_path):
     assert uc.사진저장('https://postfiles.pstatic.net/x/w.png', str(tmp_path),
                     받아오기=lambda u: b'this is not an image') is None
+
+
+def test_줄에_필요한_것이_다_들어간다():
+    글 = {'제목': '세금 이야기 "첫 번째"', '주소': 'https://blog.naver.com/tax5868/1', '번호': '1', '요약': '요약'}
+    줄 = uc.줄만들기(글, '첫 문단' + chr(10) + '둘째 문단', ['aa.jpg', 'bb.jpg'])
+    assert 'class="news-row"' in 줄
+    assert 'href="https://blog.naver.com/tax5868/1"' in 줄
+    assert '&quot;' in 줄                      # 제목의 따옴표가 안전하게 바뀐다
+    assert 'data-img="aa.jpg,bb.jpg"' in 줄
+    assert '&#10;' in 줄                       # 문단 구분
+    assert 'news-date' not in 줄               # 날짜는 넣지 않는다
+
+
+def test_사진이_없어도_줄이_만들어진다():
+    글 = {'제목': '제목', '주소': 'https://blog.naver.com/tax5868/2', '번호': '2', '요약': '요약'}
+    줄 = uc.줄만들기(글, '본문', [])
+    assert 'data-img=""' in 줄
+
+
+def test_표시자_사이를_갈아끼운다():
+    s = 'A<!-- 시작 -->옛것<!-- 끝 -->B'
+    난것 = uc.갈아끼우기(s, '<!-- 시작 -->', '<!-- 끝 -->', '새것', '  ')
+    assert '옛것' not in 난것
+    assert '새것' in 난것
+    assert 난것.startswith('A') and 난것.endswith('B')
+
+
+def test_표시자가_없으면_None():
+    assert uc.갈아끼우기('아무것도 없음', '<!-- 시작 -->', '<!-- 끝 -->', '새것', '') is None
