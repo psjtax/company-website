@@ -90,10 +90,25 @@ def 본문뽑기(쪽):
     글 = re.sub(r'<br\s*/?>', NL, 글)
     글 = re.sub(r'</(p|div)>', NL, 글)
     글 = re.sub(r'<[^>]+>', ' ', 글)
-    글 = html.unescape(글).replace(chr(0xa0), ' ').replace(chr(0x200b), '')
+    글 = html.unescape(글).replace(chr(0xa0), ' ')
     글 = re.sub(r'[ \t]+', ' ', 글)
-    글 = re.sub(NL + r'[ \t]*', NL, 글)
-    글 = re.sub(NL + r'{2,}', NL, 글).strip()
+
+    # 네이버는 화면에 보이는 줄마다 <p> 를 따로 씌운다. 그래서 한 문단이 여러 줄로
+    # 쪼개져 나오는데, 진짜 문단이 끝나는 자리에는 폭 없는 공백(zwsp)만 있는 줄을
+    # 남겨 둔다. 그런 줄을 문단 구분으로 삼아, 그 사이 줄들은 한 문단으로 합친다.
+    문단들 = []
+    현재줄들 = []
+    for 줄 in 글.split(NL):
+        글자 = 줄.replace(chr(0x200b), '').strip()
+        if 글자:
+            현재줄들.append(글자)
+        elif 현재줄들:
+            문단들.append(' '.join(현재줄들))
+            현재줄들 = []
+    if 현재줄들:
+        문단들.append(' '.join(현재줄들))
+
+    글 = NL.join(문단들).strip()
     return 글, 사진
 
 
@@ -102,9 +117,18 @@ def 본문뽑기(쪽):
 글당사진 = 12
 
 
+def 사진주소크게(주소):
+    """네이버 사진 서버(pstatic.net) 주소이고 크기 지정이 없으면 원본 크기를
+       달라고 붙여 준다. 그래야 100px 짜리 작은 섬네일이 아니라 큰 사진을 받는다.
+       파일 이름(사진이름)은 이 함수를 거치기 전 주소로 정해지므로 그대로 안정적이다."""
+    if 'pstatic.net' in (주소 or '') and '?' not in 주소:
+        return 주소 + '?type=w966'
+    return 주소
+
+
 def 받아오기기본(주소):
     """네이버는 다른 사이트에서 부르면 막으므로 Referer 를 붙이지 않습니다."""
-    요청 = urllib.request.Request(주소, headers={'User-Agent': 'Mozilla/5.0'})
+    요청 = urllib.request.Request(사진주소크게(주소), headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(요청, timeout=20) as 응답:
         return 응답.read()
 

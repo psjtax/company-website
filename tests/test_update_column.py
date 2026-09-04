@@ -73,6 +73,15 @@ def test_문단이_빈줄없이_나뉜다():
     assert 글 == 글.strip()
 
 
+def test_문단이_자연스럽게_합쳐진다():
+    """네이버는 줄마다 <p> 를 따로 씌우므로, 폭 없는 공백 줄로 표시된 진짜 문단
+       구분만 살리고 나머지 줄은 한 문장으로 합쳐야 한다."""
+    글, 사진 = uc.본문뽑기(자료글('blog_post.html'))
+    문단들 = 글.split(chr(10))
+    assert len(문단들) < 30                     # 94개 조각이 아니라 자연스러운 문단 수
+    assert '안녕하세요. 세금 고민을 시원하게 해결하는 박성진 세무사입니다.' in 문단들
+
+
 def test_본문에_페이지_찌꺼기가_안_섞인다():
     """본문 영역만 잘라야 한다. 너무 길면 댓글·이웃추가 같은 것이 섞인 것이다."""
     글, 사진 = uc.본문뽑기(자료글('blog_post.html'))
@@ -90,6 +99,21 @@ def 가짜사진(가로=1600, 세로=900):
     buf = _io.BytesIO()
     Image.new('RGB', (가로, 세로), (200, 210, 235)).save(buf, 'PNG')
     return buf.getvalue()
+
+
+def test_사진주소에_원본크기를_붙인다():
+    assert uc.사진주소크게('https://postfiles.pstatic.net/aaa/bbb.jpg') == \
+        'https://postfiles.pstatic.net/aaa/bbb.jpg?type=w966'
+
+
+def test_이미_크기가_있으면_그대로_둔다():
+    주소 = 'https://postfiles.pstatic.net/aaa/bbb.jpg?type=w80'
+    assert uc.사진주소크게(주소) == 주소
+
+
+def test_네이버_사진이_아니면_그대로_둔다():
+    주소 = 'https://example.com/aaa/bbb.jpg'
+    assert uc.사진주소크게(주소) == 주소
 
 
 def test_사진이름은_주소마다_고정된다():
