@@ -1345,3 +1345,55 @@ footer b{ color:var(--t3); font-weight:700; }
   /* 상담하기 : 영업시간이 어중간하게 끊기지 않게 */
   .call-box .hours{ font-size:13.5px; }
 }
+
+/* ==========================================================
+   [23] 세무뉴스 : 기사 읽는 창
+   ========================================================== */
+.nv-back{
+  position:fixed; inset:0; z-index:200; display:grid; place-items:center;
+  background:rgba(30,38,60,.55); padding:24px;
+  animation:nvFade .2s ease both;
+}
+.nv-back[hidden]{ display:none; }
+@keyframes nvFade{ from{ opacity:0 } to{ opacity:1 } }
+
+.nv-box{
+  position:relative; width:min(640px,100%); max-height:82vh; overflow-y:auto;
+  background:#fff; border-radius:22px; padding:38px 38px 30px;
+  box-shadow:0 24px 60px rgba(30,38,60,.3);
+  animation:nvUp .28s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes nvUp{ from{ opacity:0; transform:translateY(18px) } to{ opacity:1; transform:none } }
+@media (max-width:560px){ .nv-box{ padding:30px 22px 24px; border-radius:18px; } }
+
+.nv-x{
+  position:absolute; right:16px; top:16px; width:38px; height:38px;
+  border:0; background:none; border-radius:50%; cursor:pointer;
+  display:grid; place-items:center;
+}
+.nv-x:hover{ background:var(--pale); }
+.nv-x svg{ width:20px; height:20px; fill:none; stroke:var(--t3); stroke-width:2; stroke-linecap:round; }
+
+.nv-date{ font-size:13.5px; color:var(--t4); letter-spacing:.03em; }
+.nv-title{
+  margin-top:10px; font-size:22px; font-weight:700; color:var(--t1);
+  line-height:1.45; word-break:keep-all; padding-right:34px;
+}
+.nv-body{ margin-top:20px; }
+.nv-body p{
+  font-size:15.5px; color:var(--t2); line-height:1.9; word-break:keep-all;
+  margin-bottom:15px;
+}
+.nv-body p:last-child{ margin-bottom:0; }
+.nv-body p:first-child{ font-weight:600; color:var(--t1); }   /* 첫 문단은 조금 진하게 */
+.nv-src{
+  margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+}
+.nv-src span{ font-size:13px; color:var(--t4); }
+.nv-src a{
+  font-size:14px; font-weight:600; color:var(--navy); text-decoration:none;
+  border:1px solid var(--pale2); border-radius:99px; padding:9px 18px; white-space:nowrap;
+}
+.nv-src a:hover{ background:var(--pale); }
+.nv-src a::after{ content:' →'; }
