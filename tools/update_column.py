@@ -11,6 +11,8 @@ import html
 import io
 import os
 import re
+import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -162,3 +164,88 @@ def 갈아끼우기(s, 시작표, 끝표, 새내용, 들여):
     if a == -1 or b == -1:
         return None
     return s[:a + len(시작표)] + NL + 새내용 + NL + 들여 + s[b:]
+
+
+대상 = 'column/index.html'
+사진폴더 = 'column/img'
+쉬는시간 = 0.25
+시작표 = '<!-- 글 여기부터 -->'
+끝표 = '<!-- 글 여기까지 -->'
+본문주소 = ('https://blog.naver.com/PostView.naver?blogId=tax5868&logNo=%s'
+        '&redirect=Dlog&widgetTypeCall=true&noTrackingCode=true&directAccess=false')
+
+뿌리 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def 받아오기RSS():
+    요청 = urllib.request.Request(RSS, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(요청, timeout=25) as 응답:
+        return 응답.read()
+
+
+def 받아오기글(번호):
+    요청 = urllib.request.Request(본문주소 % 번호, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(요청, timeout=25) as 응답:
+        return 응답.read().decode('utf-8', 'replace')
+
+
+def main():
+    try:
+        원본 = 받아오기RSS()
+    except Exception as e:
+        print('블로그에서 받아오지 못했습니다 :', e)
+        return 1
+
+    try:
+        글들 = 고른글(원본)
+    except Exception as e:
+        print('블로그 목록을 읽지 못했습니다 :', e)
+        return 1
+
+    if not 글들:
+        print("'%s' 분류 글이 없습니다. 그대로 둡니다." % 분류)
+        return 1
+
+    사진갈곳 = os.path.join(뿌리, 사진폴더)
+    줄들 = []
+    for n, 글 in enumerate(글들):
+        try:
+            쪽 = 받아오기글(글['번호'])
+            본문, 사진주소 = 본문뽑기(쪽)
+        except Exception:
+            본문, 사진주소 = '', []
+
+        if len(본문) < 200:
+            본문 = 글['요약']
+            사진주소 = []
+
+        이름들 = []
+        for u in 사진주소[:글당사진]:
+            이름 = 사진저장(u, 사진갈곳)
+            if 이름:
+                이름들.append(이름)
+
+        줄들.append(줄만들기(글, 본문, 이름들))
+        if 쉬는시간:
+            time.sleep(쉬는시간)
+        if n % 10 == 9:
+            print('  %d건 가져옴…' % (n + 1))
+
+    경로 = os.path.join(뿌리, 대상)
+    s = 원래 = io.open(경로, encoding='utf-8').read()
+    s2 = 갈아끼우기(s, 시작표, 끝표, NL.join(줄들), '        ')
+    if s2 is None:
+        print('글 자리 표시를 찾지 못했습니다.')
+        return 1
+
+    if s2 == 원래:
+        print('바뀐 것이 없습니다.')
+        return 0
+
+    io.open(경로, 'w', encoding='utf-8').write(s2)
+    print('세무소식 %d건으로 갱신했습니다.' % len(줄들))
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

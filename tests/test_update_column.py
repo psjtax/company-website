@@ -166,3 +166,39 @@ def test_표시자_사이를_갈아끼운다():
 
 def test_표시자가_없으면_None():
     assert uc.갈아끼우기('아무것도 없음', '<!-- 시작 -->', '<!-- 끝 -->', '새것', '') is None
+
+
+def test_받아오기_실패하면_파일을_안_건드린다(tmp_path, monkeypatch):
+    대상 = tmp_path / 'index.html'
+    원래 = 'A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B'
+    대상.write_text(원래, encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+
+    def 터짐():
+        raise OSError('인터넷 안 됨')
+
+    monkeypatch.setattr(uc, '받아오기RSS', 터짐)
+
+    assert uc.main() == 1
+    assert 대상.read_text(encoding='utf-8') == 원래
+
+
+def test_전체가_돌면_목록이_채워진다(tmp_path, monkeypatch):
+    대상 = tmp_path / 'index.html'
+    대상.write_text('A<!-- 글 여기부터 -->옛것<!-- 글 여기까지 -->B', encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: 자료('blog_rss.xml'))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 자료글('blog_post.html'))
+    monkeypatch.setattr(uc, '사진저장', lambda u, f, 받아오기=None: 'zz.jpg')
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert '옛것' not in 난것
+    assert 난것.count('class="news-row"') == 34
+    assert 'data-img="zz.jpg' in 난것
