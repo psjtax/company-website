@@ -1335,6 +1335,11 @@ footer b{ color:var(--t3); font-weight:700; }
   .news-search input{ width:100%; }
 }
 
+/* 세무소식 : 날짜가 없어 제목 한 칸으로 보여줍니다 (세무뉴스는 위 두 칸 그대로) */
+#colHead{ grid-template-columns:1fr; }
+#colHead span{ justify-self:start; }
+#colList .news-row{ grid-template-columns:1fr; }
+
 /* 현/전 구분 없이 나열하는 약력 */
 .pro-career li.no-badge{ padding-left:16px; }
 .pro-career li.no-badge::before{
@@ -1442,6 +1447,10 @@ footer b{ color:var(--t3); font-weight:700; }
 }
 .nv-body p:last-child{ margin-bottom:0; }
 .nv-body p:first-child{ font-weight:600; color:var(--t1); }   /* 첫 문단은 조금 진하게 */
+.nv-img{
+  display:block; width:100%; height:auto; margin:18px 0;
+  border-radius:12px; background:var(--pale);
+}
 .nv-src{
   margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
   display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
