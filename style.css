@@ -1335,6 +1335,18 @@ footer b{ color:var(--t3); font-weight:700; }
   .news-search input{ width:100%; }
 }
 
+/* 세무소식 페이지만 위아래 여백을 줄입니다 (인스타 여섯 칸이 한 화면에 들어오게).
+   다른 페이지의 .sub-hero / .page 는 건드리지 않습니다 */
+.sub-hero-tight{ padding-top:32px; padding-bottom:22px; }
+.page-tight{ padding-top:44px; }
+.page-tight .ig-box{ margin-bottom:34px; }
+.page-tight .ig-grid{ gap:14px; }
+.page-tight .ig-grid .nc{ padding:11px 11px 13px; }
+@media (max-width:900px){
+  .sub-hero-tight{ padding-top:28px !important; padding-bottom:16px !important; }
+  .page-tight{ padding-top:30px; }
+}
+
 /* 세무소식 목록 : 왼쪽에 사진, 오른쪽에 제목과 앞부분
    (세무뉴스도 같은 이름을 쓰므로 반드시 #colList 안쪽에만 걸어 둡니다) */
 #colHead{ display:none; }
