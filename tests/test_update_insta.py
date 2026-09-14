@@ -7,6 +7,18 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools'))
 import update_insta as ui
 
+
+def 칸수(s):
+    """카드 칸 수를 셉니다. class="nc" 와 class="nc nc-soon" 을 둘 다 셉니다."""
+    import re as _re
+    return len(_re.findall(r'class="nc[ "]', s))
+
+
+def 준비중수(s):
+    import re as _re
+    return len(_re.findall(r'class="nc nc-soon"', s))
+
+
 여기 = os.path.dirname(os.path.abspath(__file__))
 NL = chr(10)
 
@@ -129,7 +141,7 @@ def test_카드_요약은_짧게_자른다():
 
 def test_준비중카드는_눌리지_않는다():
     카드 = ui.준비중카드()
-    assert 'nc-soon' in 카드
+    assert 'class="nc nc-soon"' in 카드
     assert '<a ' not in 카드
     assert 'href' not in 카드
     assert '준비 중입니다' in 카드
@@ -137,15 +149,15 @@ def test_준비중카드는_눌리지_않는다():
 
 def test_여섯칸을_준비중으로_채운다():
     난것 = ui.여섯칸([ui.카드만들기(보기글(), [])])
-    assert 난것.count('class="nc"') == 6
-    assert 난것.count('nc-soon') == 5
+    assert 칸수(난것) == 6
+    assert 준비중수(난것) == 5
 
 
 def test_여섯칸은_여섯개를_넘지_않는다():
     많이 = [ui.카드만들기(보기글(), []) for _ in range(9)]
     난것 = ui.여섯칸(많이)
-    assert 난것.count('class="nc"') == 6
-    assert 'nc-soon' not in 난것
+    assert 칸수(난것) == 6
+    assert 준비중수(난것) == 0
 
 
 def test_표시자_사이를_갈아끼운다():

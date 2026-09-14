@@ -107,7 +107,7 @@ def 카드만들기(글, 사진이름들):
 def 준비중카드():
     """아직 게시물이 없는 칸입니다. 눌러도 아무 일이 없도록 <a> 가 아닌 <div> 로 만듭니다."""
     return (
-        '          <div class="nc">' + NL +
+        '          <div class="nc nc-soon">' + NL +
         '            <span class="nc-soon-mark">Instagram</span>' + NL +
         '            <strong class="nc-title">준비 중입니다</strong>' + NL +
         '            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>' + NL +
