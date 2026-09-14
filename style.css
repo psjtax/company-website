@@ -1467,21 +1467,31 @@ footer b{ color:var(--t3); font-weight:700; }
   word-break:keep-all;
 }
 
-/* --- 세무소식 페이지의 인스타 칸 --- */
+/* --- 세무소식 페이지의 인스타 칸 : 가로 3칸 x 세로 2줄 --- */
 .ig-box{ margin-bottom:54px; }
-.ig-title{
-  font-size:clamp(17px,2.2vw,22px); font-weight:700; color:var(--navy);
-  margin-bottom:18px; letter-spacing:-.01em;
+.ig-grid{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;
 }
+/* 사진은 인스타 원래 비율(정사각형) 그대로 */
+.nc-thumb{
+  display:block; width:100%; aspect-ratio:1 / 1; object-fit:cover;
+  border-radius:9px; margin-bottom:12px; background:var(--pale);
+}
+.ig-grid .nc{ padding:14px 14px 16px; }
+.ig-grid .nc-date{ font-size:12px; }
+.ig-grid .nc-title{ margin-top:6px; font-size:14.5px; line-height:1.45; }
+
 .nc-soon{
-  display:flex; flex-direction:column; justify-content:center;
   background:var(--pale); border-top-color:var(--pale2);
-  color:var(--t4); cursor:default;
+  color:var(--t4); cursor:default; box-shadow:none;
 }
-.nc-soon .nc-title{ color:var(--t3); }
-.nc-soon .nc-sum{ color:var(--t4); }
-.nc-soon-mark{
-  font-size:11px; font-weight:700; letter-spacing:.12em;
-  color:var(--navy); opacity:.45; margin-bottom:8px;
+.nc-soon:hover{ transform:none; box-shadow:none; }
+.nc-soon .nc-title{ color:var(--t4); font-weight:600; }
+.nc-thumb-soon{ background:var(--pale2); opacity:.45; }
+
+@media (max-width:900px){
+  .ig-box{ margin-bottom:40px; }
+  .ig-grid{ gap:12px; }
+  .ig-grid .nc{ padding:10px 10px 12px; }
+  .ig-grid .nc-title{ font-size:13px; }
 }
-@media (max-width:900px){ .ig-box{ margin-bottom:40px; } }

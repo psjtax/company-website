@@ -87,13 +87,8 @@
          아래 '인스타 여기부터 ~ 인스타 여기까지' 사이는 자동으로 바뀌니
          손으로 고치지 말아 주세요. -->
     <div class="ig-box rv">
-      <h2 class="ig-title">인스타그램</h2>
-      <div class="nc-wrap">
-        <button class="nc-arrow prev" id="ncPrev" type="button" aria-label="이전 게시물">
-          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
-        </button>
-        <div class="nc-track" id="ncTrack">
-          <!-- 인스타 여기부터 -->
+      <div class="ig-grid" id="ncTrack">
+        <!-- 인스타 여기부터 -->
           <a class="nc" href="https://www.instagram.com/p/Dc2cBIOkuHS/" target="_blank" rel="noopener"
              data-title="2026년 8월에 프리랜서나 일용직에게 대가를 지급하셨나요?"
              data-date="2026. 09. 04"
@@ -101,40 +96,31 @@
              data-imgdir="insta"
              data-link-label="인스타그램에서 보기"
              data-body="2026년 8월에 프리랜서나 일용직에게 대가를 지급하셨나요?&#10;그렇다면 9월 30일까지 제출할 서류가 있습니다.&#10;&#10;📌 제출 대상 3종&#10;① 간이지급명세서 (거주자의 사업소득)&#10;- 프리랜서 등 인적용역 사업소득 지급분&#10;② 간이지급명세서 (거주자의 기타소득)&#10;- 인적용역 기타소득 지급분&#10;③ 일용근로소득 지급명세서&#10;- 일용근로자 급여 지급분&#10;&#10;📌 제출기한&#10;지급일이 속하는 달의 다음 달 말일까지&#10;→ 2026년 8월 지급분은 2026년 9월 30일 (수)&#10;&#10;📌 제출 방법&#10;홈택스에서 전자제출 (신청·제출 메뉴)&#10;&#10;📌 기한 내 제출하지 않으면&#10;미제출 지급금액의 0.25%&#10;기한 후 1개월 이내 제출 0.125%&#10;(불분명 금액이 총 지급금액의 5% 이하이면 적용하지 않습니다)&#10;&#10;같은 달 9월 10일에는 8월분 원천세 신고·납부 기한도 있습니다.&#10;&#10;지급 내역 확인이 필요하시면 문의해 주세요.&#10;&#10;본 콘텐츠는 일반적인 안내이며, 개별 사안은 상담이 필요합니다.&#10;출처: 국세청 (2026. 8. 25. 확인)">
+            <img class="nc-thumb" src="insta/8bd1389920682c15.jpg" alt="" loading="lazy">
             <span class="nc-date">2026. 09. 04</span>
             <strong class="nc-title">2026년 8월에 프리랜서나 일용직에게 대가를 지급하셨나요?</strong>
-            <span class="nc-sum">2026년 8월에 프리랜서나 일용직에게 대가를 지급하셨나요? 그렇다면 9월 30일까지 제출할 서류가 있습니다.  📌 제출 대상 3종 ① 간이지급명세서 (거주자의 사업소득) - 프리랜서 등 인적용역…</span>
           </a>
           <div class="nc nc-soon">
-            <span class="nc-soon-mark">Instagram</span>
+            <div class="nc-thumb nc-thumb-soon"></div>
             <strong class="nc-title">준비 중입니다</strong>
-            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>
           </div>
           <div class="nc nc-soon">
-            <span class="nc-soon-mark">Instagram</span>
+            <div class="nc-thumb nc-thumb-soon"></div>
             <strong class="nc-title">준비 중입니다</strong>
-            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>
           </div>
           <div class="nc nc-soon">
-            <span class="nc-soon-mark">Instagram</span>
+            <div class="nc-thumb nc-thumb-soon"></div>
             <strong class="nc-title">준비 중입니다</strong>
-            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>
           </div>
           <div class="nc nc-soon">
-            <span class="nc-soon-mark">Instagram</span>
+            <div class="nc-thumb nc-thumb-soon"></div>
             <strong class="nc-title">준비 중입니다</strong>
-            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>
           </div>
           <div class="nc nc-soon">
-            <span class="nc-soon-mark">Instagram</span>
+            <div class="nc-thumb nc-thumb-soon"></div>
             <strong class="nc-title">준비 중입니다</strong>
-            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>
           </div>
         <!-- 인스타 여기까지 -->
-        </div>
-        <button class="nc-arrow next" id="ncNext" type="button" aria-label="다음 게시물">
-          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-        </button>
       </div>
     </div>
 
@@ -450,23 +436,32 @@
     날짜칸.textContent = a.dataset.date || '';
     제목칸.textContent = a.dataset.title || '';
     글칸.innerHTML = '';
-    (a.dataset.body || '').split(String.fromCharCode(10)).forEach(function(문단){
-      문단 = 문단.trim();
-      if(!문단) return;
-      var p = document.createElement('p');
-      p.textContent = 문단;
-      글칸.appendChild(p);
-    });
-    (a.dataset.img || '').split(',').forEach(function(이름){
-      이름 = 이름.trim();
-      if(!이름) return;
-      var 그림 = document.createElement('img');
-      그림.className = 'nv-img';
-      그림.loading = 'lazy';
-      그림.alt = '';
-      그림.src = (a.dataset.imgdir || 'img') + '/' + 이름;
-      글칸.appendChild(그림);
-    });
+
+    function 글넣기(){
+      (a.dataset.body || '').split(String.fromCharCode(10)).forEach(function(문단){
+        문단 = 문단.trim();
+        if(!문단) return;
+        var p = document.createElement('p');
+        p.textContent = 문단;
+        글칸.appendChild(p);
+      });
+    }
+    function 사진넣기(){
+      (a.dataset.img || '').split(',').forEach(function(이름){
+        이름 = 이름.trim();
+        if(!이름) return;
+        var 그림 = document.createElement('img');
+        그림.className = 'nv-img';
+        그림.loading = 'lazy';
+        그림.alt = '';
+        그림.src = (a.dataset.imgdir || 'img') + '/' + 이름;
+        글칸.appendChild(그림);
+      });
+    }
+
+    /* 인스타는 사진이 먼저, 블로그는 글이 먼저입니다 */
+    if(a.dataset.imgdir === 'insta'){ 사진넣기(); 글넣기(); }
+    else { 글넣기(); 사진넣기(); }
     두루마리.scrollTop = 0;
     원문.href = a.getAttribute('href');
     원문.textContent = a.dataset.linkLabel || '블로그에서 보기';
@@ -506,58 +501,6 @@
 })();
 </script>
 
-<script>
-/* ---------------------------------------------------------
-   인스타 카드 : 좌우 화살표로 넘겨 봅니다
-   --------------------------------------------------------- */
-(function(){
-  var 줄 = document.getElementById('ncTrack');
-  var 왼 = document.getElementById('ncPrev');
-  var 오 = document.getElementById('ncNext');
-  if(!줄 || !왼 || !오) return;
-
-  function 한칸(){
-    var c = 줄.querySelector('.nc');
-    if(!c) return 300;
-    var 사이 = parseFloat(getComputedStyle(줄).columnGap || getComputedStyle(줄).gap || 0) || 16;
-    return c.getBoundingClientRect().width + 사이;
-  }
-  function 새로고침(){
-    var 끝 = 줄.scrollWidth - 줄.clientWidth - 2;
-    왼.disabled = 줄.scrollLeft <= 2;
-    오.disabled = 줄.scrollLeft >= 끝;
-    var 넘칠것 = 줄.scrollWidth > 줄.clientWidth + 4;
-    왼.style.display = 오.style.display = 넘칠것 ? '' : 'none';
-  }
-  /* 브라우저마다 '부드럽게' 지원이 달라서 직접 움직여 줍니다 */
-  var 달리는중 = null;
-  function 부드럽게(목표){
-    var 끝 = 줄.scrollWidth - 줄.clientWidth;
-    목표 = Math.max(0, Math.min(끝, 목표));
-    var 움직임끄기 = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(움직임끄기 || document.hidden || !window.requestAnimationFrame){
-      줄.scrollLeft = 목표; 새로고침(); return;   /* 화면이 안 보이면 바로 옮깁니다 */
-    }
-    var 시작 = 줄.scrollLeft, 거리 = 목표 - 시작, 첫시각 = null;
-    if(달리는중) cancelAnimationFrame(달리는중);
-    function 걸음(t){
-      if(첫시각 === null) 첫시각 = t;
-      var p = Math.min(1, (t - 첫시각) / 380);
-      var e = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
-      줄.scrollLeft = 시작 + 거리 * e;
-      if(p < 1) 달리는중 = requestAnimationFrame(걸음);
-      else { 달리는중 = null; 새로고침(); }
-    }
-    달리는중 = requestAnimationFrame(걸음);
-  }
-
-  왼.addEventListener('click', function(){ 부드럽게(줄.scrollLeft - 한칸()); });
-  오.addEventListener('click', function(){ 부드럽게(줄.scrollLeft + 한칸()); });
-  줄.addEventListener('scroll', 새로고침, { passive:true });
-  window.addEventListener('resize', 새로고침);
-  새로고침();
-})();
-</script>
 
 </body>
 </html>

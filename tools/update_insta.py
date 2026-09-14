@@ -96,7 +96,6 @@ def 게시물정리(자료):
 
 
 카드수 = 6
-요약길이 = 110
 
 
 def 탈없는말(e):
@@ -124,9 +123,6 @@ def 쓰기(경로, 내용):
 
 def 카드만들기(글, 사진이름들):
     """카드 하나를 만듭니다. 세무뉴스 카드와 같은 모양입니다."""
-    요약 = 글['설명'].replace(NL, ' ').strip()
-    if len(요약) > 요약길이:
-        요약 = 요약[:요약길이].rstrip() + '…'
     몸 = html.escape(글['설명']).replace(NL, '&#10;')
     return (
         '          <a class="nc" href="%s" target="_blank" rel="noopener"' % html.escape(글['주소']) + NL +
@@ -136,9 +132,10 @@ def 카드만들기(글, 사진이름들):
         '             data-imgdir="insta"' + NL +
         '             data-link-label="인스타그램에서 보기"' + NL +
         '             data-body="%s">' % 몸 + NL +
+        ('            <img class="nc-thumb" src="insta/%s" alt="" loading="lazy">' % html.escape(사진이름들[0]) + NL
+         if 사진이름들 else '') +
         '            <span class="nc-date">%s</span>' % html.escape(글['날짜']) + NL +
         '            <strong class="nc-title">%s</strong>' % html.escape(글['제목']) + NL +
-        '            <span class="nc-sum">%s</span>' % html.escape(요약) + NL +
         '          </a>'
     )
 
@@ -147,9 +144,8 @@ def 준비중카드():
     """아직 게시물이 없는 칸입니다. 눌러도 아무 일이 없도록 <a> 가 아닌 <div> 로 만듭니다."""
     return (
         '          <div class="nc nc-soon">' + NL +
-        '            <span class="nc-soon-mark">Instagram</span>' + NL +
+        '            <div class="nc-thumb nc-thumb-soon"></div>' + NL +
         '            <strong class="nc-title">준비 중입니다</strong>' + NL +
-        '            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>' + NL +
         '          </div>'
     )
 

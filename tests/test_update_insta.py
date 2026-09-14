@@ -215,12 +215,13 @@ def test_카드에_필요한_것이_다_들어간다():
     assert 'nc-date' in 카드 and '2026. 09. 04' in 카드
 
 
-def test_카드_요약은_짧게_자른다():
-    긴글 = '가' * 300
-    카드 = ui.카드만들기(보기글(긴글), [])
-    m = __import__('re').search(r'<span class="nc-sum">([^<]*)</span>', 카드)
-    assert m is not None
-    assert len(m.group(1)) <= 120
+def test_카드에는_요약글이_없다():
+    """격자로 바뀌면서 카드에는 사진과 제목만 둡니다. 본문은 눌러서 봅니다."""
+    카드 = ui.카드만들기(보기글('가' * 300), ['a.jpg'])
+    assert 'nc-sum' not in 카드
+    assert 'nc-thumb' in 카드 and 'nc-title' in 카드
+    assert 'data-body' in 카드                    # 전문은 여전히 담겨 있습니다
+
 
 
 def test_준비중카드는_눌리지_않는다():
@@ -380,3 +381,24 @@ def test_받아오기가_실패해도_토큰이_화면에_안_나온다(tmp_path
     assert ui.main() == 1
     assert 대상.read_bytes() == 원래
     assert '진짜비밀토큰98765' not in capsys.readouterr().out
+
+def test_카드에_첫장_사진이_들어간다():
+    카드 = ui.카드만들기(보기글(), ['첫장.jpg', '둘째장.jpg'])
+    assert 'class="nc-thumb"' in 카드
+    assert 'src="insta/첫장.jpg"' in 카드
+    import re as _re
+    보이는사진 = _re.findall(r'<img class="nc-thumb" src="([^"]*)"', 카드)
+    assert 보이는사진 == ['insta/첫장.jpg']              # 카드에 보이는 사진은 첫 장 하나뿐
+    assert 'loading="lazy"' in 카드
+
+
+def test_사진이_없으면_카드에_사진칸이_없다():
+    카드 = ui.카드만들기(보기글(), [])
+    assert 'nc-thumb' not in 카드
+
+
+def test_준비중카드에도_같은_크기의_빈자리가_있다():
+    카드 = ui.준비중카드()
+    assert 'nc-thumb nc-thumb-soon' in 카드
+    assert '<img' not in 카드            # 빈 자리일 뿐 사진은 아닙니다
+    assert 'Instagram' not in 카드       # 인스타그램 글자는 넣지 않습니다
