@@ -6,6 +6,7 @@
   GitHub Actions 가 하루 두 번 자동으로 돌립니다.
   손으로 돌려보려면 :  IG_ACCESS_TOKEN 을 환경변수로 주고  python tools/update_insta.py
 """
+import html
 import re
 
 NL = chr(10)
@@ -76,3 +77,54 @@ def 게시물정리(자료):
             '사진': 사진,
         })
     return 정리됨
+
+
+카드수 = 6
+요약길이 = 110
+
+
+def 카드만들기(글, 사진이름들):
+    """카드 하나를 만듭니다. 세무뉴스 카드와 같은 모양입니다."""
+    요약 = 글['설명'].replace(NL, ' ').strip()
+    if len(요약) > 요약길이:
+        요약 = 요약[:요약길이].rstrip() + '…'
+    몸 = html.escape(글['설명']).replace(NL, '&#10;')
+    return (
+        '          <a class="nc" href="%s" target="_blank" rel="noopener"' % html.escape(글['주소']) + NL +
+        '             data-title="%s"' % html.escape(글['제목']) + NL +
+        '             data-date="%s"' % html.escape(글['날짜']) + NL +
+        '             data-img="%s"' % html.escape(','.join(사진이름들)) + NL +
+        '             data-imgdir="insta"' + NL +
+        '             data-link-label="인스타그램에서 보기"' + NL +
+        '             data-body="%s">' % 몸 + NL +
+        '            <span class="nc-date">%s</span>' % html.escape(글['날짜']) + NL +
+        '            <strong class="nc-title">%s</strong>' % html.escape(글['제목']) + NL +
+        '            <span class="nc-sum">%s</span>' % html.escape(요약) + NL +
+        '          </a>'
+    )
+
+
+def 준비중카드():
+    """아직 게시물이 없는 칸입니다. 눌러도 아무 일이 없도록 <a> 가 아닌 <div> 로 만듭니다."""
+    return (
+        '          <div class="nc">' + NL +
+        '            <span class="nc-soon-mark">Instagram</span>' + NL +
+        '            <strong class="nc-title">준비 중입니다</strong>' + NL +
+        '            <span class="nc-sum">새 소식을 곧 전해 드리겠습니다.</span>' + NL +
+        '          </div>'
+    )
+
+
+def 여섯칸(카드들):
+    """카드가 6칸이 되도록 준비중 카드로 채웁니다."""
+    골라둠 = list(카드들)[:카드수]
+    while len(골라둠) < 카드수:
+        골라둠.append(준비중카드())
+    return NL.join(골라둠)
+
+
+def 갈아끼우기(s, 시작표, 끝표, 새내용, 들여):
+    a, b = s.find(시작표), s.find(끝표)
+    if a == -1 or b == -1:
+        return None
+    return s[:a + len(시작표)] + NL + 새내용 + NL + 들여 + s[b:]

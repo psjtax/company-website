@@ -99,3 +99,69 @@ def test_띄어쓴_전화번호도_지운다():
     assert ui.설명다듬기('문의 051 710 9685') == ''
     assert ui.설명다듬기('문의 051-710-9685') == ''
     assert ui.설명다듬기('전화: 051.710.9685 입니다') == ''
+
+
+def 보기글(설명='첫 문단' + NL + '둘째 문단'):
+    return {'아이디': '1', '제목': '제목 "따옴표"', '설명': 설명,
+            '날짜': '2026. 09. 04',
+            '주소': 'https://www.instagram.com/p/AAA/', '사진': []}
+
+
+def test_카드에_필요한_것이_다_들어간다():
+    카드 = ui.카드만들기(보기글(), ['a.jpg', 'b.jpg'])
+    assert 'class="nc"' in 카드
+    assert 'href="https://www.instagram.com/p/AAA/"' in 카드
+    assert '&quot;' in 카드                      # 제목의 따옴표가 안전하게 바뀐다
+    assert 'data-img="a.jpg,b.jpg"' in 카드
+    assert 'data-imgdir="insta"' in 카드
+    assert 'data-link-label="인스타그램에서 보기"' in 카드
+    assert '&#10;' in 카드                       # 문단 구분
+    assert 'nc-date' in 카드 and '2026. 09. 04' in 카드
+
+
+def test_카드_요약은_짧게_자른다():
+    긴글 = '가' * 300
+    카드 = ui.카드만들기(보기글(긴글), [])
+    m = __import__('re').search(r'<span class="nc-sum">([^<]*)</span>', 카드)
+    assert m is not None
+    assert len(m.group(1)) <= 120
+
+
+def test_준비중카드는_눌리지_않는다():
+    카드 = ui.준비중카드()
+    assert 'nc-soon' in 카드
+    assert '<a ' not in 카드
+    assert 'href' not in 카드
+    assert '준비 중입니다' in 카드
+
+
+def test_여섯칸을_준비중으로_채운다():
+    난것 = ui.여섯칸([ui.카드만들기(보기글(), [])])
+    assert 난것.count('class="nc"') == 6
+    assert 난것.count('nc-soon') == 5
+
+
+def test_여섯칸은_여섯개를_넘지_않는다():
+    많이 = [ui.카드만들기(보기글(), []) for _ in range(9)]
+    난것 = ui.여섯칸(많이)
+    assert 난것.count('class="nc"') == 6
+    assert 'nc-soon' not in 난것
+
+
+def test_표시자_사이를_갈아끼운다():
+    s = 'A<!-- 시작 -->옛것<!-- 끝 -->B'
+    난것 = ui.갈아끼우기(s, '<!-- 시작 -->', '<!-- 끝 -->', '새것', '  ')
+    assert '옛것' not in 난것 and '새것' in 난것
+    assert 난것.startswith('A') and 난것.endswith('B')
+
+
+def test_표시자가_없으면_None():
+    assert ui.갈아끼우기('아무것도 없음', '<!-- 시작 -->', '<!-- 끝 -->', '새것', '') is None
+
+
+def test_표시자를_흉내낸_제목도_안전하다():
+    글 = 보기글()
+    글['제목'] = '<!-- 인스타 여기까지 -->'
+    카드 = ui.카드만들기(글, [])
+    assert '<!-- 인스타 여기까지 -->' not in 카드     # 이스케이프되어 표시자 노릇을 못 한다
+    assert '&lt;!--' in 카드
