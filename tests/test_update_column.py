@@ -226,7 +226,7 @@ def test_전체가_돌면_목록이_채워진다(tmp_path, monkeypatch):
     assert uc.main() == 0
     난것 = 대상.read_text(encoding='utf-8')
     assert '옛것' not in 난것
-    assert 난것.count('class="news-row"') == 34
+    assert 난것.count('class="news-row"') == uc.목록수   # 최근 것부터 정해진 수만큼만
     assert 'data-img="zz.jpg' in 난것
 
 
@@ -409,11 +409,11 @@ def test_기존보다_크게_줄면_중단한다(tmp_path, monkeypatch, capsys):
 
 
 def test_기존보다_조금_줄면_허용된다(tmp_path, monkeypatch):
-    """Finding 2 (줄어듦 가드) : 34건에서 33건처럼 한 건 줄어드는 것은
-       글쓴이가 직접 지운 정상 상황일 수 있으므로 막지 않는다."""
+    """Finding 2 (줄어듦 가드) : 한 건 줄어드는 것은 글쓴이가 직접 지운
+       정상 상황일 수 있으므로 막지 않는다."""
     대상 = tmp_path / 'index.html'
     기존행들 = uc.NL.join(
-        '<a class="news-row" href="#">기존글%d</a>' % i for i in range(34))
+        '<a class="news-row" href="#">기존글%d</a>' % i for i in range(uc.목록수))
     원래 = uc.시작표 + uc.NL + 기존행들 + uc.NL + uc.끝표
     대상.write_text(원래, encoding='utf-8')
 
@@ -422,13 +422,31 @@ def test_기존보다_조금_줄면_허용된다(tmp_path, monkeypatch):
     monkeypatch.setattr(uc, '사진폴더', 'img')
     monkeypatch.setattr(uc, '쉬는시간', 0)
     monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
-    monkeypatch.setattr(uc, '고른글', lambda 원본: _가짜글목록(33))
+    monkeypatch.setattr(uc, '고른글', lambda 원본: _가짜글목록(uc.목록수 - 1))
     monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성본문)
 
     assert uc.main() == 0
     난것 = 대상.read_text(encoding='utf-8')
-    assert 난것.count('class="news-row"') == 33
+    assert 난것.count('class="news-row"') == uc.목록수 - 1
     assert '기존글0' not in 난것
+
+
+def test_글이_많아도_목록수까지만_쓴다(tmp_path, monkeypatch):
+    """블로그에 34건이 있어도 화면에는 최근 목록수(10)건만 올린다."""
+    대상 = tmp_path / 'index.html'
+    대상.write_text(uc.시작표 + uc.NL + uc.끝표, encoding='utf-8')
+
+    monkeypatch.setattr(uc, '뿌리', str(tmp_path))
+    monkeypatch.setattr(uc, '대상', 'index.html')
+    monkeypatch.setattr(uc, '사진폴더', 'img')
+    monkeypatch.setattr(uc, '쉬는시간', 0)
+    monkeypatch.setattr(uc, '받아오기RSS', lambda: b'')
+    monkeypatch.setattr(uc, '고른글', lambda 원본: _가짜글목록(34))
+    monkeypatch.setattr(uc, '받아오기글', lambda 번호: 합성본문)
+
+    assert uc.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 난것.count('class="news-row"') == uc.목록수
 
 
 def test_일부_실패해도_요약으로_채워진다(tmp_path, monkeypatch):

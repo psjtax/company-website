@@ -171,15 +171,33 @@ def 사진저장(주소, 폴더, 받아오기=None):
     return 이름
 
 
+목록수 = 10        # 목록에 보여줄 최근 글 수
+맛보기길이 = 95     # 제목 아래에 보여줄 본문 앞부분 글자 수
+
+
+def 맛보기(본문):
+    """제목 아래에 보여줄 본문 앞부분을 만듭니다."""
+    글 = re.sub(r'\s+', ' ', (본문 or '')).strip()
+    if len(글) > 맛보기길이:
+        글 = 글[:맛보기길이].rstrip() + '…'
+    return 글
+
+
 def 줄만들기(글, 본문, 사진이름들):
-    """목록 한 줄을 만듭니다. 날짜는 넣지 않습니다."""
+    """목록 한 줄을 만듭니다. 왼쪽에 사진, 오른쪽에 제목과 앞부분.
+       날짜는 넣지 않습니다(대리님 결정)."""
     몸 = html.escape(본문).replace(NL, '&#10;')
     return (
         '        <a class="news-row" href="%s" target="_blank" rel="noopener"' % html.escape(글['주소']) + NL +
         '           data-title="%s"' % html.escape(글['제목']) + NL +
         '           data-img="%s"' % html.escape(','.join(사진이름들)) + NL +
         '           data-body="%s">' % 몸 + NL +
-        '          <span class="news-title">%s</span>' % html.escape(글['제목']) + NL +
+        ('          <img class="news-thumb" src="img/%s" alt="" loading="lazy">' % html.escape(사진이름들[0]) + NL
+         if 사진이름들 else '          <div class="news-thumb news-thumb-none"></div>' + NL) +
+        '          <span class="news-text">' + NL +
+        '            <strong class="news-title">%s</strong>' % html.escape(글['제목']) + NL +
+        '            <span class="news-sum">%s</span>' % html.escape(맛보기(본문)) + NL +
+        '          </span>' + NL +
         '        </a>'
     )
 
@@ -241,6 +259,8 @@ def main():
         print("'%s' 분류 글이 없습니다. 그대로 둡니다." % 분류)
         return 1
 
+    글들 = 글들[:목록수]          # 가장 최근 것부터 목록수 만큼만 (대리님 결정)
+
     사진갈곳 = os.path.join(뿌리, 사진폴더)
     줄들 = []
     폴백수 = 0
@@ -291,9 +311,10 @@ def main():
     # 되는 경우), 실수로 보이는 화면을 그대로 지우지 않도록 멈춘다. 한두 건 줄어드는
     # 것(예: 34→33, 글쓴이가 직접 지운 경우)은 정상이므로 막지 않는다.
     이전줄수 = 마커사이_줄수(s, 시작표, 끝표)
-    if 이전줄수 > 0 and len(줄들) * 5 < 이전줄수 * 4:
-        print('기존 %d건에서 %d건으로 크게 줄었습니다. 기존 화면을 그대로 둡니다.'
-              % (이전줄수, len(줄들)))
+    기대줄수 = min(이전줄수, 목록수) if 이전줄수 > 0 else 0
+    if 기대줄수 > 0 and len(줄들) * 5 < 기대줄수 * 4:
+        print('기대한 %d건에서 %d건으로 크게 줄었습니다. 기존 화면을 그대로 둡니다.'
+              % (기대줄수, len(줄들)))
         return 1
 
     s2 = 갈아끼우기(s, 시작표, 끝표, NL.join(줄들), '        ')
