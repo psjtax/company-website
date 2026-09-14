@@ -193,6 +193,31 @@ def test_금고열쇠받기가_실패하면_None():
                       부르기=lambda 방법, 주소, 몸=None, 토큰=None: {}) is None
 
 
+def test_봉인도구가_없으면_금고열쇠받기가_네트워크도_안_부르고_None을_돌려준다(monkeypatch):
+    monkeypatch.setattr(rt, '봉인도구있나', lambda: False)
+
+    def 부르면_터짐(*a, **k):
+        raise AssertionError('봉인 도구가 없으면 네트워크를 부르면 안 된다')
+
+    assert rt.금고열쇠받기('psjtax', 'company-website', '깃허브토큰',
+                      부르기=부르면_터짐) is None
+
+
+def test_봉인도구가_없으면_연장을_시도하지_않는다(tmp_path, monkeypatch, capsys):
+    판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
+    불렀나 = {'응': False}
+
+    def 연장스파이(t, 부르기=None):
+        불렀나['응'] = True
+        return ('새토큰', 5184000)
+
+    monkeypatch.setattr(rt, '연장하기', 연장스파이)
+    monkeypatch.setattr(rt, '봉인도구있나', lambda: False)
+    assert rt.main() == 0
+    assert 불렀나['응'] is False
+    assert '금고에 접근하지 못했습니다' in capsys.readouterr().out
+
+
 def test_금고쓰기가_실패하면_세번_해본다():
     # 주의: 원 리뷰 코드의 더미 키 'AAAA'는 base64로 3바이트로 풀려
     # PublicKey 생성 단계(32바이트 요구)에서 곧바로 예외가 나, PUT을

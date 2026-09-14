@@ -13,21 +13,22 @@ import os
 import re
 import sys
 import tempfile
+import unicodedata
 import urllib.parse
 import urllib.request
 
 NL = chr(10)
 숨길번호 = '051-710-9685'
 기본제목 = '인스타그램 게시물'
-전화꼴 = re.compile(r'\d[\d\-.\u2010-\u2015\s]{7,}\d')
+전화꼴 = re.compile(r'\d[\d\-.‐-―()/·∙\s]{7,}\d')
 사무실숫자 = re.sub(r'[^0-9]', '', 숨길번호)
 
 
 def 전화번호줄인가(줄):
     """사무실 번호가 들어있는 줄인지 봅니다.
-       숫자 덩어리를 통째로 이어 붙이면 날짜·금액이 전화번호로 오인되므로,
-       전화번호처럼 생긴 부분만 골라서 견줍니다."""
-    줄 = 줄 or ''
+       괄호·가운데점·전각 숫자 같은 변형도 잡되,
+       날짜나 금액이 전화번호로 오인되지 않게 전화번호처럼 생긴 부분만 견줍니다."""
+    줄 = unicodedata.normalize('NFKC', 줄 or '')
     if 숨길번호 in 줄:
         return True
     for 조각 in 전화꼴.findall(줄):
@@ -61,6 +62,14 @@ def 날짜다듬기(값):
     return '%s. %s. %s' % m.groups() if m else ''
 
 
+def 사진주소고르기(항목):
+    """영상이면 대표 그림을 씁니다. 영상 파일을 사진으로 받으면 안 됩니다."""
+    종류 = (항목.get('media_type') or '').upper()
+    if 종류 == 'VIDEO':
+        return 항목.get('thumbnail_url') or ''
+    return 항목.get('media_url') or 항목.get('thumbnail_url') or ''
+
+
 def 게시물정리(자료):
     """API 가 준 것을 우리가 쓸 모양으로 바꿉니다."""
     정리됨 = []
@@ -71,9 +80,9 @@ def 게시물정리(자료):
         설명 = 설명다듬기(it.get('caption') or '')
         첫줄 = 설명.split(NL)[0].strip() if 설명 else ''
         낱장 = (it.get('children') or {}).get('data', [])
-        사진 = [c.get('media_url') for c in 낱장 if c.get('media_url')]
+        사진 = [u for u in (사진주소고르기(c) for c in 낱장) if u]
         if not 사진:
-            하나 = it.get('media_url') or it.get('thumbnail_url')
+            하나 = 사진주소고르기(it)
             사진 = [하나] if 하나 else []
         정리됨.append({
             '아이디': str(it.get('id') or ''),
@@ -101,7 +110,7 @@ def 탈없는말(e):
 
 def 쓰기(경로, 내용):
     """임시파일에 쓴 뒤 바꿔치기합니다. 쓰다가 멈춰도 원래 파일이 깨지지 않습니다."""
-    칸, 임시 = tempfile.mkstemp(dir=os.path.dirname(경로), suffix='.tmp')
+    칸, 임시 = tempfile.mkstemp(dir=os.path.dirname(경로), prefix='.tmp-insta-', suffix='.tmp')
     os.close(칸)
     try:
         with io.open(임시, 'w', encoding='utf-8') as f:
@@ -165,7 +174,7 @@ from update_column import 사진저장, 사진이름          # 이미 시험을
 
 API = 'https://graph.instagram.com/v21.0/me/media'
 항목 = ('id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,'
-      'children{media_url}')
+      'children{media_url,thumbnail_url,media_type}')
 게시물당사진 = 12
 대상 = 'column/index.html'
 사진폴더 = 'column/insta'

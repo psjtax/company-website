@@ -95,6 +95,63 @@ def test_설명이_없으면_기본제목():
     assert g['설명'] == ''
 
 
+def test_영상_항목은_섬네일을_이미지_항목은_media_url을_쓴다():
+    영상 = {'id': '10', 'media_type': 'VIDEO',
+          'media_url': 'https://example.com/v.mp4',
+          'thumbnail_url': 'https://example.com/v_thumb.jpg',
+          'permalink': 'https://www.instagram.com/p/VVV/',
+          'timestamp': '2026-09-01T00:00:00+0000'}
+    사진 = {'id': '11', 'media_type': 'IMAGE',
+          'media_url': 'https://example.com/i.jpg',
+          'thumbnail_url': 'https://example.com/i_thumb.jpg',
+          'permalink': 'https://www.instagram.com/p/III/',
+          'timestamp': '2026-09-01T00:00:00+0000'}
+    g영상 = ui.게시물정리({'data': [영상]})[0]
+    g사진 = ui.게시물정리({'data': [사진]})[0]
+    assert g영상['사진'] == ['https://example.com/v_thumb.jpg']
+    assert g사진['사진'] == ['https://example.com/i.jpg']
+    assert not any('.mp4' in u for u in g영상['사진'])
+
+
+def test_사진주소고르기_직접_확인():
+    assert ui.사진주소고르기({'media_type': 'VIDEO', 'media_url': 'a.mp4',
+                        'thumbnail_url': 'a.jpg'}) == 'a.jpg'
+    assert ui.사진주소고르기({'media_type': 'IMAGE', 'media_url': 'a.jpg',
+                        'thumbnail_url': 'a_t.jpg'}) == 'a.jpg'
+    assert ui.사진주소고르기({'media_type': 'IMAGE'}) == ''
+
+
+def test_캐러셀에서_영상은_섬네일_이미지는_media_url을_쓴다():
+    자 = {'data': [{
+        'id': '20', 'caption': '캐러셀 글', 'media_type': 'CAROUSEL_ALBUM',
+        'permalink': 'https://www.instagram.com/p/CCC/',
+        'timestamp': '2026-09-01T00:00:00+0000',
+        'children': {'data': [
+            {'media_type': 'IMAGE', 'media_url': 'https://example.com/c1.jpg',
+             'thumbnail_url': 'https://example.com/c1_thumb.jpg'},
+            {'media_type': 'VIDEO', 'media_url': 'https://example.com/c2.mp4',
+             'thumbnail_url': 'https://example.com/c2_thumb.jpg'},
+        ]},
+    }]}
+    g = ui.게시물정리(자)[0]
+    assert g['사진'] == ['https://example.com/c1.jpg', 'https://example.com/c2_thumb.jpg']
+    assert not any('.mp4' in u for u in g['사진'])
+
+
+def test_아무_그림도_없는_캐러셀_자식은_건너뛴다():
+    자 = {'data': [{
+        'id': '21', 'caption': '글', 'media_type': 'CAROUSEL_ALBUM',
+        'permalink': 'https://www.instagram.com/p/DDD/',
+        'timestamp': '2026-09-01T00:00:00+0000',
+        'children': {'data': [
+            {'media_type': 'IMAGE', 'media_url': 'https://example.com/d1.jpg'},
+            {'media_type': 'VIDEO'},
+        ]},
+    }]}
+    g = ui.게시물정리(자)[0]
+    assert g['사진'] == ['https://example.com/d1.jpg']
+
+
 def test_날짜와_금액이_있는_줄은_안_지운다():
     글 = '2026년 05월 17일까지 109,685원 납부하세요'
     assert ui.설명다듬기(글) == 글
@@ -111,6 +168,33 @@ def test_띄어쓴_전화번호도_지운다():
     assert ui.설명다듬기('문의 051 710 9685') == ''
     assert ui.설명다듬기('문의 051-710-9685') == ''
     assert ui.설명다듬기('전화: 051.710.9685 입니다') == ''
+
+
+def test_괄호_슬래시_가운데점_전각숫자_변형도_모두_지운다():
+    """리뷰에서 살아남는 것으로 확인된 다섯 가지 변형이 모두 지워져야 한다."""
+    변형들 = [
+        '전화 051)710-9685 로 주세요',
+        '(051)710-9685',
+        '051 / 710 / 9685',
+        '051·710·9685',
+        '０５１-７１０-９６８５',
+    ]
+    for 줄 in 변형들:
+        assert ui.설명다듬기(줄) == '', '지워지지 않음: %r' % (줄,)
+
+
+def test_넓어진_전화꼴에도_안전한_여섯줄은_그대로_남는다():
+    """전화번호 칸을 넓혀도 날짜·금액·사업자번호 같은 줄은 절대 지워지면 안 된다."""
+    안전줄들 = [
+        '2026년 05월 17일까지 109,685원 납부하세요',
+        '신고기한 2026-09-30 까지입니다',
+        '사업자등록번호 878-28-01274',
+        '작년 매출 1,234,567,890원',
+        '① 간이지급명세서 (거주자의 사업소득)',
+        '출처: 국세청 (2026. 8. 25. 확인)',
+    ]
+    for 줄 in 안전줄들:
+        assert ui.설명다듬기(줄) == 줄, '엉뚱하게 지워짐: %r' % (줄,)
 
 
 def 보기글(설명='첫 문단' + NL + '둘째 문단'):

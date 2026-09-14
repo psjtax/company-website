@@ -17,6 +17,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.parse
 import urllib.request
 
@@ -99,8 +100,19 @@ def 금고주소(주인, 저장소):
     return 'https://api.github.com/repos/%s/%s/actions/secrets' % (주인, 저장소)
 
 
+def 봉인도구있나():
+    """값을 봉인할 도구(PyNaCl)가 깔려 있는지 봅니다."""
+    try:
+        from nacl import encoding, public          # noqa: F401
+        return True
+    except Exception:
+        return False
+
+
 def 금고열쇠받기(주인, 저장소, 깃허브토큰, 부르기=None):
     """금고에 쓸 수 있는지 미리 확인합니다. 못 받으면 None 입니다."""
+    if not 봉인도구있나():
+        return None
     부르기 = 부르기 or 깃허브부르기
     try:
         열쇠 = 부르기('GET', 금고주소(주인, 저장소) + '/public-key', 토큰=깃허브토큰)
@@ -129,6 +141,7 @@ def 금고에넣기(주인, 저장소, 이름, 값, 깃허브토큰, 부르기=N
         except Exception:
             if 번째 + 1 >= 시도:
                 return False
+            time.sleep(2)
     return False
 
 
