@@ -113,16 +113,21 @@ def test_발급일_파일이_없으면_오늘로_적고_넘어간다(tmp_path, m
 
 def test_아직_이르면_아무것도_안_한다(tmp_path, monkeypatch, capsys):
     판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=5))
-    monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('안돼', 1))
+    불렀나 = {'응': False}
+    monkeypatch.setattr(rt, '연장하기',
+                        lambda t, 부르기=None: 불렀나.update(응=True) or ('안돼', 1))
     assert rt.main() == 0
+    assert 불렀나['응'] is False
     assert '아직' in capsys.readouterr().out
 
 
 def test_연장하면_발급일이_오늘로_바뀐다(tmp_path, monkeypatch):
     경로 = 판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
     monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('새토큰', 5184000))
     monkeypatch.setattr(rt, '금고에넣기',
-                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None: True)
+                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None, 열쇠=None: True)
     assert rt.main() == 0
     assert rt.발급일읽기(경로) == datetime.date.today()
 
@@ -130,15 +135,19 @@ def test_연장하면_발급일이_오늘로_바뀐다(tmp_path, monkeypatch):
 def test_금고에_못_넣으면_발급일을_안_바꾼다(tmp_path, monkeypatch, capsys):
     옛날 = datetime.date.today() - datetime.timedelta(days=45)
     경로 = 판깔기(tmp_path, monkeypatch, 옛날)
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
     monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('새토큰', 5184000))
     monkeypatch.setattr(rt, '금고에넣기',
-                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None: False)
+                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None, 열쇠=None: False)
     assert rt.main() == 0
     assert rt.발급일읽기(경로) == 옛날          # 실패했으니 다음 번에 다시 시도해야 한다
 
 
 def test_연장이_실패해도_0으로_끝난다(tmp_path, monkeypatch, capsys):
     판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
     monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: None)
     assert rt.main() == 0
     assert '연장하지 못했습니다' in capsys.readouterr().out
@@ -148,10 +157,86 @@ def test_토큰은_화면에_안_찍힌다(tmp_path, monkeypatch, capsys):
     판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
     monkeypatch.setenv('IG_ACCESS_TOKEN', '아주비밀12345')
     monkeypatch.setenv('GITHUB_TOKEN_FOR_SECRETS', '깃허브비밀67890')
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
     monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('새토큰abcde', 5184000))
     monkeypatch.setattr(rt, '금고에넣기',
-                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None: True)
+                        lambda 주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None, 열쇠=None: True)
     rt.main()
     나온말 = capsys.readouterr().out
     for 비밀 in ('아주비밀12345', '깃허브비밀67890', '새토큰abcde'):
         assert 비밀 not in 나온말
+
+
+def test_금고에_접근_못하면_연장을_시도하지_않는다(tmp_path, monkeypatch, capsys):
+    판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
+    불렀나 = {'응': False}
+
+    def 연장스파이(t, 부르기=None):
+        불렀나['응'] = True
+        return ('새토큰', 5184000)
+
+    monkeypatch.setattr(rt, '연장하기', 연장스파이)
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: None)
+    assert rt.main() == 0
+    assert 불렀나['응'] is False
+    assert '금고에 접근하지 못했습니다' in capsys.readouterr().out
+
+
+def test_금고열쇠받기가_실패하면_None():
+    def 터짐(방법, 주소, 몸=None, 토큰=None):
+        raise OSError('안 됨')
+
+    assert rt.금고열쇠받기('a', 'b', 'c', 부르기=터짐) is None
+    assert rt.금고열쇠받기('a', 'b', 'c',
+                      부르기=lambda 방법, 주소, 몸=None, 토큰=None: {}) is None
+
+
+def test_금고쓰기가_실패하면_세번_해본다():
+    # 주의: 원 리뷰 코드의 더미 키 'AAAA'는 base64로 3바이트로 풀려
+    # PublicKey 생성 단계(32바이트 요구)에서 곧바로 예외가 나, PUT을
+    # 한 번도 시도하지 못한 채 매번 실패해 버린다(횟수['n']이 0에 머묾).
+    # PUT 단계에서 반복 실패하는 상황을 실제로 재현하려고 유효한 길이의
+    # 더미 공개키로 바꿨다 — 그 외 시험 구조·검증 내용은 그대로다.
+    from nacl import encoding, public
+    더미키 = public.PrivateKey.generate().public_key.encode(encoding.Base64Encoder).decode()
+    횟수 = {'n': 0}
+
+    def 가짜(방법, 주소, 몸=None, 토큰=None):
+        if 방법 == 'GET':
+            return {'key': 더미키, 'key_id': '1'}
+        횟수['n'] += 1
+        raise OSError('일시적 오류')
+
+    assert rt.금고에넣기('a', 'b', 'C', 'd', 'e', 부르기=가짜) is False
+    assert 횟수['n'] == 3
+
+
+def test_금고에_못_넣으면_손으로_하라고_알린다(tmp_path, monkeypatch, capsys):
+    옛날 = datetime.date.today() - datetime.timedelta(days=45)
+    경로 = 판깔기(tmp_path, monkeypatch, 옛날)
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
+    monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('새토큰', 5184000))
+    monkeypatch.setattr(rt, '금고에넣기',
+                        lambda *a, **k: False)
+    assert rt.main() == 0
+    나온말 = capsys.readouterr().out
+    assert '손으로 다시 발급' in 나온말
+    assert rt.발급일읽기(경로) == 옛날
+
+
+def test_발급일을_못_적어도_main은_0이다(tmp_path, monkeypatch, capsys):
+    판깔기(tmp_path, monkeypatch, datetime.date.today() - datetime.timedelta(days=45))
+    monkeypatch.setattr(rt, '금고열쇠받기',
+                        lambda 주인, 저장소, 깃허브토큰, 부르기=None: {'key': 'A', 'key_id': '1'})
+    monkeypatch.setattr(rt, '연장하기', lambda t, 부르기=None: ('새토큰', 5184000))
+    monkeypatch.setattr(rt, '금고에넣기', lambda *a, **k: True)
+
+    def 못씀(경로, 날짜):
+        raise OSError('디스크 꽉 참')
+
+    monkeypatch.setattr(rt, '발급일쓰기', 못씀)
+    assert rt.main() == 0
+    assert '적어두지 못했습니다' in capsys.readouterr().out

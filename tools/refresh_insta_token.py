@@ -48,6 +48,16 @@ def 발급일쓰기(경로, 날짜):
     io.open(경로, 'w', encoding='utf-8').write(날짜.isoformat() + chr(10))
 
 
+def 발급일적어두기(경로, 날짜):
+    """발급일을 적습니다. 못 적어도 멈추지 않습니다."""
+    try:
+        발급일쓰기(경로, 날짜)
+        return True
+    except Exception:
+        print('발급일을 적어두지 못했습니다. 다음 번에 다시 해봅니다.')
+        return False
+
+
 def 연장필요한가(발급일, 오늘, 기준=기준일):
     return (오늘 - 발급일).days >= 기준
 
@@ -85,22 +95,41 @@ def 깃허브부르기(방법, 주소, 몸=None, 토큰=None):
         return json.loads(속) if 속 else {}
 
 
-def 금고에넣기(주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None):
-    """깃허브 금고에 값을 넣습니다. 저장소 공개키로 봉인해서 보냅니다."""
+def 금고주소(주인, 저장소):
+    return 'https://api.github.com/repos/%s/%s/actions/secrets' % (주인, 저장소)
+
+
+def 금고열쇠받기(주인, 저장소, 깃허브토큰, 부르기=None):
+    """금고에 쓸 수 있는지 미리 확인합니다. 못 받으면 None 입니다."""
     부르기 = 부르기 or 깃허브부르기
-    바탕 = 'https://api.github.com/repos/%s/%s/actions/secrets' % (주인, 저장소)
     try:
-        from nacl import encoding, public
-        열쇠 = 부르기('GET', 바탕 + '/public-key', 토큰=깃허브토큰)
-        공개키 = public.PublicKey(열쇠['key'].encode('utf-8'), encoding.Base64Encoder)
-        봉인 = public.SealedBox(공개키).encrypt(값.encode('utf-8'))
-        부르기('PUT', 바탕 + '/' + 이름, 몸={
-            'encrypted_value': base64.b64encode(봉인).decode('utf-8'),
-            'key_id': 열쇠['key_id'],
-        }, 토큰=깃허브토큰)
-        return True
+        열쇠 = 부르기('GET', 금고주소(주인, 저장소) + '/public-key', 토큰=깃허브토큰)
     except Exception:
-        return False
+        return None
+    if 열쇠 and 열쇠.get('key') and 열쇠.get('key_id'):
+        return 열쇠
+    return None
+
+
+def 금고에넣기(주인, 저장소, 이름, 값, 깃허브토큰, 부르기=None, 열쇠=None, 시도=3):
+    """깃허브 금고에 값을 넣습니다. 저장소 공개키로 봉인해서 보냅니다.
+       한 번 실패해도 몇 번 더 해봅니다. 토큰을 잃지 않기 위해서입니다."""
+    부르기 = 부르기 or 깃허브부르기
+    for 번째 in range(시도):
+        try:
+            from nacl import encoding, public
+            이번열쇠 = 열쇠 or 부르기('GET', 금고주소(주인, 저장소) + '/public-key', 토큰=깃허브토큰)
+            공개키 = public.PublicKey(이번열쇠['key'].encode('utf-8'), encoding.Base64Encoder)
+            봉인 = public.SealedBox(공개키).encrypt(값.encode('utf-8'))
+            부르기('PUT', 금고주소(주인, 저장소) + '/' + 이름, 몸={
+                'encrypted_value': base64.b64encode(봉인).decode('utf-8'),
+                'key_id': 이번열쇠['key_id'],
+            }, 토큰=깃허브토큰)
+            return True
+        except Exception:
+            if 번째 + 1 >= 시도:
+                return False
+    return False
 
 
 def main():
@@ -119,7 +148,7 @@ def main():
     오늘 = datetime.date.today()
     발급일 = 발급일읽기(발급일파일)
     if 발급일 is None:
-        발급일쓰기(발급일파일, 오늘)
+        발급일적어두기(발급일파일, 오늘)
         print('발급일을 처음 적어 두었습니다. 이번에는 연장하지 않습니다.')
         return 0
 
@@ -129,17 +158,25 @@ def main():
         return 0
 
     print('이름표를 받은 지 %d일 되었습니다. 연장을 받아 옵니다.' % 지난날)
+
+    열쇠 = 금고열쇠받기(주인, 저장소, 깃허브토큰)
+    if 열쇠 is None:
+        print('금고에 접근하지 못했습니다. 이번에는 연장하지 않고 넘어갑니다.')
+        return 0
+
     난것 = 연장하기(토큰)
     if not 난것:
         print('이름표를 연장하지 못했습니다. 다음 번에 다시 해봅니다.')
         return 0
     새토큰, 남은초 = 난것
 
-    if 금고에넣기(주인, 저장소, 'IG_ACCESS_TOKEN', 새토큰, 깃허브토큰):
-        발급일쓰기(발급일파일, 오늘)
+    if 금고에넣기(주인, 저장소, 'IG_ACCESS_TOKEN', 새토큰, 깃허브토큰, 열쇠=열쇠):
+        발급일적어두기(발급일파일, 오늘)
         print('이름표를 연장해서 금고에 새로 넣었습니다. (%d일 더)' % (남은초 // 86400))
     else:
-        print('연장은 받았지만 금고에 넣지 못했습니다. 다음 번에 다시 해봅니다.')
+        print('!!! 연장은 받았는데 금고에 넣지 못했습니다.')
+        print('!!! 인스타 이름표를 손으로 다시 발급받아 금고에 넣어야 할 수 있습니다.')
+        print('!!! Meta 개발자 콘솔 > 박성진세무 카드뉴스 > Instagram > 액세스 토큰 생성')
     return 0
 
 
