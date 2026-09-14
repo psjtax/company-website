@@ -222,7 +222,11 @@ def main():
         print('바뀐 것이 없습니다.')
         return 0
 
-    쓰기(경로, 새것)
+    try:
+        쓰기(경로, 새것)
+    except Exception as e:
+        print('파일을 쓰지 못했습니다 :', 탈없는말(e))
+        return 1
     print('인스타 카드 %d칸을 갱신했습니다. (실제 게시물 %d건)' % (카드수, len(카드들)))
     return 0
 

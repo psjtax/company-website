@@ -266,3 +266,33 @@ def test_토큰은_화면에_안_찍힌다(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv('IG_ACCESS_TOKEN', '아주비밀스러운값12345')
     ui.main()
     assert '아주비밀스러운값12345' not in capsys.readouterr().out
+
+
+def test_탈없는말이_환경변수_토큰을_지운다(monkeypatch):
+    monkeypatch.setenv('IG_ACCESS_TOKEN', '비밀토큰XYZ98765')
+    말 = ui.탈없는말(Exception(
+        'HTTP 400 for https://graph.instagram.com/v21.0/me/media?limit=6&access_token=비밀토큰XYZ98765'))
+    assert '비밀토큰XYZ98765' not in 말
+    assert '(이름표)' in 말
+
+
+def test_탈없는말이_주소속_토큰도_지운다(monkeypatch):
+    monkeypatch.delenv('IG_ACCESS_TOKEN', raising=False)
+    말 = ui.탈없는말(Exception('열지 못함 access_token=AAABBBCCCDDD&limit=6 입니다'))
+    assert 'AAABBBCCCDDD' not in 말
+    assert '(이름표)' in 말
+
+
+def test_받아오기가_실패해도_토큰이_화면에_안_나온다(tmp_path, monkeypatch, capsys):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+    monkeypatch.setenv('IG_ACCESS_TOKEN', '진짜비밀토큰98765')
+
+    def 터짐():
+        raise OSError('열지 못함: https://graph.instagram.com/v21.0/me/media'
+                      '?limit=6&access_token=진짜비밀토큰98765')
+
+    monkeypatch.setattr(ui, '받아오기', 터짐)
+    원래 = 대상.read_bytes()
+    assert ui.main() == 1
+    assert 대상.read_bytes() == 원래
+    assert '진짜비밀토큰98765' not in capsys.readouterr().out
