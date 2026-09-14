@@ -48,16 +48,30 @@ jobs:
       - name: 블로그에서 세무소식 받아오기
         run: python tools/update_column.py || echo "세무소식은 이번에 건너뜁니다."
 
+      - name: 금고 다루는 도구 준비
+        run: python -m pip install --quiet PyNaCl || echo "금고 도구를 준비하지 못했습니다. 이름표 연장은 건너뜁니다."
+
+      - name: 인스타에서 카드 받아오기
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python tools/update_insta.py || echo "인스타는 이번에 건너뜁니다."
+
+      - name: 인스타 이름표 수명 챙기기
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GITHUB_TOKEN_FOR_SECRETS: ${{ secrets.NEWS_TOKEN }}
+        run: python tools/refresh_insta_token.py || echo "이름표 연장은 이번에 건너뜁니다."
+
       - name: 바뀐 것이 있으면 올리기
         run: |
-          if [ -z "$(git status --porcelain news/index.html column/)" ]; then
+          if [ -z "$(git status --porcelain news/index.html column/ .github/insta-token-issued.txt)" ]; then
             echo "새 글이 없어 올릴 것이 없습니다."
             exit 0
           fi
           git config user.name  "psjtax"
           git config user.email "tax0517109685@gmail.com"
-          git add news/index.html column/
-          git commit -m "세무뉴스·세무소식 자동 갱신 ($(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'))"
+          git add news/index.html column/ .github/insta-token-issued.txt
+          git commit -m "세무뉴스·세무소식·인스타 자동 갱신 ($(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'))"
           git push
 
       - name: 오래 조용했을 때만 살아있다는 도장 찍기
