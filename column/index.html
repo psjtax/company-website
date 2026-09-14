@@ -82,6 +82,26 @@
 <section class="page">
   <div class="narrow">
 
+    <!-- ================= 인스타그램 =================
+         @taxpsj 최근 게시물을 하루 두 번 자동으로 받아옵니다.
+         아래 '인스타 여기부터 ~ 인스타 여기까지' 사이는 자동으로 바뀌니
+         손으로 고치지 말아 주세요. -->
+    <div class="ig-box rv">
+      <h2 class="ig-title">인스타그램</h2>
+      <div class="nc-wrap">
+        <button class="nc-arrow prev" id="ncPrev" type="button" aria-label="이전 게시물">
+          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="nc-track" id="ncTrack">
+          <!-- 인스타 여기부터 -->
+          <!-- 인스타 여기까지 -->
+        </div>
+        <button class="nc-arrow next" id="ncNext" type="button" aria-label="다음 게시물">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
     <!-- ================= 세무소식 =================
          박성진 대표세무사가 직접 쓰는 글입니다.
          글을 추가하실 때는 아래 '글 여기부터 ~ 글 여기까지' 사이에
@@ -408,11 +428,12 @@
       그림.className = 'nv-img';
       그림.loading = 'lazy';
       그림.alt = '';
-      그림.src = 'img/' + 이름;
+      그림.src = (a.dataset.imgdir || 'img') + '/' + 이름;
       글칸.appendChild(그림);
     });
     두루마리.scrollTop = 0;
     원문.href = a.getAttribute('href');
+    원문.textContent = a.dataset.linkLabel || '블로그에서 보기';
     뒷막.hidden = false;
     document.body.style.overflow = 'hidden';
     닫기.focus();
@@ -424,7 +445,7 @@
   }
 
   document.addEventListener('click', function(e){
-    var a = e.target.closest('.news-row');
+    var a = e.target.closest('.news-row, .nc');
     if(!a || !a.dataset.body) return;
     e.preventDefault();
     열기(a);
@@ -446,6 +467,59 @@
   var 있음 = 목록.querySelectorAll('.news-row').length > 0;
   안내.style.display = 있음 ? 'none' : 'block';   /* .news-empty 가 기본으로 숨겨져 있어 직접 켭니다 */
   if(머리) 머리.style.display = 있음 ? '' : 'none';
+})();
+</script>
+
+<script>
+/* ---------------------------------------------------------
+   인스타 카드 : 좌우 화살표로 넘겨 봅니다
+   --------------------------------------------------------- */
+(function(){
+  var 줄 = document.getElementById('ncTrack');
+  var 왼 = document.getElementById('ncPrev');
+  var 오 = document.getElementById('ncNext');
+  if(!줄 || !왼 || !오) return;
+
+  function 한칸(){
+    var c = 줄.querySelector('.nc');
+    if(!c) return 300;
+    var 사이 = parseFloat(getComputedStyle(줄).columnGap || getComputedStyle(줄).gap || 0) || 16;
+    return c.getBoundingClientRect().width + 사이;
+  }
+  function 새로고침(){
+    var 끝 = 줄.scrollWidth - 줄.clientWidth - 2;
+    왼.disabled = 줄.scrollLeft <= 2;
+    오.disabled = 줄.scrollLeft >= 끝;
+    var 넘칠것 = 줄.scrollWidth > 줄.clientWidth + 4;
+    왼.style.display = 오.style.display = 넘칠것 ? '' : 'none';
+  }
+  /* 브라우저마다 '부드럽게' 지원이 달라서 직접 움직여 줍니다 */
+  var 달리는중 = null;
+  function 부드럽게(목표){
+    var 끝 = 줄.scrollWidth - 줄.clientWidth;
+    목표 = Math.max(0, Math.min(끝, 목표));
+    var 움직임끄기 = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(움직임끄기 || document.hidden || !window.requestAnimationFrame){
+      줄.scrollLeft = 목표; 새로고침(); return;   /* 화면이 안 보이면 바로 옮깁니다 */
+    }
+    var 시작 = 줄.scrollLeft, 거리 = 목표 - 시작, 첫시각 = null;
+    if(달리는중) cancelAnimationFrame(달리는중);
+    function 걸음(t){
+      if(첫시각 === null) 첫시각 = t;
+      var p = Math.min(1, (t - 첫시각) / 380);
+      var e = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+      줄.scrollLeft = 시작 + 거리 * e;
+      if(p < 1) 달리는중 = requestAnimationFrame(걸음);
+      else { 달리는중 = null; 새로고침(); }
+    }
+    달리는중 = requestAnimationFrame(걸음);
+  }
+
+  왼.addEventListener('click', function(){ 부드럽게(줄.scrollLeft - 한칸()); });
+  오.addEventListener('click', function(){ 부드럽게(줄.scrollLeft + 한칸()); });
+  줄.addEventListener('scroll', 새로고침, { passive:true });
+  window.addEventListener('resize', 새로고침);
+  새로고침();
 })();
 </script>
 

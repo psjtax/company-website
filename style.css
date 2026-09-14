@@ -1466,3 +1466,22 @@ footer b{ color:var(--t3); font-weight:700; }
   margin-top:14px; font-size:12.5px; line-height:1.7; color:var(--t4);
   word-break:keep-all;
 }
+
+/* --- 세무소식 페이지의 인스타 칸 --- */
+.ig-box{ margin-bottom:54px; }
+.ig-title{
+  font-size:clamp(17px,2.2vw,22px); font-weight:700; color:var(--navy);
+  margin-bottom:18px; letter-spacing:-.01em;
+}
+.nc-soon{
+  display:flex; flex-direction:column; justify-content:center;
+  background:var(--pale); border-top-color:var(--pale2);
+  color:var(--t4); cursor:default;
+}
+.nc-soon .nc-title{ color:var(--t3); }
+.nc-soon .nc-sum{ color:var(--t4); }
+.nc-soon-mark{
+  font-size:11px; font-weight:700; letter-spacing:.12em;
+  color:var(--navy); opacity:.45; margin-bottom:8px;
+}
+@media (max-width:900px){ .ig-box{ margin-bottom:40px; } }
