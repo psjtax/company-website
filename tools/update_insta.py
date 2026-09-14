@@ -7,7 +7,14 @@
   손으로 돌려보려면 :  IG_ACCESS_TOKEN 을 환경변수로 주고  python tools/update_insta.py
 """
 import html
+import io
+import json
+import os
 import re
+import sys
+import tempfile
+import urllib.parse
+import urllib.request
 
 NL = chr(10)
 숨길번호 = '051-710-9685'
@@ -83,6 +90,29 @@ def 게시물정리(자료):
 요약길이 = 110
 
 
+def 탈없는말(e):
+    """오류 메시지에 토큰이 섞여 나오지 않게 지웁니다."""
+    말 = str(e)
+    토큰 = os.environ.get('IG_ACCESS_TOKEN', '').strip()
+    if 토큰:
+        말 = 말.replace(토큰, '(이름표)')
+    return re.sub(r'access_token=[^&\s\'"]+', 'access_token=(이름표)', 말)
+
+
+def 쓰기(경로, 내용):
+    """임시파일에 쓴 뒤 바꿔치기합니다. 쓰다가 멈춰도 원래 파일이 깨지지 않습니다."""
+    칸, 임시 = tempfile.mkstemp(dir=os.path.dirname(경로), suffix='.tmp')
+    os.close(칸)
+    try:
+        with io.open(임시, 'w', encoding='utf-8') as f:
+            f.write(내용)
+        os.replace(임시, 경로)
+    except Exception:
+        if os.path.exists(임시):
+            os.remove(임시)
+        raise
+
+
 def 카드만들기(글, 사진이름들):
     """카드 하나를 만듭니다. 세무뉴스 카드와 같은 모양입니다."""
     요약 = 글['설명'].replace(NL, ' ').strip()
@@ -128,3 +158,74 @@ def 갈아끼우기(s, 시작표, 끝표, 새내용, 들여):
     if a == -1 or b == -1:
         return None
     return s[:a + len(시작표)] + NL + 새내용 + NL + 들여 + s[b:]
+
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from update_column import 사진저장, 사진이름          # 이미 시험을 거친 사진 저장 기능을 그대로 씁니다
+
+API = 'https://graph.instagram.com/v21.0/me/media'
+항목 = ('id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,'
+      'children{media_url}')
+게시물당사진 = 12
+대상 = 'column/index.html'
+사진폴더 = 'column/insta'
+시작표 = '<!-- 인스타 여기부터 -->'
+끝표 = '<!-- 인스타 여기까지 -->'
+
+뿌리 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def 받아오기():
+    """인스타에 최근 게시물을 물어봅니다. 토큰은 환경변수에서만 읽습니다."""
+    토큰 = os.environ.get('IG_ACCESS_TOKEN', '').strip()
+    주소 = API + '?' + urllib.parse.urlencode({
+        'fields': 항목, 'limit': str(카드수), 'access_token': 토큰})
+    요청 = urllib.request.Request(주소, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(요청, timeout=25) as 응답:
+        return json.loads(응답.read().decode('utf-8'))
+
+
+def main():
+    if not os.environ.get('IG_ACCESS_TOKEN', '').strip():
+        print('금고에 IG_ACCESS_TOKEN 이 없습니다. 그대로 둡니다.')
+        return 1
+
+    try:
+        자료 = 받아오기()
+    except Exception as e:
+        print('인스타에서 받아오지 못했습니다 :', 탈없는말(e))
+        return 1
+
+    글들 = 게시물정리(자료)
+    if not 글들:
+        print('게시물이 하나도 오지 않았습니다. 있던 카드를 그대로 둡니다.')
+        return 1
+
+    사진갈곳 = os.path.join(뿌리, 사진폴더)
+    카드들 = []
+    for 글 in 글들:
+        이름들 = []
+        for u in 글['사진'][:게시물당사진]:
+            이름 = 사진저장(u, 사진갈곳)
+            if 이름:
+                이름들.append(이름)
+        카드들.append(카드만들기(글, 이름들))
+
+    경로 = os.path.join(뿌리, 대상)
+    with io.open(경로, encoding='utf-8') as f:
+        원래 = f.read()
+    새것 = 갈아끼우기(원래, 시작표, 끝표, 여섯칸(카드들), '        ')
+    if 새것 is None:
+        print('카드 자리 표시를 찾지 못했습니다.')
+        return 1
+    if 새것 == 원래:
+        print('바뀐 것이 없습니다.')
+        return 0
+
+    쓰기(경로, 새것)
+    print('인스타 카드 %d칸을 갱신했습니다. (실제 게시물 %d건)' % (카드수, len(카드들)))
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

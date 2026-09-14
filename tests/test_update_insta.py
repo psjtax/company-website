@@ -177,3 +177,92 @@ def test_표시자를_흉내낸_제목도_안전하다():
     카드 = ui.카드만들기(글, [])
     assert '<!-- 인스타 여기까지 -->' not in 카드     # 이스케이프되어 표시자 노릇을 못 한다
     assert '&lt;!--' in 카드
+
+
+def 빈페이지(줄수=0):
+    안 = NL.join('<a class="nc" href="#">옛것</a>' for _ in range(줄수))
+    return 'A<!-- 인스타 여기부터 -->' + 안 + '<!-- 인스타 여기까지 -->B'
+
+
+def 판깔기(tmp_path, monkeypatch, 자료값, 줄수=0):
+    대상 = tmp_path / 'index.html'
+    대상.write_text(빈페이지(줄수), encoding='utf-8')
+    monkeypatch.setattr(ui, '뿌리', str(tmp_path))
+    monkeypatch.setattr(ui, '대상', 'index.html')
+    monkeypatch.setattr(ui, '사진폴더', 'insta')
+    monkeypatch.setattr(ui, '받아오기', lambda: 자료값)
+    monkeypatch.setattr(ui, '사진저장', lambda u, f: 'zz.jpg')
+    monkeypatch.setenv('IG_ACCESS_TOKEN', '시험용가짜토큰')
+    return 대상
+
+
+def test_토큰이_없으면_파일을_안_건드린다(tmp_path, monkeypatch):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+    monkeypatch.delenv('IG_ACCESS_TOKEN', raising=False)
+    원래 = 대상.read_bytes()
+    assert ui.main() == 1
+    assert 대상.read_bytes() == 원래
+
+
+def test_받아오기_실패하면_파일을_안_건드린다(tmp_path, monkeypatch):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+
+    def 터짐():
+        raise OSError('인터넷 안 됨')
+
+    monkeypatch.setattr(ui, '받아오기', 터짐)
+    원래 = 대상.read_bytes()
+    assert ui.main() == 1
+    assert 대상.read_bytes() == 원래
+
+
+def test_게시물이_없으면_파일을_안_건드린다(tmp_path, monkeypatch):
+    대상 = 판깔기(tmp_path, monkeypatch, {'data': []}, 줄수=3)
+    원래 = 대상.read_bytes()
+    assert ui.main() == 1
+    assert 대상.read_bytes() == 원래
+
+
+def test_전체가_돌면_여섯칸이_찬다(tmp_path, monkeypatch, capsys):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+    assert ui.main() == 0
+    난것 = 대상.read_text(encoding='utf-8')
+    assert 칸수(난것) == 6
+    assert 준비중수(난것) == 5
+    assert '옛것' not in 난것
+    assert 'data-img="zz.jpg' in 난것
+
+
+def test_사진은_열두장까지만(tmp_path, monkeypatch):
+    자 = 자료()
+    자['data'][0]['children']['data'] = [
+        {'media_url': 'https://example.com/i%02d.jpg' % n} for n in range(20)]
+    대상 = 판깔기(tmp_path, monkeypatch, 자)
+    monkeypatch.setattr(ui, '사진저장', lambda u, f: u.rsplit('/', 1)[-1])
+    assert ui.main() == 0
+    import re as _re
+    m = _re.search(r'data-img="([^"]*)"', 대상.read_text(encoding='utf-8'))
+    assert len(m.group(1).split(',')) == 12
+
+
+def test_두번_돌리면_그대로다(tmp_path, monkeypatch, capsys):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+    assert ui.main() == 0
+    한번째 = 대상.read_text(encoding='utf-8')
+    assert ui.main() == 0
+    assert 대상.read_text(encoding='utf-8') == 한번째
+    assert '바뀐 것이 없습니다' in capsys.readouterr().out
+
+
+def test_임시파일이_남지_않는다(tmp_path, monkeypatch):
+    대상 = 판깔기(tmp_path, monkeypatch, 자료())
+    assert ui.main() == 0
+    남은것 = [f for f in os.listdir(str(tmp_path)) if f != 'index.html' and f != 'insta']
+    assert 남은것 == []
+
+
+def test_토큰은_화면에_안_찍힌다(tmp_path, monkeypatch, capsys):
+    판깔기(tmp_path, monkeypatch, 자료())
+    monkeypatch.setenv('IG_ACCESS_TOKEN', '아주비밀스러운값12345')
+    ui.main()
+    assert '아주비밀스러운값12345' not in capsys.readouterr().out
