@@ -1,5 +1,9 @@
 # 인스타 이름표와 카드를 손으로 확인합니다.
 # 저절로 돌지 않습니다. Actions 탭에서 "Run workflow" 를 눌러야만 돕니다.
+#
+# ⚠️ 누르기 전에 "Use workflow from" 에서 가지(branch)를 확인하세요.
+#    고른 가지에 그대로 커밋하고 올립니다. 기본값은 main 입니다.
+#    아직 합치기 전이라면 작업 가지(insta-cards)를 골라야 합니다.
 
 name: 인스타 이름표 확인
 
@@ -42,6 +46,7 @@ jobs:
             echo "바뀐 것이 없습니다."
             exit 0
           fi
+          echo "올릴 가지 : $(git rev-parse --abbrev-ref HEAD)"
           git config user.name  "psjtax"
           git config user.email "tax0517109685@gmail.com"
           git add column/
