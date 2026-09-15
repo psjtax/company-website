@@ -80,12 +80,17 @@ document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
    컴퓨터에서는 채널 홈으로, 휴대폰에서는 바로 대화창으로 갑니다
    --------------------------------------------------------- */
 (function(){
-  var 카톡 = document.querySelector('.kakao-fab');
-  if(!카톡 || !카톡.dataset.mo) return;
+  /* 떠다니는 동그란 버튼과 상담하기 페이지 버튼을 모두 챙깁니다 */
+  var 카톡들 = document.querySelectorAll('.kakao-fab, .kakao-link');
+  if(!카톡들.length) return;
 
   function 고르기(){
     var 휴대폰 = window.matchMedia('(max-width:900px), (pointer:coarse)').matches;
-    카톡.href = 휴대폰 ? 카톡.dataset.mo : 카톡.dataset.pc;
+    for(var i = 0; i < 카톡들.length; i++){
+      var 하나 = 카톡들[i];
+      if(!하나.dataset.mo) continue;
+      하나.href = 휴대폰 ? 하나.dataset.mo : 하나.dataset.pc;
+    }
   }
   고르기();
   window.addEventListener('resize', 고르기);

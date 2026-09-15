@@ -925,6 +925,32 @@ footer b{ color:var(--t3); font-weight:700; }
   border:1px solid var(--pale2); box-shadow:var(--sh); background:var(--pale);
 }
 .loc-map iframe{ display:block; width:100%; height:430px; border:0; }
+
+/* ==========================================================
+   상담하기 : 왼쪽 물어보기 예시 + 오른쪽 바로 연락 버튼
+   ========================================================== */
+.ask-grid{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,320px);
+  gap:34px; align-items:start;
+}
+@media (max-width:760px){ .ask-grid{ grid-template-columns:1fr; gap:22px; } }
+.ask-grid .note-box{ margin-top:0; }
+
+.ask-act{ display:flex; flex-direction:column; gap:12px; }
+.ask-btn{ width:100%; min-width:0; gap:10px; }
+.ask-btn svg{ width:19px; height:19px; flex:none; }
+.ask-btn .ico-tel{
+  fill:none; stroke:currentColor;
+  stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;
+}
+/* 카카오 말풍선은 선이 아니라 면으로 그립니다 */
+.ask-btn .ico-kakao{ fill:currentColor; stroke:none; }
+
+.ask-hours{ margin-top:16px; font-size:14.5px; color:var(--t4); line-height:1.9; }
+.ask-desc{
+  margin-top:12px; font-size:14.5px; color:var(--t3);
+  line-height:1.85; word-break:keep-all;
+}
 @media (max-width:760px){ .loc-map iframe{ height:320px; } }
 
 /* 세무뉴스 */
