@@ -946,10 +946,9 @@ footer b{ color:var(--t3); font-weight:700; }
 /* 카카오 말풍선은 선이 아니라 면으로 그립니다 */
 .ask-btn .ico-kakao{ fill:currentColor; stroke:none; }
 
-.ask-hours{ margin-top:16px; font-size:14.5px; color:var(--t4); line-height:1.9; }
-.ask-desc{
-  margin-top:12px; font-size:14.5px; color:var(--t3);
-  line-height:1.85; word-break:keep-all;
+.ask-hours{
+  margin-top:16px; text-align:center;
+  font-size:14.5px; color:var(--t4); line-height:1.9;
 }
 @media (max-width:760px){ .loc-map iframe{ height:320px; } }
 
