@@ -1125,11 +1125,17 @@ footer b{ color:var(--t3); font-weight:700; }
 }
 .ws span{ font-size:15px; color:var(--t3); line-height:1.7; }
 
-/* 좁은 화면에서는 그림을 옆으로 밀어 볼 수 있게 */
+/* 좁은 화면 : 그림을 잘라 내지 않고 화면 폭에 맞춰 줄입니다.
+   양옆 여백(24px)까지 조금 빌려 써서 되도록 크게 보여 주고,
+   작아진 만큼 글자 크기를 키워 읽을 수 있게 맞춥니다.
+   (글자 크기는 그림 안 좌표 기준이라 화면에서는 이 비율만큼 줄어듭니다) */
 @media (max-width:680px){
-  .web-wrap{ overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
-  .web-wrap::-webkit-scrollbar{ display:none; }
-  .web-map{ width:620px; }
+  .web-wrap{ margin-left:-16px; margin-right:-16px; }
+  .web-map{ width:100%; }
+  .w-core-t{ font-size:18px; }
+  .w-core-t tspan{ font-size:14.5px; }
+  .w-nm{ font-size:19px; }
+  .w-sub{ font-size:14px; }
 }
 
 /* ==========================================================
