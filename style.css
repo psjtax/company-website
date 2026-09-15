@@ -449,7 +449,7 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
   background:var(--pale); border-radius:28px;
   overflow-y:auto; overflow-x:hidden;
   scroll-snap-type:y mandatory; scroll-padding:20px;
-  overscroll-behavior:contain;              /* 끝까지 가도 페이지가 딸려가지 않게 */
+  overscroll-behavior:auto;                 /* 마지막 카드까지 가면 페이지가 이어서 내려갑니다 */
   scrollbar-width:none;                     /* 스크롤 막대는 숨김 */
   -ms-overflow-style:none;
 }
