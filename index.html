@@ -600,7 +600,8 @@
    숫자를 바꾸고 싶으면 아래 SPEED 값만 조절하세요 (밀리초)
    --------------------------------------------------------- */
 (function(){
-  var SPEED = 3000;                        // 카드가 넘어가는 간격
+  var SPEED = 2000;                        // 카드가 넘어가는 간격
+  var HOLD  = 3500;                        // 카드를 누르면 그 자리에 머무는 시간
   var track = document.getElementById('svcTrack');
   var frame = document.getElementById('svcFrame');
   var dots  = document.getElementById('svcDots');
@@ -610,8 +611,7 @@
   var cards = track.querySelectorAll('.svc-card');
   var pans  = frame.querySelectorAll('.pan');
   var dotEls= dots ? dots.querySelectorAll('i') : [];
-  var i = 0, timer = null, paused = false;
-  var picked = false;                       // 직접 골랐으면 자동 넘김을 멈춥니다
+  var i = 0, timer = null, hold = null;
 
   function step(){                          // 카드 한 칸 너비 (여백 포함)
     var c = cards[0].getBoundingClientRect().width;
@@ -626,7 +626,6 @@
     for(var k=0;k<dotEls.length;k++) dotEls[k].classList.toggle('act', k === active);
   }
   function go(){
-    if(paused) return;
     i++;
     track.style.transition = 'transform .85s cubic-bezier(.4,0,.2,1)';
     track.style.transform  = 'translateX(' + (-i * step()) + 'px)';
@@ -642,18 +641,22 @@
   function start(){ stop(); timer = setInterval(go, SPEED); }
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
 
-  track.addEventListener('mouseenter', function(){ paused = true; });
-  track.addEventListener('mouseleave', function(){ paused = false; });
+  /* 커서를 올려도 멈추지 않습니다 (예전에는 여기서 멈췄습니다) */
 
   /* 원하는 분야로 바로 이동
-     byUser 가 true 면 (직접 고른 것이면) 자동 넘김을 멈춥니다 */
+     byUser 가 true 면 (직접 고른 것이면) 잠깐 머물렀다가 다시 돌아갑니다 */
   function goTo(want, byUser){
     track.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
     i = want;
     track.style.transform = 'translateX(' + (-i * step()) + 'px)';
     mark(want);
-    if(byUser){ picked = true; stop(); }     // 직접 고름 → 자동 넘김 정지
-    else { picked = false; start(); }        // 처음으로 → 자동 넘김 다시 시작
+    if(hold){ clearTimeout(hold); hold = null; }
+    stop();
+    if(byUser){                              // 직접 고름 → HOLD 만큼 머물다가 다시
+      hold = setTimeout(function(){ hold = null; go(); start(); }, HOLD);
+    } else {                                 // 처음으로 → 바로 다시 시작
+      start();
+    }
   }
 
   /* 카드를 누르면 그 분야로 */
@@ -677,10 +680,10 @@
   });
 
   /* 화면에 보일 때만 돌아가게 (안 보이면 멈춤)
-     단, 직접 고른 뒤에는 다시 보여도 자동으로 넘어가지 않습니다 */
+     직접 고른 직후라면 머무는 시간이 끝난 뒤에 알아서 다시 돕니다 */
   new IntersectionObserver(function(es){
     es.forEach(function(e){
-      if(e.isIntersecting){ if(!picked) start(); }
+      if(e.isIntersecting){ if(!hold) start(); }
       else stop();
     });
   },{ threshold:.2 }).observe(track);
@@ -793,8 +796,11 @@
 
 /* ---------------------------------------------------------
    세무 일정
-   · 오른쪽 창을 마우스 휠로 굴리면 한 장씩 넘어가고
-     왼쪽 창이 그에 맞춰 따라옵니다
+   · 이 구역에 오면 페이지가 잠깐 멈추고, 휠을 내릴 때마다
+     오른쪽 카드가 한 장씩 넘어갑니다 (커서가 어디 있든)
+   · 카드를 다 보면 그때부터 페이지가 아래로 내려갑니다
+   · 위로 올릴 때는 붙잡지 않고 그냥 지나갑니다
+   · 왼쪽 창은 오른쪽 카드에 맞춰 따라옵니다
    · 가만히 두면 자동으로도 넘어갑니다
    자동 넘김 간격을 바꾸려면 아래 SPEED 숫자만 고치세요 (밀리초)
    --------------------------------------------------------- */
@@ -824,6 +830,31 @@
     if(window.innerWidth <= 1000) return;
     moveLeft(Math.max(0, Math.min(N - 1, Math.round(box.scrollTop / step()))));
   }, { passive:true });
+
+  /* 아래로 굴릴 때 : 커서가 어디 있든 오른쪽 카드부터 한 장씩 넘기고,
+     카드를 다 본 뒤에야 페이지가 내려가게 합니다.
+     위로 굴릴 때는 붙잡지 않습니다. */
+  var 잠김 = false;                               /* 한 번 굴릴 때 한 장씩만 */
+  window.addEventListener('wheel', function(e){
+    if(window.innerWidth <= 1000) return;        /* 휴대폰·태블릿은 그대로 둡니다 */
+    if(e.deltaY <= 0) return;                    /* 위로 굴릴 때는 그냥 지나갑니다 */
+
+    var 끝 = box.scrollHeight - box.clientHeight;
+    if(box.scrollTop >= 끝 - 2) return;           /* 카드를 다 봤으면 페이지에 넘깁니다 */
+
+    var r = box.getBoundingClientRect();
+    var 보이는만큼 = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    if(보이는만큼 < r.height * 0.8) return;        /* 카드 창이 거의 다 보일 때만 붙잡습니다 */
+
+    e.preventDefault();                          /* 페이지는 그대로 두고 */
+    touched = Date.now();                        /* 자동 넘김과 부딪히지 않게 */
+    if(잠김) return;
+    잠김 = true;
+    setTimeout(function(){ 잠김 = false; }, 700);
+
+    var 다음 = Math.min(N - 1, Math.round(box.scrollTop / step()) + 1);
+    box.scrollTo({ top: 다음 * step(), behavior:'smooth' });
+  }, { passive:false });
 
   /* 직접 굴리는 동안에는 자동 넘김을 잠시 멈춥니다 */
   ['wheel','touchstart','mousedown'].forEach(function(ev){
