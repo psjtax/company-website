@@ -1173,6 +1173,25 @@ footer b{ color:var(--t3); font-weight:700; }
 .orb .w-nm{ font-size:19px; }
 .orb .w-sub{ font-size:15px; }
 
+/* 궤도가 아주 천천히 돕니다.
+   뒤쪽 옅은 궤도 두 줄은 서로 반대 방향으로 (한 바퀴에 50초 · 60초),
+   전문가 다섯은 궤도를 따라 (한 바퀴에 90초) 돕니다.
+   글자는 따라 기울지 않고 늘 똑바로 서 있습니다. */
+.spin1,.spin2{ transform-box:view-box; }
+.spin1{ animation:w-spin1 50s linear infinite; }
+.spin2{ animation:w-spin2 60s linear infinite; }
+.only-pc .spin1,.only-pc .spin2{ transform-origin:320px 210px; }
+.only-mo .spin1,.only-mo .spin2{ transform-origin:210px 320px; }
+@keyframes w-spin1{ from{ transform:rotate(32deg); }  to{ transform:rotate(392deg); } }
+@keyframes w-spin2{ from{ transform:rotate(-32deg); } to{ transform:rotate(-392deg); } }
+
+/* 움직임을 줄이도록 설정하신 분에게는 뒤 궤도를 멈춰 둡니다.
+   (전문가가 도는 것은 CSS 로 못 멈춰서 common.js 에서 함께 멈춥니다) */
+@media (prefers-reduced-motion:reduce){
+  .spin1{ animation:none; transform:rotate(32deg); }
+  .spin2{ animation:none; transform:rotate(-32deg); }
+}
+
 /* 오른쪽 : 일이 흘러가는 순서.
    떠 있는 상자 네 개는 '순서'로 읽히지 않아서, 번호끼리 선으로 이었습니다. */
 .web-step{ list-style:none; margin:0; padding:0; }

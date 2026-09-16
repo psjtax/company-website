@@ -104,3 +104,9 @@ document.querySelectorAll('.fab a').forEach(function(a){
     if(this.getAttribute('href') === '#') e.preventDefault();
   });
 });
+
+/* 움직임을 줄이도록 설정하신 분에게는 궤도를 멈춰 둡니다.
+   그림 안에서 도는 움직임은 CSS 로 멈출 수 없어서 여기서 처리합니다. */
+if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('svg.orb').forEach(function(s){ s.pauseAnimations(); });
+}
