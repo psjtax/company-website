@@ -308,114 +308,82 @@
     </div>
 
     <div class="web-grid rv">
-      <!-- 왼쪽 : 도표 -->
+      <!-- 왼쪽 : 궤도 그림 -->
       <div class="web-wrap">
-        <svg class="web-map" viewBox="192 10 516 516" role="img"
-             aria-label="박성진세무회계사무소를 가운데 두고 변호사, 회계사, 노무사, 산업안전지도사, 가맹거래사가 서로 이어져 함께 일하는 그림">
-          <g class="w-line">
-      <line x1="450.0" y1="170.0" x2="450.0" y2="156.0"/>
-      <line x1="543.2" y1="237.7" x2="556.5" y2="233.4"/>
-      <line x1="507.6" y1="347.3" x2="515.8" y2="358.6"/>
-      <line x1="392.4" y1="347.3" x2="384.2" y2="358.6"/>
-      <line x1="356.8" y1="237.7" x2="343.5" y2="233.4"/>
+        <!-- 넓은 화면 : 가로로 누운 궤도 -->
+        <svg class="web-map orb only-pc" viewBox="-12 -34 666 458" role="img"
+             aria-label="박성진세무회계사무소를 가운데 두고 변호사, 회계사, 노무사, 산업안전지도사, 가맹거래사가 궤도 위에서 함께 일하는 그림">
+          <g class="w-orbit faint">
+            <ellipse cx="320" cy="210" rx="272" ry="170" transform="rotate(32 320 210)"/>
+            <ellipse cx="320" cy="210" rx="272" ry="170" transform="rotate(-32 320 210)"/>
           </g>
+          <ellipse class="w-orbit" cx="320" cy="210" rx="272" ry="170"/>
+          <circle class="w-halo" cx="320" cy="210" r="78"/>
+          <circle class="w-core" cx="320" cy="210" r="66"/>
+          <text class="w-ct" x="320" y="205">박성진<tspan x="320" dy="19">세무회계사무소</tspan></text>
 
-          <g class="w-orbits">
-      <path class="w-orbit" d="M526.9,103.1 A182,182 0 0,1 583.1,143.9"/>
-      <path class="w-orbit" d="M630.6,290.2 A182,182 0 0,1 609.2,356.2"/>
-      <path class="w-orbit" d="M484.7,446.7 A182,182 0 0,1 415.3,446.7"/>
-      <path class="w-orbit" d="M290.8,356.2 A182,182 0 0,1 269.4,290.2"/>
-      <path class="w-orbit" d="M316.9,143.9 A182,182 0 0,1 373.1,103.1"/>
+          <circle class="w-node" cx="320" cy="40" r="66"/>
+          <text class="w-nm" x="320" y="35">변호사</text>
+          <text class="w-sub" x="320" y="59">계약 · 분쟁</text>
+
+          <circle class="w-node" cx="578.7" cy="157.5" r="66"/>
+          <text class="w-nm" x="578.7" y="152.5">회계사</text>
+          <text class="w-sub" x="578.7" y="176.5">감사 · 가치평가</text>
+
+          <circle class="w-node" cx="479.9" cy="347.5" r="66"/>
+          <text class="w-nm" x="479.9" y="342.5">노무사</text>
+          <text class="w-sub" x="479.9" y="366.5">인사 · 4대보험</text>
+
+          <circle class="w-node" cx="160.1" cy="347.5" r="66"/>
+          <text class="w-nm" x="160.1" y="336">산업안전<tspan x="160.1" dy="21">지도사</tspan></text>
+          <text class="w-sub" x="160.1" y="379">사업장 안전</text>
+
+          <circle class="w-node" cx="61.3" cy="157.5" r="66"/>
+          <text class="w-nm" x="61.3" y="152.5">가맹거래사</text>
+          <text class="w-sub" x="61.3" y="176.5">프랜차이즈</text>
+        </svg>
+
+        <!-- 좁은 화면 : 세로로 선 궤도 (가로 궤도는 글씨가 너무 작아집니다) -->
+        <svg class="web-map orb only-mo" viewBox="-16 -26 452 646" role="img"
+             aria-label="박성진세무회계사무소를 가운데 두고 변호사, 회계사, 노무사, 산업안전지도사, 가맹거래사가 궤도 위에서 함께 일하는 그림">
+          <g class="w-orbit faint">
+            <ellipse cx="210" cy="320" rx="160" ry="272" transform="rotate(32 210 320)"/>
+            <ellipse cx="210" cy="320" rx="160" ry="272" transform="rotate(-32 210 320)"/>
           </g>
+          <ellipse class="w-orbit" cx="210" cy="320" rx="160" ry="272"/>
+          <circle class="w-halo" cx="210" cy="320" r="82"/>
+          <circle class="w-core" cx="210" cy="320" r="70"/>
+          <text class="w-ct" x="210" y="315">박성진<tspan x="210" dy="20">세무회계사무소</tspan></text>
 
-          <g class="w-flow">
-      <path class="w-arrow w-in" d="M-5,-3.8 L5,0 L-5,3.8 Z">
-        <animateMotion dur="3.8s" begin="0.00s" repeatCount="indefinite"
-          keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear" rotate="auto"
-          path="M450.0,170.0 L450.0,156.0"/>
-      </path>
-      <path class="w-arrow w-in" d="M-5,-3.8 L5,0 L-5,3.8 Z">
-        <animateMotion dur="3.8s" begin="0.60s" repeatCount="indefinite"
-          keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear" rotate="auto"
-          path="M543.2,237.7 L556.5,233.4"/>
-      </path>
-      <path class="w-arrow w-in" d="M-5,-3.8 L5,0 L-5,3.8 Z">
-        <animateMotion dur="3.8s" begin="1.20s" repeatCount="indefinite"
-          keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear" rotate="auto"
-          path="M507.6,347.3 L515.8,358.6"/>
-      </path>
-      <path class="w-arrow w-in" d="M-5,-3.8 L5,0 L-5,3.8 Z">
-        <animateMotion dur="3.8s" begin="1.80s" repeatCount="indefinite"
-          keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear" rotate="auto"
-          path="M392.4,347.3 L384.2,358.6"/>
-      </path>
-      <path class="w-arrow w-in" d="M-5,-3.8 L5,0 L-5,3.8 Z">
-        <animateMotion dur="3.8s" begin="2.40s" repeatCount="indefinite"
-          keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear" rotate="auto"
-          path="M356.8,237.7 L343.5,233.4"/>
-      </path>
-      <path class="w-arrow" d="M-6,-4.6 L6,0 L-6,4.6 Z">
-        <animateMotion dur="2.6s" begin="0.00s" repeatCount="indefinite"
-          calcMode="linear" rotate="auto" path="M526.9,103.1 A182,182 0 0,1 583.1,143.9"/>
-      </path>
-      <path class="w-arrow" d="M-6,-4.6 L6,0 L-6,4.6 Z">
-        <animateMotion dur="2.6s" begin="0.52s" repeatCount="indefinite"
-          calcMode="linear" rotate="auto" path="M630.6,290.2 A182,182 0 0,1 609.2,356.2"/>
-      </path>
-      <path class="w-arrow" d="M-6,-4.6 L6,0 L-6,4.6 Z">
-        <animateMotion dur="2.6s" begin="1.04s" repeatCount="indefinite"
-          calcMode="linear" rotate="auto" path="M484.7,446.7 A182,182 0 0,1 415.3,446.7"/>
-      </path>
-      <path class="w-arrow" d="M-6,-4.6 L6,0 L-6,4.6 Z">
-        <animateMotion dur="2.6s" begin="1.56s" repeatCount="indefinite"
-          calcMode="linear" rotate="auto" path="M290.8,356.2 A182,182 0 0,1 269.4,290.2"/>
-      </path>
-      <path class="w-arrow" d="M-6,-4.6 L6,0 L-6,4.6 Z">
-        <animateMotion dur="2.6s" begin="2.08s" repeatCount="indefinite"
-          calcMode="linear" rotate="auto" path="M316.9,143.9 A182,182 0 0,1 373.1,103.1"/>
-      </path>
-          </g>
+          <circle class="w-node" cx="210" cy="48" r="62"/>
+          <text class="w-nm" x="210" y="43">변호사</text>
+          <text class="w-sub" x="210" y="66">계약 · 분쟁</text>
 
-          <g class="w-core">
-            <circle cx="450" cy="268" r="92"/>
-            <text class="w-core-t" x="450" y="262">박성진세무회계사무소<tspan x="450" dy="21">대표세무사 박성진</tspan></text>
-          </g>
+          <circle class="w-node" cx="362.2" cy="235.9" r="62"/>
+          <text class="w-nm" x="362.2" y="230.9">회계사</text>
+          <text class="w-sub" x="362.2" y="253.9">감사 · 가치평가</text>
 
-      <g class="w-node">
-        <circle cx="450" cy="86" r="64"/>
-        <text class="w-nm" x="450" y="83">변호사</text>
-        <text class="w-sub" x="450" y="102">계약 · 분쟁</text>
-      </g>
-      <g class="w-node">
-        <circle cx="623" cy="212" r="64"/>
-        <text class="w-nm" x="623" y="209">회계사</text>
-        <text class="w-sub" x="623" y="228">감사 · 가치평가</text>
-      </g>
-      <g class="w-node">
-        <circle cx="557" cy="415" r="64"/>
-        <text class="w-nm" x="557" y="412">노무사</text>
-        <text class="w-sub" x="557" y="431">인사 · 4대보험</text>
-      </g>
-      <g class="w-node">
-        <circle cx="343" cy="415" r="64"/>
-        <text class="w-nm" x="343" y="403">산업안전<tspan x="343" dy="17">지도사</tspan></text>
-        <text class="w-sub" x="343" y="440">사업장 안전</text>
-      </g>
-      <g class="w-node">
-        <circle cx="277" cy="212" r="64"/>
-        <text class="w-nm" x="277" y="209">가맹거래사</text>
-        <text class="w-sub" x="277" y="228">프랜차이즈</text>
-      </g>
+          <circle class="w-node" cx="304" cy="540.1" r="62"/>
+          <text class="w-nm" x="304" y="535.1">노무사</text>
+          <text class="w-sub" x="304" y="558.1">인사 · 4대보험</text>
+
+          <circle class="w-node" cx="116" cy="540.1" r="62"/>
+          <text class="w-nm" x="116" y="528">산업안전<tspan x="116" dy="21">지도사</tspan></text>
+          <text class="w-sub" x="116" y="571">사업장 안전</text>
+
+          <circle class="w-node" cx="57.8" cy="235.9" r="62"/>
+          <text class="w-nm" x="57.8" y="230.9">가맹거래사</text>
+          <text class="w-sub" x="57.8" y="253.9">프랜차이즈</text>
         </svg>
       </div>
 
       <!-- 오른쪽 : 일이 흘러가는 순서 -->
-      <div class="web-step">
-        <div class="ws"><b>01</b><span>어떤 일이든 저희에게 먼저 말씀해 주세요</span></div>
-        <div class="ws"><b>02</b><span>대표세무사가 세무 관점에서 먼저 살펴봅니다</span></div>
-        <div class="ws"><b>03</b><span>세무 밖의 일이면 해당 분야 전문가와 함께 봅니다</span></div>
-        <div class="ws"><b>04</b><span>진행 상황은 대표세무사가 끝까지 챙깁니다</span></div>
-      </div>
+      <ol class="web-step">
+        <li><i>01</i><p>어떤 일이든 저희에게 먼저 말씀해 주세요</p></li>
+        <li><i>02</i><p>대표세무사가 세무 관점에서 먼저 살펴봅니다</p></li>
+        <li><i>03</i><p>세무 밖의 일이면 해당 분야 전문가와 함께 봅니다</p></li>
+        <li><i>04</i><p>진행 상황은 대표세무사가 끝까지 챙깁니다</p></li>
+      </ol>
     </div>
   </div>
 </section>

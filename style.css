@@ -1136,67 +1136,73 @@ footer b{ color:var(--t3); font-weight:700; }
    [18] 함께 일하는 그림 (사무소 소개)
    ========================================================== */
 .web-grid{
-  display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
+  display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
   gap:44px; align-items:center;
 }
 @media (max-width:1000px){ .web-grid{ grid-template-columns:1fr; gap:34px; } }
 
 .web-wrap{ min-width:0; }
-.web-map{ width:100%; height:auto; display:block; overflow:visible; }
+.web-map{ width:100%; height:auto; display:block; }
+.only-mo{ display:none; }        /* 좁은 화면에서만 나오는 세로 궤도 */
 
-/* 잇는 선 */
-.w-line line{ stroke:var(--pale2); stroke-width:2; }
-
-/* 전문가끼리 이어지는 둘레 */
-.w-orbit{ fill:none; stroke:var(--pale2); stroke-width:2; stroke-linecap:round; }
-
-/* 움직이는 화살표 — 둘레를 도는 것과 가운데를 오가는 것 */
-.w-arrow{ fill:var(--navy); opacity:.85; }
-.w-arrow.w-in{ opacity:.5; }        /* 가운데 쪽은 조금 옅게 */
-@media (prefers-reduced-motion: reduce){ .w-flow{ display:none; } }
+/* 궤도 : 전문가가 놓이는 길 하나와, 뒤로 비껴 지나가는 옅은 길 두 줄 */
+.w-orbit{ fill:none; stroke:var(--pale2); stroke-width:1.6; }
+.w-orbit.faint{ opacity:.5; }
 
 /* 가운데 : 사무소 */
-.w-core circle{ fill:var(--navy); }
-.w-core-t{
+.w-core{ fill:var(--navy); }
+.w-halo{ fill:none; stroke:var(--navy); stroke-width:1.2; opacity:.15; }
+.w-ct{
   fill:#fff; font-size:16px; font-weight:700; text-anchor:middle;
   font-family:'Noto Sans KR',sans-serif;
 }
-.w-core-t tspan{ font-size:13px; font-weight:400; opacity:.78; }
 
 /* 둘레 : 전문가 */
-.w-node circle{ fill:#fff; stroke:var(--pale2); stroke-width:1.6; }
+.w-node{ fill:#fff; stroke:var(--pale2); stroke-width:1.6; }
 .w-nm{
-  fill:var(--t1); font-size:15px; font-weight:700; text-anchor:middle;
+  fill:var(--t1); font-size:16px; font-weight:700; text-anchor:middle;
   font-family:'Noto Sans KR',sans-serif;
 }
 .w-sub{
-  fill:var(--t4); font-size:12px; text-anchor:middle;
+  fill:var(--t4); font-size:12.5px; text-anchor:middle;
   font-family:'Noto Sans KR',sans-serif;
 }
 
-/* 오른쪽 : 일이 흘러가는 순서 */
-.web-step{ display:grid; gap:14px; }
-.ws{
-  background:#fff; border:1px solid #EFF3FB; border-radius:16px;
-  padding:20px 22px; box-shadow:var(--sh); word-break:keep-all;
-  display:grid; grid-template-columns:34px 1fr; align-items:baseline; gap:6px;
-}
-.ws b{
-  font-size:13px; font-weight:800; color:var(--navy); letter-spacing:.06em;
-}
-.ws span{ font-size:15px; color:var(--t3); line-height:1.7; }
+/* 궤도 그림은 가로로 넓어서 화면에서 더 줄어듭니다. 그만큼 글씨를 키워 둡니다. */
+.orb .w-ct{ font-size:15px; }
+.orb .w-nm{ font-size:19px; }
+.orb .w-sub{ font-size:15px; }
 
-/* 좁은 화면 : 그림을 잘라 내지 않고 화면 폭에 맞춰 줄입니다.
-   양옆 여백(24px)까지 조금 빌려 써서 되도록 크게 보여 주고,
-   작아진 만큼 글자 크기를 키워 읽을 수 있게 맞춥니다.
-   (글자 크기는 그림 안 좌표 기준이라 화면에서는 이 비율만큼 줄어듭니다) */
-@media (max-width:680px){
+/* 오른쪽 : 일이 흘러가는 순서.
+   떠 있는 상자 네 개는 '순서'로 읽히지 않아서, 번호끼리 선으로 이었습니다. */
+.web-step{ list-style:none; margin:0; padding:0; }
+.web-step li{
+  position:relative; display:grid; grid-template-columns:40px 1fr;
+  gap:18px; padding-bottom:28px;
+}
+.web-step li:last-child{ padding-bottom:0; }
+.web-step li::before{
+  content:''; position:absolute; left:19px; top:42px; bottom:-2px;
+  width:2px; background:var(--pale2); border-radius:2px;
+}
+.web-step li:last-child::before{ display:none; }
+.web-step i{
+  width:40px; height:40px; border-radius:50%; font-style:normal;
+  background:#fff; border:1.6px solid var(--pale2); color:var(--navy);
+  display:grid; place-items:center; font-size:13px; font-weight:800; letter-spacing:.04em;
+}
+.web-step p{ margin:0; padding-top:10px; font-size:15.5px; color:var(--t2); line-height:1.7; }
+
+/* 좁은 화면 : 그림이 양옆 여백까지 조금 빌려 써서 되도록 크게 나오고,
+   작아진 만큼 글자를 키웁니다. 가로 궤도는 글씨가 너무 작아져서
+   세로로 선 궤도로 바꿔 답니다. */
+@media (max-width:900px){
   .web-wrap{ margin-left:-16px; margin-right:-16px; }
-  .web-map{ width:100%; }
-  .w-core-t{ font-size:18px; }
-  .w-core-t tspan{ font-size:14.5px; }
-  .w-nm{ font-size:19px; }
-  .w-sub{ font-size:14px; }
+  .only-pc{ display:none; }
+  .only-mo{ display:block; }
+  .w-ct,.orb .w-ct{ font-size:16px; }
+  .w-nm,.orb .w-nm{ font-size:19px; }
+  .w-sub,.orb .w-sub{ font-size:14.5px; }
 }
 
 /* ==========================================================
