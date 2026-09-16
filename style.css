@@ -1624,3 +1624,59 @@ footer b{ color:var(--t3); font-weight:700; }
   .ig-grid .nc{ padding:10px 10px 12px; }
   .ig-grid .nc-title{ font-size:13px; }
 }
+
+/* ==========================================================
+   [21] 약관 · 방침 (서비스이용약관 / 개인정보처리방침)
+   ========================================================== */
+.policy{ font-size:15.5px; color:var(--t2); line-height:1.9; }
+.policy .lead{
+  margin:0 0 34px; padding:20px 22px; background:var(--pale);
+  border-radius:14px; color:var(--t3); font-size:15px;
+}
+.policy h2{
+  margin:38px 0 12px; padding-bottom:10px;
+  font-size:18px; font-weight:700; color:var(--t1);
+  border-bottom:1px solid var(--pale2);
+}
+.policy h2:first-of-type{ margin-top:0; }
+.policy h3{ margin:22px 0 8px; font-size:15.5px; font-weight:700; color:var(--navy); }
+.policy p{ margin:0 0 12px; }
+.policy ol,.policy ul{ margin:0 0 12px; padding-left:20px; }
+.policy li{ margin-bottom:7px; }
+.policy b{ font-weight:700; color:var(--t1); }
+.policy a{ color:var(--navy); text-decoration:underline; }
+
+/* 덧붙이는 설명 : 본문보다 한 칸 낮춰 보이게 */
+.policy .note{
+  margin:12px 0 14px; padding:13px 16px;
+  background:var(--pale); border-radius:10px;
+  font-size:14.5px; color:var(--t3);
+}
+
+/* 표 : 좁은 화면에서는 칸을 위아래로 쌓습니다 */
+.ptable{ margin:14px 0 16px; border:1px solid var(--pale2); border-radius:12px; overflow:hidden; }
+.pt-row{ display:grid; grid-template-columns:190px 1fr; }
+.pt-row + .pt-row{ border-top:1px solid var(--pale2); }
+.pt-row span{ padding:13px 16px; }
+.pt-row span + span{ border-left:1px solid var(--pale2); }
+.pt-row small{ color:var(--t4); }
+.pt-head{ background:var(--pale); font-weight:700; color:var(--t1); }
+
+.policy .pfoot{ margin-top:40px; padding-top:22px; border-top:2px solid var(--pale2); }
+.policy .pfoot b{ display:block; margin-bottom:8px; color:var(--t1); }
+.policy .pfoot p{ margin:0; }
+
+/* 아직 안 정한 날짜 자리 (밑줄만 그어 둡니다) */
+.blank{ display:inline-block; border-bottom:1px solid var(--t4); color:var(--t4); }
+
+@media (max-width:600px){
+  .policy h2{ font-size:17px; }
+  .pt-row{ grid-template-columns:1fr; }
+  .pt-row span + span{ border-left:0; border-top:1px solid var(--pale2); }
+}
+
+/* 하단의 약관 · 방침 링크 */
+.fpolicy a{ color:inherit; text-decoration:none; opacity:.8; }
+.fpolicy a:hover{ opacity:1; text-decoration:underline; }
+.fpolicy a + a{ position:relative; margin-left:15px; }
+.fpolicy a + a::before{ content:'·'; position:absolute; left:-10px; opacity:.55; }
