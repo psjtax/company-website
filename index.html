@@ -832,21 +832,17 @@
   }, { passive:true });
 
   /* ── 아래로 굴릴 때 화면을 붙들어 두기 ───────────────────────────
-     구역이 화면 가운데에 닿으면 보기 좋은 자리에 세우고 그 자리를 붙듭니다.
-     이 사이트는 부드러운 스크롤이 켜져 있어서, 휠을 막기만 해서는
-     이미 미끄러지는 화면을 세울 수 없습니다. 그래서 자리를 직접 되돌립니다.
+     카드 창이 거의 다 보이면, 그때 있던 자리에 화면을 그대로 세웁니다.
+     자리를 맞추려고 옮기지 않습니다. 옮기면 화면이 확 땡겨져서 놀랍니다.
+     이 사이트는 부드러운 스크롤이 켜져 있어서 휠을 막는 것만으로는
+     이미 미끄러지는 화면을 세울 수 없기 때문에, 자리를 되돌리는 방식입니다.
      놓아 주는 때 : 카드를 다 봤을 때 · 위로 굴릴 때 · 키보드를 쓸 때 */
-  var sec = document.getElementById('schedule');
   var 잠긴자리 = null;
 
-  function 알맞은자리(){                           /* 구역을 화면 가운데에 */
-    return Math.max(0, Math.round(sec.offsetTop + (sec.offsetHeight - window.innerHeight) / 2));
-  }
   function 붙들기(){
     if(잠긴자리 !== null) return;
-    잠긴자리 = 알맞은자리();
+    잠긴자리 = Math.round(window.scrollY);   /* 지금 이 자리 그대로 (옮기지 않습니다) */
     document.documentElement.style.scrollBehavior = 'auto';   /* 되돌릴 때 출렁이지 않게 */
-    window.scrollTo(0, 잠긴자리);
   }
   function 놓아주기(){
     if(잠긴자리 === null) return;
@@ -872,12 +868,12 @@
     var 끝 = box.scrollHeight - box.clientHeight;
     if(box.scrollTop >= 끝 - 12){ 놓아주기(); return; }     /* 카드를 다 봤으면 놓아 줍니다 */
 
-    /* 구역이 화면을 지나가는 동안 붙듭니다.
-       구간을 넉넉히 잡아야 한 번에 세게 굴려도 그냥 지나치지 않습니다. */
-    var sr = sec.getBoundingClientRect();
-    var h = window.innerHeight;
-    if(sr.top > h * 0.75){ 놓아주기(); return; }    /* 아직 멀었습니다 */
-    if(sr.bottom < h * 0.4){ 놓아주기(); return; }  /* 이미 지나갔습니다 */
+    /* 카드 창이 거의 다 보일 때만 붙듭니다.
+       이때 붙들면 자리를 옮기지 않아도 화면이 어색하지 않습니다.
+       (이 구간이 화면 높이의 절반쯤 되어서, 세게 굴려도 대개 걸립니다) */
+    var r = box.getBoundingClientRect();
+    var 보이는만큼 = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    if(보이는만큼 < r.height * 0.85){ 놓아주기(); return; }
 
     e.preventDefault();
     붙들기();
