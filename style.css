@@ -22,6 +22,11 @@ body{
   font-family:'Noto Sans KR','Malgun Gothic','맑은 고딕',sans-serif;
   font-weight:400; line-height:1.6; -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
+  /* 한글은 낱말 중간에서 줄이 끊기면 읽기 나쁩니다.
+     사이트 전체에 한 번에 걸어 둡니다 (예전에는 29군데에 하나씩 걸려 있었습니다) */
+  word-break:keep-all;
+  overflow-wrap:break-word;   /* 단, 한 낱말이 칸보다 길면 그때만 끊습니다 */
+  text-wrap:pretty;           /* 마지막 줄에 낱말 하나만 덩그러니 남지 않게 */
 }
 img{ max-width:100%; display:block; }
 
