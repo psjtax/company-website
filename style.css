@@ -256,11 +256,10 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
 }
 .top-fab:hover{ background:var(--pale); border-color:var(--navy); }
 .top-fab svg{ width:25px; height:25px; stroke:var(--navy); }
-.fab a.top-fab{ display:none; }
-@media (max-width:1000px){
-  .fab a.top-fab{ display:grid; opacity:0; pointer-events:none; transition:opacity .3s ease; }
-  .fab a.top-fab.show{ opacity:1; pointer-events:auto; }
-}
+/* 조금 내려가면 나타납니다. 예전에는 폭 1000px 이하에서만 나와서
+   컴퓨터에서는 어느 페이지에서도 보이지 않았습니다. */
+.fab a.top-fab{ display:grid; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.fab a.top-fab.show{ opacity:1; pointer-events:auto; }
 
 /* 전화 걸기 */
 .call-fab{ background:var(--navy); box-shadow:0 8px 24px rgba(69,88,135,.42); }

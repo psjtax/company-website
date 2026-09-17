@@ -489,7 +489,20 @@
       if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); 고르기(+this.dataset.i); }
     });
   });
-  if(닫기) 닫기.addEventListener('click', function(){ 보이기(-1); });
+  /* 닫으면 도표로 되돌아갑니다. 약력이 길어서 닫기만 하면
+     엉뚱한 자리에 남아 어디를 보고 있었는지 알기 어렵습니다. */
+  function 보이는도표(){
+    var 들 = document.querySelectorAll('.web-sec .web-map');
+    for(var i = 0; i < 들.length; i++){
+      if(들[i].getClientRects().length) return 들[i];
+    }
+    return document.querySelector('.web-sec');
+  }
+  if(닫기) 닫기.addEventListener('click', function(){
+    보이기(-1);
+    var 도표 = 보이는도표();
+    if(도표) 도표.scrollIntoView({ behavior:'smooth', block:'center' });
+  });
 
   보이기(-1);   /* 처음에는 접어 둡니다 */
 })();
