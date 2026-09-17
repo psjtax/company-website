@@ -1743,7 +1743,11 @@ footer b{ color:var(--t3); font-weight:700; }
 
   /* 6 : 네 단계를 늘 2 × 2 로. 520px 아래에서 한 줄로 바뀌던 것을 막습니다 */
   .steps{ grid-template-columns:repeat(2,1fr); gap:12px; }
-  .step{ padding:24px 16px; }
+  .step{ padding:22px 14px; }
+  /* 2 x 2 로 좁아진 만큼 글씨도 줄입니다. 안 그러면 줄이 너무 많아집니다 */
+  .step .n{ width:42px; height:42px; font-size:13px; margin:0 0 12px; }
+  .step h3{ font-size:16px; }
+  .step p{ margin-top:9px; font-size:13px; line-height:1.65; }
 
   /* 7 : 세무 일정 — 위에 있던 큰 카드를 슬라이드의 첫 장으로 넣고,
          나머지도 옆으로 흐르는 작은 카드로 바꿉니다.
@@ -1787,6 +1791,6 @@ footer b{ color:var(--t3); font-weight:700; }
   }
   .why-card[open] > summary::after{ transform:rotate(-135deg); margin-top:-2px; }
   .why-card > summary > *{ margin:0; }
-  .why-card > summary > h3{ margin-top:10px; }
+  .why-faq .why-card > h3{ padding:0 22px; margin:0 0 10px; }
   .why-faq .why-card > p{ padding:0 22px 22px; margin:0; }
 }
