@@ -475,26 +475,34 @@
         </div>
 
         <div class="why-grid rv">
-          <div class="why-card">
-            <p class="q">“기장료는 매달 내는데,<br>절세가 되고 있는 건지 모르겠어요.”</p>
-            <h3>신고 전에 먼저 연락드립니다</h3>
+          <details class="why-card" open>
+            <summary>
+              <p class="q">“기장료는 매달 내는데,<br>절세가 되고 있는 건지 모르겠어요.”</p>
+              <h3>신고 전에 먼저 연락드립니다</h3>
+            </summary>
             <p>신고 기한에 임박해서야 알려드리지 않습니다.<br>적용 가능한 공제·감면을 미리 확인하고,<br>준비하실 것을 앞당겨 안내해 드립니다.</p>
-          </div>
-          <div class="why-card">
-            <p class="q">“세무는 잘 몰라서<br>질문하기가 눈치 보여요.”</p>
-            <h3>사소한 질문일수록 편하게</h3>
+          </details>
+          <details class="why-card" open>
+            <summary>
+              <p class="q">“세무는 잘 몰라서<br>질문하기가 눈치 보여요.”</p>
+              <h3>사소한 질문일수록 편하게</h3>
+            </summary>
             <p>세법을 강의해 온 세무사가 직접 설명해 드립니다.<br>어려운 용어 대신 알아들으실 수 있는 말로<br>말씀드리겠습니다.</p>
-          </div>
-          <div class="why-card">
-            <p class="q">“중요한 건 세무사님께<br>직접 확인받고 싶어요.”</p>
-            <h3>대표세무사가 직접 확인합니다</h3>
+          </details>
+          <details class="why-card" open>
+            <summary>
+              <p class="q">“중요한 건 세무사님께<br>직접 확인받고 싶어요.”</p>
+              <h3>대표세무사가 직접 확인합니다</h3>
+            </summary>
             <p>담당 직원이 실무를 챙기고,<br>박성진 대표세무사가 모든 건을 직접 꼼꼼히 확인합니다.<br>상담도 대표세무사가 직접 해 드립니다.</p>
-          </div>
-          <div class="why-card">
-            <p class="q">“지금 세무사무소를<br>옮겨도 괜찮을까요?”</p>
-            <h3>이전 절차는 저희가 처리합니다</h3>
+          </details>
+          <details class="why-card" open>
+            <summary>
+              <p class="q">“지금 세무사무소를<br>옮겨도 괜찮을까요?”</p>
+              <h3>이전 절차는 저희가 처리합니다</h3>
+            </summary>
             <p>기존 사무소와의 자료 인계, 홈택스 수임 변경까지 저희가 진행합니다.<br>고객님이 하실 일은 거의 없습니다.</p>
-          </div>
+          </details>
         </div>
       </div>
 
@@ -583,6 +591,102 @@
   </a>
 </div>
 
+<script>
+/* 후기 카드 : 휴대폰에서는 접은 채로 시작합니다.
+   컴퓨터에서는 늘 펼쳐 두어 예전 모습 그대로입니다. */
+(function(){
+  var 카드 = document.querySelectorAll('details.why-card');
+  if(!카드.length) return;
+  var 처음 = true;
+  var 좁은화면 = window.matchMedia('(max-width:900px)');
+  function 맞추기(){
+    var 좁음 = 좁은화면.matches;
+    for(var k = 0; k < 카드.length; k++){
+      if(!좁음) 카드[k].open = true;          /* 컴퓨터 : 늘 펼침 */
+      else if(처음) 카드[k].open = false;     /* 휴대폰 : 처음에만 접기 */
+    }
+    처음 = false;
+  }
+  맞추기();
+  if(좁은화면.addEventListener) 좁은화면.addEventListener('change', 맞추기);
+  else 좁은화면.addListener(맞추기);          /* 옛 브라우저 */
+})();
+</script>
+<script>
+/* 휴대폰 : 위에 있던 큰 카드를 옆으로 흐르는 슬라이드의 첫 장으로 옮깁니다.
+   넓은 화면에서는 도로 제자리에 돌려놓습니다. */
+(function(){
+  var 왼쪽 = document.querySelector('#schedule .sched-left');
+  var 카드줄 = document.getElementById('schedCards');
+  if(!왼쪽 || !카드줄) return;
+  var 첫장 = 왼쪽.querySelector('.sched-slide');
+  if(!첫장) return;
+  var 제자리 = 첫장.parentNode;
+  var 담을칸 = document.createElement('div');
+  담을칸.className = 'sched-card sched-lead';
+  var 좁은화면 = window.matchMedia('(max-width:1000px)');
+
+  function 맞추기(){
+    if(좁은화면.matches){
+      if(첫장.parentNode !== 담을칸){
+        담을칸.appendChild(첫장);
+        카드줄.insertBefore(담을칸, 카드줄.firstChild);
+      }
+    } else if(첫장.parentNode === 담을칸){
+      제자리.insertBefore(첫장, 제자리.firstChild);   /* 넓은 화면 : 되돌리기 */
+      if(담을칸.parentNode) 담을칸.parentNode.removeChild(담을칸);
+    }
+  }
+  맞추기();
+  if(좁은화면.addEventListener) 좁은화면.addEventListener('change', 맞추기);
+  else 좁은화면.addListener(맞추기);
+})();
+
+/* 휴대폰 : 세무 일정 작은 카드가 옆으로 흐릅니다.
+   (넓은 화면은 예전처럼 위아래로 넘어갑니다 — 그쪽 코드는 그대로입니다) */
+(function(){
+  var 칸 = document.querySelector('#schedule .sched-right');
+  if(!칸) return;
+  var 좁은화면 = window.matchMedia('(max-width:1000px)');
+  var 카드 = 칸.querySelectorAll('.sched-card');
+  var N = 카드.length;
+  if(N < 2) return;
+  var 시계 = null, 만진때 = 0;
+
+  function 한칸(){ return 카드[1].offsetLeft - 카드[0].offsetLeft || 1; }
+  function 넘기기(){
+    if(!좁은화면.matches) return;
+    if(Date.now() - 만진때 < 6000) return;      /* 방금 손으로 밀었으면 쉽니다 */
+    var 지금 = Math.round(칸.scrollLeft / 한칸());
+    var 갈곳 = ((지금 + 1) % N) * 한칸();
+    try { 칸.scrollTo({ left: 갈곳, behavior:'smooth' }); }
+    catch(e){ 칸.scrollLeft = 갈곳; }
+    /* 부드럽게 밀기가 안 통하는 곳이 있어, 잠시 뒤에도 그대로면 그냥 밉니다 */
+    setTimeout(function(){
+      if(Math.abs(칸.scrollLeft - 갈곳) > 12) 칸.scrollLeft = 갈곳;
+    }, 450);
+  }
+  ['touchstart','pointerdown'].forEach(function(ev){
+    칸.addEventListener(ev, function(){ 만진때 = Date.now(); }, { passive:true });
+  });
+
+  function 시작(){ 멈춤(); if(좁은화면.matches) 시계 = setInterval(넘기기, 3500); }
+  function 멈춤(){ if(시계){ clearInterval(시계); 시계 = null; } }
+
+  시작();                                   /* 바로 시작합니다 */
+
+  /* 화면에서 벗어나면 쉬고, 돌아오면 다시 */
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting ? 시작() : 멈춤(); });
+    },{ threshold:.15 }).observe(칸);
+  }
+
+  /* 화면 폭이 바뀌면 다시 판단합니다 */
+  if(좁은화면.addEventListener) 좁은화면.addEventListener('change', 시작);
+  else 좁은화면.addListener(시작);
+})();
+</script>
 <script src="common.js"></script>
 <script>
 /* ---------------------------------------------------------
@@ -660,6 +764,7 @@
   for(var k=0;k<dotEls.length;k++){
     (function(idx){ dotEls[idx].addEventListener('click', function(){ goTo(idx, true); }); })(k);
   }
+
 
   /* 처음으로 버튼 : 첫 분야로 되돌리고 자동 넘김도 다시 시작합니다 */
   var resetBtn = document.getElementById('svcReset');
