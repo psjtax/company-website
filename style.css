@@ -1143,6 +1143,11 @@ footer b{ color:var(--t3); font-weight:700; }
   fill:var(--t1); font-size:16px; font-weight:700; text-anchor:middle;
   font-family:'Noto Sans KR',sans-serif;
 }
+/* 전문가 성함 (직함 바로 위, 흐린 글씨) */
+.w-who{
+  fill:var(--t4); font-size:14px; font-weight:500; text-anchor:middle;
+  font-family:'Noto Sans KR',sans-serif;
+}
 .w-sub{
   fill:var(--t4); font-size:12.5px; text-anchor:middle;
   font-family:'Noto Sans KR',sans-serif;
@@ -1150,8 +1155,10 @@ footer b{ color:var(--t3); font-weight:700; }
 
 /* 궤도 그림은 가로로 넓어서 화면에서 더 줄어듭니다. 그만큼 글씨를 키워 둡니다. */
 .orb .w-ct{ font-size:15px; }
-.orb .w-nm{ font-size:19px; }
-.orb .w-sub{ font-size:15px; }
+/* 전문가 원은 이름 / 직함 / 분야 세 줄이라 그만큼 줄여 담습니다 */
+.orb .w-who{ font-size:14px; }
+.orb .w-nm{ font-size:18px; }
+.orb .w-sub{ font-size:13px; }
 
 /* 궤도가 아주 천천히 돕니다.
    뒤쪽 옅은 궤도 두 줄은 서로 반대 방향으로 (한 바퀴에 50초 · 60초),
@@ -1200,8 +1207,9 @@ footer b{ color:var(--t3); font-weight:700; }
   .only-pc{ display:none; }
   .only-mo{ display:block; }
   .w-ct,.orb .w-ct{ font-size:16px; }
-  .w-nm,.orb .w-nm{ font-size:19px; }
-  .w-sub,.orb .w-sub{ font-size:14.5px; }
+  .w-who,.orb .w-who{ font-size:15px; }
+  .w-nm,.orb .w-nm{ font-size:17px; }
+  .w-sub,.orb .w-sub{ font-size:12.5px; }
 }
 
 /* ==========================================================
