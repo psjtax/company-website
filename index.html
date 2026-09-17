@@ -554,13 +554,9 @@
   </div>
 </footer>
 
-<!-- ============ 화면 오른쪽 아래에 떠 있는 버튼 두 개 ============ -->
+<!-- ============ 화면 오른쪽 아래에 떠 있는 버튼 ============ -->
 <div class="fab">
-  <!-- 위 : 다음 구역으로 내려가기 -->
-  <a class="scroll-down" id="scrollDown" href="#service" aria-label="다음 구역으로 내려가기" title="다음으로">
-    <svg viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg>
-  </a>
-  <!-- 맨 위로 : 휴대폰에서 조금 내려가면 나타납니다 -->
+  <!-- 맨 위로 : 조금 내려가면 나타납니다 -->
   <a class="top-fab" id="topFab" href="#" aria-label="맨 위로" title="맨 위로">
     <svg viewBox="0 0 24 24"><path d="M18 14.5l-6-6-6 6"/></svg>
   </a>
@@ -922,52 +918,6 @@
       moveLeft(0);
     });
   },{ threshold:0 }).observe(box);
-})();
-
-/* ---------------------------------------------------------
-   화면 따라다니는 '아래로' 버튼
-   누를 때마다 다음 구역으로 내려가고,
-   맨 아래에 닿으면 위로 올라가는 화살표로 바뀝니다
-   --------------------------------------------------------- */
-(function(){
-  var btn = document.getElementById('scrollDown');
-  if(!btn) return;
-
-  /* 이동할 구역 순서 */
-  var ids = ['service','why','step','schedule','faq'];
-  var stops = [];
-  for(var k=0;k<ids.length;k++){
-    var el = document.getElementById(ids[k]);
-    if(el) stops.push(el);
-  }
-
-  function atBottom(){
-    return (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 120);
-  }
-  function refresh(){
-    btn.classList.toggle('up', atBottom());
-    btn.title = atBottom() ? '맨 위로' : '다음으로';
-  }
-
-  btn.addEventListener('click', function(e){
-    e.preventDefault();
-    if(atBottom()){
-      window.scrollTo({ top:0, behavior:'smooth' });
-      return;
-    }
-    var y = window.scrollY;
-    for(var k=0;k<stops.length;k++){
-      var top = stops[k].getBoundingClientRect().top + y;
-      if(top > y + 80){                       // 지금 위치보다 아래에 있는 첫 구역
-        window.scrollTo({ top:top - 70, behavior:'smooth' });   // 70 = 맨 위 바 높이만큼 빼기
-        return;
-      }
-    }
-    window.scrollTo({ top:document.body.scrollHeight, behavior:'smooth' });
-  });
-
-  window.addEventListener('scroll', refresh, { passive:true });
-  refresh();
 })();
 
 /* 배경 초대형 글씨가 스크롤에 따라 옆으로 흐르게 */

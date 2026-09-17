@@ -236,20 +236,7 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
 .fab a svg{ fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .fab a:hover{ transform:translateY(-3px); }
 
-/* 다음 구역으로 내려가기 */
-.scroll-down{
-  background:#fff; border:1px solid var(--pale2);
-  box-shadow:0 6px 20px rgba(69,88,135,.18);
-}
-.scroll-down:hover{ background:var(--pale); border-color:var(--navy); }
-.scroll-down svg{
-  width:26px; height:26px; stroke:var(--navy);
-  animation:bob 1.8s ease-in-out infinite;
-}
-/* 맨 아래까지 내려가면 위를 가리키는 화살표로 바뀝니다 */
-.scroll-down.up svg{ animation:none; transform:rotate(180deg); }
-
-/* 맨 위로 (휴대폰에서만, 조금 내려가면 나타납니다) */
+/* 맨 위로 (조금 내려가면 나타납니다) */
 .top-fab{
   background:#fff; border:1px solid var(--pale2);
   box-shadow:0 6px 20px rgba(69,88,135,.18);
@@ -279,9 +266,6 @@ h3.small{ font-size:clamp(18px,1.9vw,24px); font-weight:700; color:var(--t1); ma
 
 /* 아직 주소를 안 넣은 버튼은 눌러도 아무 일이 없습니다 */
 .fab a[href="#"]{ cursor:default; }
-
-@media (prefers-reduced-motion:reduce){ .scroll-down svg{ animation:none; } }
-@keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(6px);} }
 
 /* ==========================================================
    [5] 문장 패널 — 연한 배경 + 흰 둥근 패널 (모서리 30px)
@@ -799,9 +783,6 @@ footer b{ color:var(--t3); font-weight:700; }
   }
   .fab a{ width:46px; height:46px; }
   .fab a svg{ transform:scale(.88); }
-  /* 휴대폰은 손가락으로 넘기면 되니 '아래로' 버튼은 숨깁니다.
-     위의 .fab a 설정을 이기려면 앞에 .fab a 를 붙여야 합니다 */
-  .fab a.scroll-down{ display:none; }
 }
 
 /* --- 세무 일정 : 휴대폰에서 같은 내용이 두 번 나오지 않게 --- */
