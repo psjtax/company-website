@@ -1680,3 +1680,67 @@ footer b{ color:var(--t3); font-weight:700; }
 .fpolicy a:hover{ opacity:1; text-decoration:underline; }
 .fpolicy a + a{ position:relative; margin-left:15px; }
 .fpolicy a + a::before{ content:'·'; position:absolute; left:-10px; opacity:.55; }
+
+/* ==========================================================
+   [22] 사무소 소개 : 궤도 그림과 협력 전문가 카드 사이
+   ========================================================== */
+/* 연한 하늘빛 배경을 카드 구역보다 위로 끌어올려 그림 중간에 걸치게 합니다.
+   단색으로 뚝 끊으면 경계선이 눈에 보여서 위아래를 서서히 지웁니다. */
+.page.pale{ position:relative; background:none; padding-top:44px; }
+.page.pale::before{
+  content:''; position:absolute; z-index:0; pointer-events:none;
+  left:50%; transform:translateX(-50%); width:100vw;
+  top:-360px;      /* 카드 구역 위로 360px : 그림 한가운데쯤 */
+  bottom:-90px;    /* 아래로도 조금 흘러나가게 */
+  background:linear-gradient(to bottom,
+    rgba(243,246,255,0) 0,
+    var(--pale) 170px,
+    var(--pale) calc(100% - 130px),
+    rgba(243,246,255,0) 100%);
+}
+.page.pale > *{ position:relative; z-index:1; }
+
+/* 그림이 배경에 덮이지 않도록 한 겹 위로 띄웁니다.
+   그림 구역이 카드 구역보다 문서에서 먼저 나와서, 이게 없으면 덮입니다. */
+.web-sec{ position:relative; z-index:1; padding-bottom:40px; }
+
+@media (max-width:900px){
+  /* 좁은 화면에서는 그림이 세로로 길고 01~04 가 그 아래에 쌓여서
+     배경을 덜 끌어올립니다 */
+  .page.pale::before{
+    top:-520px; bottom:-70px;
+    background:linear-gradient(to bottom,
+      rgba(243,246,255,0) 0,
+      var(--pale) 120px,
+      var(--pale) calc(100% - 100px),
+      rgba(243,246,255,0) 100%);
+  }
+}
+
+/* ==========================================================
+   [23] 그림에서 전문가를 눌러 약력 펼치기
+   ========================================================== */
+/* 그림 속 전문가 원 : 누를 수 있다는 걸 알 수 있게 */
+.w-pick{ cursor:pointer; }
+.w-pick .w-node{ transition:fill .2s, stroke .2s, stroke-width .2s; }
+.w-pick:hover .w-node{ fill:var(--pale); stroke:var(--navy); }
+.w-pick:focus{ outline:none; }
+.w-pick:focus-visible .w-node{ stroke:var(--navy); stroke-width:3; }
+.w-pick.act .w-node{ fill:var(--pale2); stroke:var(--navy); stroke-width:2.6; }
+
+/* 약력이 접혀 있을 때 그 자리에 놓이는 안내 */
+.pro-hint{
+  margin:0; padding:22px 0 4px; text-align:center;
+  font-size:15.5px; color:var(--t4); letter-spacing:-.01em;
+}
+.pro-hint[hidden]{ display:none; }
+
+/* 닫기 단추 */
+.pro-close-wrap{ margin-top:20px; text-align:center; }
+.pro-close-wrap[hidden]{ display:none; }
+.pro-close{
+  font-family:inherit; font-size:14px; color:var(--t3); cursor:pointer;
+  background:#fff; border:1px solid var(--pale2); border-radius:99px;
+  padding:11px 30px; transition:border-color .2s, color .2s;
+}
+.pro-close:hover{ border-color:var(--navy); color:var(--navy); }
