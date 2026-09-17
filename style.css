@@ -1072,45 +1072,6 @@ footer b{ color:var(--t3); font-weight:700; }
 .pro-career li i.now{ background:var(--navy); color:#fff; }
 .pro-career li i.was{ background:var(--pale2); color:var(--navy); }
 
-/* --- 아래 : 눌러서 바꾸는 아이콘 카드 --- */
-.pro-track{
-  display:flex; gap:16px; list-style:none;
-  overflow-x:auto; padding:6px 2px 10px; scrollbar-width:none;
-}
-.pro-track::-webkit-scrollbar{ display:none; }
-.pro-card{
-  flex:0 0 168px; background:#fff; border:1px solid #EFF3FB; border-radius:18px;
-  padding:22px 20px; box-shadow:var(--sh); cursor:pointer; word-break:keep-all;
-  transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
-}
-.pro-card:hover{ transform:translateY(-4px); }
-.pro-card:focus-visible{ outline:2px solid var(--navy); outline-offset:3px; }
-.pro-card.act{
-  transform:translateY(-6px); border-color:var(--pale2);
-  box-shadow:0 16px 38px rgba(69,88,135,.2);
-}
-.pro-card .ic{
-  width:48px; height:48px; border-radius:14px; background:var(--pale);
-  display:grid; place-items:center; margin-bottom:15px; transition:background .35s;
-}
-.pro-card.act .ic{ background:var(--pale2); }
-.pro-card .ic svg{
-  width:25px; height:25px; fill:none; stroke:var(--navy);
-  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
-}
-.pro-card h3{ font-size:16.5px; font-weight:700; color:var(--t1); line-height:1.4; }
-.pro-card p{ margin-top:8px; font-size:13.5px; color:var(--t3); line-height:1.7; }
-
-/* 아래 점 */
-.pro-nav{ display:flex; justify-content:center; margin:14px 0 30px; }
-.pro-dots{ display:flex; gap:9px; }
-.pro-dots i{
-  width:8px; height:8px; border-radius:50%; background:#D9D9D9;
-  transition:background .4s, width .4s; display:block; cursor:pointer;
-}
-.pro-dots i:hover{ background:#B9C3DC; }
-.pro-dots i.act{ background:var(--navy); width:26px; border-radius:99px; }
-
 
 /* ==========================================================
    [18] 함께 일하는 그림 (사무소 소개)
