@@ -1884,19 +1884,19 @@ footer b{ color:var(--t3); font-weight:700; }
   .tax-card{
     min-height:0; border-radius:0; overflow:visible;
     background:none; box-shadow:none;
-    display:flex; align-items:center; gap:15px; margin-bottom:22px;
+    display:flex; align-items:center; gap:16px; margin-bottom:22px;
   }
   .tax-card img{ display:none; }               /* 큰 사진은 쉽니다 */
   .tax-card img.tax-face{
     display:block; position:static;
-    width:100px; height:100px; flex:0 0 100px;
+    width:132px; height:132px; flex:0 0 132px;
     border-radius:50%; object-position:50% 50%;
   }
   .tax-card .veil{ display:none; }             /* 사진 위 어두운 막도 쉽니다 */
   .tax-card .on{ position:static; padding:0; color:var(--t1); }
-  .tax-card .on .nm{ font-size:22px; font-weight:700; }
+  .tax-card .on .nm{ font-size:24px; font-weight:700; }
   .tax-card .on .nm em{
-    display:block; margin:4px 0 0; font-size:14px;
+    display:block; margin:5px 0 0; font-size:14.5px;
     font-weight:500; color:var(--t3); opacity:1;
   }
 }
