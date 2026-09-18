@@ -1798,6 +1798,9 @@ footer b{ color:var(--t3); font-weight:700; }
 /* '약력' 머리글은 휴대폰에서만 씁니다. 컴퓨터 화면에는 안 나옵니다 */
 .pro-cap{ display:none; }
 
+/* 휴대폰용 얼굴 사진도 마찬가지입니다. 컴퓨터 화면에는 안 나옵니다 */
+.tax-face{ display:none; }
+
 /* ==========================================================
    [25] 휴대폰 화면 다듬기 (사무소 소개)
    ※ 아래 @media 안의 것은 모두 좁은 화면 전용입니다.
@@ -1868,4 +1871,32 @@ footer b{ color:var(--t3); font-weight:700; }
   .career li{ padding-top:8px; padding-bottom:8px; }
   .career li + li{ border-top:1px solid #F4F4F6; }
   .career li i{ top:10px; }
+
+  /* 3-5 : 대표세무사 프로필도 전문가 카드와 같은 생김새로.
+          따로 있던 사진 카드와 글 카드를 흰 카드 하나로 묶고,
+          사진은 100px 동그라미로 씁니다.
+          (전문가분들은 78px 이라 대표님이 한 뼘 큽니다) */
+  .tax-grid{
+    background:#fff; border-radius:20px; padding:26px 20px;
+    box-shadow:var(--sh); gap:0;
+  }
+  .tax-info{ background:none; box-shadow:none; padding:0; border-radius:0; }
+  .tax-card{
+    min-height:0; border-radius:0; overflow:visible;
+    background:none; box-shadow:none;
+    display:flex; align-items:center; gap:15px; margin-bottom:22px;
+  }
+  .tax-card img{ display:none; }               /* 큰 사진은 쉽니다 */
+  .tax-card img.tax-face{
+    display:block; position:static;
+    width:100px; height:100px; flex:0 0 100px;
+    border-radius:50%; object-position:50% 50%;
+  }
+  .tax-card .veil{ display:none; }             /* 사진 위 어두운 막도 쉽니다 */
+  .tax-card .on{ position:static; padding:0; color:var(--t1); }
+  .tax-card .on .nm{ font-size:22px; font-weight:700; }
+  .tax-card .on .nm em{
+    display:block; margin:4px 0 0; font-size:14px;
+    font-weight:500; color:var(--t3); opacity:1;
+  }
 }
